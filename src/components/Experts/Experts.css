@@ -1,0 +1,52 @@
+/* .experts-holder .experts {
+  padding: 38px 0px;
+  bottom: -10%;
+  left: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+.experts-holder .experts .card {
+  padding: 0px 6vw;
+  text-align: center;
+  color: #004A5B;
+}*/
+/* .experts-holder .experts .card:not(:last-child) {
+  border-left: 1px solid #004A5B;
+} */
+.experts-holder .experts .card {
+  padding: 0px 0px;
+  text-align: center;
+}
+.experts-holder .experts .card p.num {
+  font-size: 40px;
+  font-weight: 600;
+  color: black;
+  margin: 0px;
+}
+.experts-holder .experts .card p.text {
+  font-size: 20px;
+  font-weight: 400;
+  color: #939393;
+  margin: 0px;
+} 
+
+/* .experts-holder{
+  
+} */
+.experts-holder .experts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  padding: 40px;
+  border-radius: 10px;
+  /* border: solid 1px #004A5B; */
+  position: absolute;
+  bottom: -96px;
+  right: 215px;
+  background-color: white;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}

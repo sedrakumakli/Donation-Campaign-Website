@@ -1,0 +1,200 @@
+/* *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Tajawal", sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+} */
+
+.campaign-card {
+    width: 430px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+}
+
+/* Header */
+
+.card-header {
+    height: 280px;
+    background: linear-gradient(135deg, #3b7d61, #59c095);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.status-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: #eaf5eb;
+    color: #214d39;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #214d39;
+    border-radius: 50%;
+}
+
+/* Body */
+
+.card-body {
+    padding: 24px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 28px;
+    color: #222;
+    font-size: 30px;
+    line-height: 1.6;
+}
+
+/* Stats */
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    color: #666;
+    font-size: 15px;
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #222;
+}
+
+.green {
+    color: #2f7a57;
+}
+
+/* Progress */
+
+.progress-wrapper {
+    margin-bottom: 25px;
+}
+
+.percentage {
+    width: 58px;
+    height: 40px;
+    margin: auto;
+    margin-bottom: 14px;
+    background: #cde5d2;
+    color: #2d6c4e;
+    border-radius: 999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.progress-bar {
+    height: 12px;
+    background: #e5e5e5;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    /* width: 75%; */
+    height: 100%;
+    background: #2f7a57;
+    border-radius: 30px;
+}
+
+/* Info Grid */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.info-box {
+    background: #efeee8;
+    border: 1px solid #d4d2ca;
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+}
+
+.icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.text {
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.number {
+    font-size: 36px;
+    font-weight: 800;
+}
+
+/* Buttons */
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.primary {
+    flex: 1;
+    background: #fff;
+    border: 2px solid #cfcfcf;
+}
+
+.secondary {
+    width: 120px;
+    background: #fff;
+    border: 2px solid #cfcfcf;
+}

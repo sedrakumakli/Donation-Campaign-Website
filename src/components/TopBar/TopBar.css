@@ -1,0 +1,27 @@
+.top-bar {
+    /* padding-bottom:8px;
+    padding-top: 8px;   */
+}
+.top-bar ,.container, .left , .phone , .email{
+    display: flex;
+    flex-direction: row;
+}
+ .top-bar .container{
+    justify-content: space-between;
+    align-items: center;
+    background-color: #8C9EA0;
+    color: white;
+    padding: 12px 12px;
+    width: 100%;
+}
+.container .left{
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.container .left .phone , .container .left .email{
+  justify-content: space-between;
+  align-items:center;
+  gap: 8px;
+  
+}

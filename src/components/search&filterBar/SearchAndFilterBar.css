@@ -1,0 +1,19 @@
+.searchAndfilterBar .conatiner{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.searchAndfilterBar .conatiner .search-bar{
+    /* padding-right: 16px; */
+    width: 60%;
+}
+.searchAndfilterBar .conatiner .filter-bar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .muirtl-10fyffj-MuiButtonBase-root-MuiIconButton-root svg {
+    font-size: 24px;
+    color: #6B7280;
+}
+}
