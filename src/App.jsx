@@ -12,25 +12,30 @@ import { Route, Routes } from 'react-router-dom';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import News from './Pages/News/News';
 import Campaigns from './Pages/Campaigns/Campaigns';
+import CampaignDetails from './Pages/CampaignDetails/CampaignDetails';
 
 
 function App() {
-  
+
   return (
     <>
-    {/* <div className="header">
+      {/* <div className="header">
       <TopBar/>
       <NavBar/> 
     </div> */}
-     {/* <Home/> */}
-     <TopBar/>
-     <NavBar/>
+      {/* <Home/> */}
+      <TopBar />
+      <NavBar />
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/campaigns" element={<Campaigns/>} />
+        <Route path="/campaigns" element={<Campaigns />} />
         <Route path="/news" element={<News />} />
         <Route path="/contactUs" element={<ContactUs />} />
+        <Route
+          path="/campaign/:id"
+          element={<CampaignDetails />}
+        />
       </Routes>
     </>
   )

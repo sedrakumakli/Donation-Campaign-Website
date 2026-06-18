@@ -3,7 +3,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import "./SearchAndFilterBar.css";
-const SearchAndFilterBar = () => {
+import { useState } from "react";
+const SearchAndFilterBar = ({ onFilterClick ,searchKey , setSearchKey}) => {
     // const [searchedKey, setSearchedKey] = useState('');
     return (
         <div className="searchAndfilterBar">
@@ -27,6 +28,8 @@ const SearchAndFilterBar = () => {
                         }} />
                         <InputBase
                             placeholder="ابحث حسب الاسم"
+                            value={searchKey}
+                            onChange={(e) => setSearchKey(e.target.value)}
                             sx={{
                                 flex: 1,
                                 textAlign: "right",
@@ -39,15 +42,18 @@ const SearchAndFilterBar = () => {
                 <div className="filter-bar">
                     <IconButton
                         sx={{
-                            border: "2px solid #6B7280",
+                            // border: "2px solid #6B7280",
                             borderRadius: "8px",
                             p: 1.2,
-                            backgroundColor: "#fff",
+                            backgroundColor: "#f5f6f7",
 
                             "& svg": {
-                                fontsize: "24",
+                                fontsize: 24,
                                 color: "#6B7280",
                             },
+                        }}
+                        onClick={() => {
+                            onFilterClick();
                         }}
                     >
                         <FilterAltIcon />

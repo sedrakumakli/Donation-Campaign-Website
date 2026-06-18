@@ -1,6 +1,10 @@
+import { Button, Menu, MenuItem } from "@mui/material";
 import "./CampaignCard.css";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const CampaignCard = ( {
+const CampaignCard = ({
+  id,
   image,
   title,
   target,
@@ -10,69 +14,137 @@ const CampaignCard = ( {
   relatedProjects,
   status
 }) => {
+  const navigate = useNavigate();
+  const [anchorElDonate, setAnchorElDonate] = useState(null);
+
+  const handleOpenDonateMenu = (event) => {
+    setAnchorElDonate(event.currentTarget);
+  };
+
+  const handleCloseDonateMenu = () => {
+    setAnchorElDonate(null);
+  };
+  const [openDirectModal, setOpenDirectModal] = useState(false);
+  const [openPledgeModal, setOpenPledgeModal] = useState(false);
+
+  const statusStyles = {
+    "نشطة": "active",
+    "مكتملة": "completed",
+    "منتهية": "ended",
+    "جديدة": "new",
+  };
+
+  console.log(status);
+console.log(statusStyles[status]);
   return (
     <div className="campaignCard">
       {/* Header  */}
-      <div class="card-header">
-        <div class="status-badge">
-          <span class="dot"></span>
-        {status}
+      <div className="card-header">
+        <div className={`status-badge ${statusStyles[status]}`}>
+          {status}
         </div>
         <img
           src={image}
           alt="حملة المياه"
-          class="cover-image"
+          className="cover-image"
         />
       </div>
 
       {/* Content  */}
-      <div class="card-body">
+      <div className="card-body">
 
-        <h2 class="title">{title}</h2>
+        <h2 className="title">{title}</h2>
 
-        <div class="stats">
-          <div class="stat">
-            <span class="label">المبلغ المجموع</span>
-            <span class="value green">{collected}$</span>
+        <div className="stats">
+          <div className="stat">
+            <span className="label">المبلغ المجموع</span>
+            <span className="value green">{collected}$</span>
           </div>
 
-          <div class="stat">
-            <span class="label">الهدف</span>
-            <span class="value">{target}$</span>
+          <div className="stat">
+            <span className="label">الهدف</span>
+            <span className="value">{target}$</span>
           </div>
         </div>
 
         {/* Progress  */}
-        <div class="progress-wrapper">
-            <div class="percentage">{progress}%</div>
-
-            <div class="progress-bar">
-                <div
-            className="progress-fill"
-            style={{ width: `${progress}%` }}
-          />
-            </div>
+        <div className="progress-wrapper">
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="percentage">
+            <p> نسبة الإنجاز :</p>
+            <span>{progress}%</span>
+          </div>
         </div>
 
         {/* Info Cards  */}
-        <div class="info-grid">
+        {/* <div class="info-grid">
           <div class="info-box">
-            {/* <div class="icon">📁</div> */}
             <div class="text">المشاريع المرتبطة</div>
             <div class="number">{completedProjects}</div>
           </div>
 
           <div class="info-box">
-            {/* <div class="icon">📂</div> */}
             <div class="text">المشاريع المنجزة</div>
             <div class="number">{relatedProjects}</div>
           </div>
-        </div>
-
+        </div> */}
+        <hr />
         {/* Buttons  */}
-        <div class="actions">
-          <button class="btn primary">تبرع الآن</button>
-          <button class="btn secondary">المزيد</button>
+        <div className="actions">
+          <Button
+            variant="contained"
+            onClick={handleOpenDonateMenu}
+            className="btn primary"
+            sx={{
+              borderRadius: "8px",
+              px: 4,
+              display: { xs: "none", md: "flex" },
+              bgcolor: "#004A5B",
+            }}
+          >
+            تبرع الآن
+          </Button>
+          <Menu
+            anchorEl={anchorElDonate}
+            open={Boolean(anchorElDonate)}
+            onClose={handleCloseDonateMenu}
+          >
+            <MenuItem onClick={() => {
+              handleCloseDonateMenu();
+              setOpenDirectModal(true);
+            }}>
+              تبرع مباشر
+            </MenuItem>
+
+            <MenuItem onClick={() => {
+              handleCloseDonateMenu();
+              setOpenPledgeModal(true);
+            }}>
+              تعهد
+            </MenuItem>
+          </Menu>
+          <Button
+            variant='outlined'
+            sx={{
+              borderRadius: '8px',
+              border: '1px solid #E0E0E0',
+              px: 4,
+              display: { xs: 'none', md: 'flex' },
+              bgcolor: '#fff',
+              color: 'var(--main-color)',
+              width: '120px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+            }}
+            onClick={() => navigate(`/campaign/${id}`)}
+          >
+            المزيد
+          </Button>
         </div>
 
       </div>
