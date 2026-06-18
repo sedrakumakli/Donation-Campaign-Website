@@ -1,5 +1,53 @@
-.campaigns .container-campaign{
+.campaigns {
+    /* padding: 80px; */
+}
+
+.campaigns .hero {
+    width: 100%;
+    height: 60vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.4)), url("/src/assets/homehero.png.png");
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    color: white;
+    margin-bottom: 40px;
+    h1{
+      font-size: 58px;
+    }
+    .desc{
+      font-size: 16px;
+    }
+}
+
+.campaigns .container-campaign{
+  display:flex;
+  flex-direction:row-reverse;
+  gap:24px;
+  align-items:flex-start;
+}
+
+.campaigns .filter-wrapper{
+  width:350px;
+  flex-shrink:0;
+}
+
+.campaigns .cards-wrapper{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+}
+
+.campaigns .cards-wrapper.with-filter{
+  grid-template-columns:repeat(3,1fr);
+}
+.campaigns .pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
 }
