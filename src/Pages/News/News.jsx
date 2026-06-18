@@ -12,7 +12,7 @@ import NewsCard from '../../components/News/NewsCard';
 import CustomPagination from '../../components/CustomPagination';
 import BreadCrumb from '../../components/BreadCrumb';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-import { getNews, getNewsCategories } from '../../services/news.js';
+import { filterNews, getNews, getNewsCategories } from '../../services/news.js';
 
 const newsData = [
   {
@@ -150,13 +150,30 @@ const News = () => {
 
   const news = newsData?.data || [];
 
-  const filteredNews = news.filter((blog) =>
-    blog.title.toLowerCase().includes(search.toLowerCase()),
-  );
+  const formData = new FormData();
 
-  const totalPages = Math.ceil(filteredNews.length / cardsPerPage);
+  if (search !== '') formData.append('title', search);
+  if (category !== 'الكل') formData.append('category[]', category);
 
-  const currentNews = filteredNews.slice(
+  const isFilterEnabled = search !== '' || category !== 'الكل';
+
+  const {
+    data: filteredNewsData,
+    isFetching: isFiltering,
+    error: filterErr,
+  } = useGetData({
+    queryKey: ['news', 'filter', search, category],
+    queryFn: () => filterNews(formData),
+    enabled: isFilterEnabled,
+  });
+
+  const filteredNews = filteredNewsData?.data || [];
+
+  const allNews = isFilterEnabled ? filteredNews : news;
+
+  const totalPages = Math.ceil(allNews.length / cardsPerPage);
+
+  const currentNews = allNews.slice(
     (page - 1) * cardsPerPage,
     page * cardsPerPage,
   );
@@ -277,7 +294,7 @@ const News = () => {
                 order: { xs: 2, md: 1 },
               }}
             >
-              {filteredNews.length} أخبار
+              {allNews.length} أخبار
             </Typography>
           </Box>
 
@@ -370,7 +387,7 @@ const News = () => {
           </Box>
         </Box>
 
-        {filteredNews.length === 0 ? (
+        {allNews.length === 0 ? (
           <Typography
             variant='h5'
             align='center'
