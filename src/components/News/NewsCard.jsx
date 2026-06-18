@@ -8,8 +8,17 @@ import {
   Chip,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import config from '../../constants/enviroment';
+import { formatArabicDate } from '../../utils/methods';
 
-const NewsCard = ({ id, image, title, excerpt, date, category }) => {
+const NewsCard = ({
+  uuid,
+  cover_image,
+  title,
+  excerpt,
+  publish_date,
+  category,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -30,7 +39,7 @@ const NewsCard = ({ id, image, title, excerpt, date, category }) => {
       }}
     >
       <CardActionArea
-        onClick={() => navigate(`/news/${id}`)}
+        onClick={() => navigate(`/news/${uuid}`)}
         sx={{
           height: '100%',
           display: 'flex',
@@ -49,7 +58,7 @@ const NewsCard = ({ id, image, title, excerpt, date, category }) => {
         >
           <CardMedia
             component='img'
-            image={image}
+            image={config.baseUrl + cover_image}
             alt={title}
             height='300'
             sx={{
@@ -67,6 +76,7 @@ const NewsCard = ({ id, image, title, excerpt, date, category }) => {
             flexDirection: 'column',
             justifyContent: 'space-between',
             flex: 1,
+            gap: 0.5,
           }}
         >
           <Box>
@@ -119,7 +129,7 @@ const NewsCard = ({ id, image, title, excerpt, date, category }) => {
               textAlign: 'right',
             }}
           >
-            تم النشر في {date}
+            تم النشر في {formatArabicDate(publish_date)}
           </Typography>
         </CardContent>
       </CardActionArea>

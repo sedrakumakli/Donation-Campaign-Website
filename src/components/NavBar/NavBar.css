@@ -1,7 +1,4 @@
-.nav-bar .container{
-    padding: 16px;
-}
-.nav-bar .container NavLink{
-   color: white;
-   text-decoration: none;
+.nav-bar .container NavLink {
+  color: white;
+  text-decoration: none;
 }

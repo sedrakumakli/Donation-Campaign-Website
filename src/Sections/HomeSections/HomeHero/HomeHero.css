@@ -1,4 +1,4 @@
-.home-hero{
+.home-hero {
   /* padding-bottom: 16.5%; */
   padding-top: 141.2px;
   display: flex;
@@ -8,21 +8,20 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-image:   linear-gradient(
-   rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)
-  ),url("/src/assets/homehero.png.png");
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('/src/assets/homehero.png.png');
   position: relative;
   margin-bottom: 150px;
 }
-.home-hero section{
+.home-hero section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
   top: 160px;
 }
-.home-hero section .btns{
+.home-hero section .btns {
   display: flex;
   justify-content: center;
   align-items: center;

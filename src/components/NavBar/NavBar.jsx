@@ -1,23 +1,23 @@
-import * as React from "react";
+import * as React from 'react';
 
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import { Link, NavLink } from "react-router-dom";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import { Link, NavLink } from 'react-router-dom';
 
 const pages = [
-  { name: "الرئيسية", path: "/" },
-  { name: "حولنا", path: "/about" },
-  { name: "الحملات", path: "/campaigns" },
-  { name: "آخر الأخبار", path: "/news" },
-  { name: "تواصل معنا", path: "/contactUs" },
+  { name: 'الرئيسية', path: '/' },
+  { name: 'حولنا', path: '/about' },
+  { name: 'الحملات', path: '/campaigns' },
+  { name: 'آخر الأخبار', path: '/news' },
+  { name: 'تواصل معنا', path: '/contactUs' },
 ];
 /* const pages = [
   "الرئيسية",
@@ -50,24 +50,29 @@ function NavBar() {
 
   return (
     <AppBar
-      position="static"
+      position='static'
       sx={{
-        bgcolor: "#fff",
-        color: "#000",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-        fontSize:"16px",
+        bgcolor: '#fff',
+        color: '#000',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+        fontSize: '16px',
       }}
-      className="nav-bar"
+      className='nav-bar'
     >
-      <Container maxWidth="xl">
+      <Container
+        maxWidth='xl'
+        sx={{
+          py: 0.5,
+          px: { xs: 2, md: 6, lg: 10 },
+        }}
+      >
         <Toolbar disableGutters sx={{ width: '100%' }}>
-
           {/* LOGO - Desktop */}
           <Typography
-            variant="h5"
+            variant='h5'
             sx={{
-              display: { xs: "none", md: "flex" },
-              fontWeight: "bold",
+              display: { xs: 'none', md: 'flex' },
+              fontWeight: 'bold',
             }}
           >
             LOGO
@@ -76,13 +81,13 @@ function NavBar() {
           {/* Mobile Menu */}
           <Box
             sx={{
-              display: { xs: "flex", md: "none" },
+              display: { xs: 'flex', md: 'none' },
             }}
           >
             <IconButton
-              size="large"
+              size='large'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>
@@ -92,22 +97,17 @@ function NavBar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
+                vertical: 'bottom',
+                horizontal: 'right',
               }}
               transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
             >
               {pages.map((page) => (
-                <MenuItem
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                >
-                  <NavLink to={page.path}>
-                    {page.name}
-                  </NavLink>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <NavLink to={page.path}>{page.name}</NavLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -115,11 +115,11 @@ function NavBar() {
 
           {/* LOGO - Mobile */}
           <Typography
-            variant="h6"
+            variant='h6'
             sx={{
-              display: { xs: "flex", md: "none" },
+              display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontWeight: "bold",
+              fontWeight: 'bold',
             }}
           >
             LOGO
@@ -129,8 +129,8 @@ function NavBar() {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              justifyContent: "center",
+              display: { xs: 'none', md: 'flex' },
+              justifyContent: 'center',
               gap: 4,
             }}
           >
@@ -139,26 +139,25 @@ function NavBar() {
                 key={page.path}
                 component={NavLink}
                 to={page.path}
-                color="inherit"
+                color='inherit'
                 sx={{
-                  fontSize:"16px",
+                  fontSize: '16px',
                 }}
               >
                 {page.name}
               </Button>
             ))}
-
           </Box>
 
           {/* Donate Button */}
           <Button
-            variant="contained"
+            variant='contained'
             onClick={handleOpenDonateMenu}
             sx={{
-              borderRadius: "8px",
+              borderRadius: '8px',
               px: 4,
-              display: { xs: "none", md: "flex" },
-              bgcolor: "#004A5B",
+              display: { xs: 'none', md: 'flex' },
+              bgcolor: '#004A5B',
             }}
           >
             تبرع الآن
@@ -168,13 +167,9 @@ function NavBar() {
             open={Boolean(anchorElDonate)}
             onClose={handleCloseDonateMenu}
           >
-            <MenuItem onClick={handleCloseDonateMenu}>
-              تبرع مادي
-            </MenuItem>
+            <MenuItem onClick={handleCloseDonateMenu}>تبرع مادي</MenuItem>
 
-            <MenuItem onClick={handleCloseDonateMenu}>
-              تبرع عيني
-            </MenuItem>
+            <MenuItem onClick={handleCloseDonateMenu}>تبرع عيني</MenuItem>
           </Menu>
         </Toolbar>
       </Container>
