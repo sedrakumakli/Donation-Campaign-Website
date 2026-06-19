@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getLastestNews, getSingleNews } from '../../services/news';
 import config from '../../constants/enviroment';
 import CustomContainer from '../../components/common/CustomContainer';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import NewsDetailsHeader from '../../components/News/NewsDetailsHeader';
 import NewsGallery from '../../components/News/NewsGallery';
 import NewsLightbox from '../../components/News/NewsLightBox';
@@ -92,8 +92,12 @@ const NewsDetails = () => {
     queryKey: ['news', 'latest'],
     queryFn: () => getLastestNews(),
   });
-  const latestNews =
-    latestNewsData?.data.filter((item) => item.uuid !== id) || [];
+
+  const latestNews = useMemo(() => {
+    if (!latestNewsData?.data) return [];
+
+    return latestNewsData.data.filter((item) => item.uuid !== id);
+  }, [latestNewsData, id]);
 
   return (
     <>
