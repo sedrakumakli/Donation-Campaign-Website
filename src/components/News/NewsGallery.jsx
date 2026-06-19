@@ -35,6 +35,13 @@ const NewsGallery = ({ images = [], onImageClick }) => {
           borderRadius: 4,
           mb: 3,
           cursor: 'pointer',
+
+          transition: 'all .3s ease',
+
+          '&:hover': {
+            transform: 'scale(1.03)',
+            filter: 'brightness(0.85)',
+          },
         }}
       />
 
