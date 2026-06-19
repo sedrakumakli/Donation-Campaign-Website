@@ -2,6 +2,7 @@ import { Box, Container, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
+import CustomContainer from './common/CustomContainer';
 
 const breadcrumbItems = [{ label: 'الرئيسية', path: '/' }];
 
@@ -14,11 +15,9 @@ const BreadCrumb = ({ dynamicItems = [] }) => {
         backgroundColor: '#EEF2F3',
       }}
     >
-      <Container
-        maxWidth='xl'
-        sx={{
+      <CustomContainer
+        styles={{
           height: 72,
-          px: { xs: 2, md: 6, lg: 10 },
           display: 'flex',
           alignItems: 'center',
           gap: 1,
@@ -63,7 +62,7 @@ const BreadCrumb = ({ dynamicItems = [] }) => {
             </Box>
           );
         })}
-      </Container>
+      </CustomContainer>
     </Box>
   );
 };

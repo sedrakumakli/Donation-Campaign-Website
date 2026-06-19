@@ -5,7 +5,10 @@ export const getAll = async (endpoint) => {
   return res.data;
 };
 
-export const getById = (endpoint, id) => api.get(`/${endpoint}/${id}`);
+export const getById = async (endpoint, id) => {
+  const res = await api.get(`/${endpoint}/${id}`);
+  return res.data;
+};
 
 export const filter = async (endpoint, body) => {
   const res = await api.post(`/${endpoint}`, body);

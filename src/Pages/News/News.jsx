@@ -1,126 +1,12 @@
 import { useState } from 'react';
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  Chip,
-  InputBase,
-} from '@mui/material';
+import { Box, Grid, Typography, Chip, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import NewsCard from '../../components/News/NewsCard';
 import CustomPagination from '../../components/CustomPagination';
 import BreadCrumb from '../../components/BreadCrumb';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import { filterNews, getNews, getNewsCategories } from '../../services/news.js';
-
-const newsData = [
-  {
-    id: 1,
-    title: 'بدء استقبال طلبات مشاريع التخرج للعام الدراسي الجديد',
-    excerpt:
-      'أعلنت الكلية عن بدء استقبال طلبات مشاريع التخرج إلكترونياً عبر المنصة، مع إمكانية متابعة حالة الطلب بشكل مباشر.',
-    image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800',
-    date: '10 تموز 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 2,
-    title: 'إطلاق تحديث جديد لمنصة إدارة مشاريع التخرج',
-    excerpt:
-      'يتضمن التحديث تحسينات على واجهة المستخدم وإضافة إشعارات فورية للطلاب والمشرفين.',
-    image: '/homehero.png.png',
-    date: '8 تموز 2026',
-    category: 'تكنولوجيا',
-  },
-  {
-    id: 3,
-    title: 'نصائح مهمة لكتابة تقرير مشروع التخرج',
-    excerpt:
-      'مجموعة من الإرشادات العملية التي تساعد الطلاب على إعداد تقرير أكاديمي منظم واحترافي.',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
-    date: '5 تموز 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 4,
-    title: 'جدولة مناقشات مشاريع التخرج للفصل الحالي',
-    excerpt:
-      'تم نشر الجدول الأولي لمناقشات مشاريع التخرج، ويمكن للطلاب الاطلاع على مواعيدهم عبر المنصة.',
-    image: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=800',
-    date: '1 تموز 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 5,
-    title: 'تكريم المشاريع المتميزة في كلية الهندسة المعلوماتية',
-    excerpt:
-      'شهد الحفل عرض عدد من المشاريع المبتكرة التي قدمت حلولاً تقنية لمشكلات واقعية.',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800',
-    date: '28 حزيران 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 6,
-    title: 'إرشادات اختيار المشرف الأكاديمي المناسب',
-    excerpt:
-      'تعرف على أهم المعايير التي تساعدك في اختيار مشرف يتناسب مع فكرة مشروعك وأهدافك البحثية.',
-    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800',
-    date: '25 حزيران 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 7,
-    title: 'بدء استقبال طلبات مشاريع التخرج للعام الدراسي الجديد',
-    excerpt:
-      'أعلنت الكلية عن بدء استقبال طلبات مشاريع التخرج إلكترونياً عبر المنصة، مع إمكانية متابعة حالة الطلب بشكل مباشر.',
-    image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800',
-    date: '10 تموز 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 8,
-    title: 'إطلاق تحديث جديد لمنصة إدارة مشاريع التخرج',
-    excerpt:
-      'يتضمن التحديث تحسينات على واجهة المستخدم وإضافة إشعارات فورية للطلاب والمشرفين.',
-    image: '/homehero.png.png',
-    date: '8 تموز 2026',
-    category: 'تعليم',
-  },
-  {
-    id: 9,
-    title: 'نصائح مهمة لكتابة تقرير مشروع التخرج',
-    excerpt:
-      'مجموعة من الإرشادات العملية التي تساعد الطلاب على إعداد تقرير أكاديمي منظم واحترافي.',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
-    date: '5 تموز 2026',
-    category: 'تعليم',
-  },
-  /*  {
-    id: 10,
-    title: 'جدولة مناقشات مشاريع التخرج للفصل الحالي',
-    excerpt:
-      'تم نشر الجدول الأولي لمناقشات مشاريع التخرج، ويمكن للطلاب الاطلاع على مواعيدهم عبر المنصة.',
-    image: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=800',
-    date: '1 تموز 2026',
-  },
-  {
-    id: 11,
-    title: 'تكريم المشاريع المتميزة في كلية الهندسة المعلوماتية',
-    excerpt:
-      'شهد الحفل عرض عدد من المشاريع المبتكرة التي قدمت حلولاً تقنية لمشكلات واقعية.',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800',
-    date: '28 حزيران 2026',
-  },
-  {
-    id: 12,
-    title: 'إرشادات اختيار المشرف الأكاديمي المناسب',
-    excerpt:
-      'تعرف على أهم المعايير التي تساعدك في اختيار مشرف يتناسب مع فكرة مشروعك وأهدافك البحثية.',
-    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800',
-    date: '25 حزيران 2026',
-  }, */
-];
+import CustomContainer from '../../components/common/CustomContainer.jsx';
 
 const News = () => {
   const [search, setSearch] = useState('');
@@ -227,11 +113,9 @@ const News = () => {
           </Typography>
         </Box>
       </Box>
-      <Container
-        maxWidth='xl'
-        sx={{
+      <CustomContainer
+        styles={{
           pb: 4,
-          px: { xs: 2, md: 6, lg: 10 },
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
@@ -443,7 +327,7 @@ const News = () => {
             )}
           </>
         )}
-      </Container>
+      </CustomContainer>
     </>
   );
 };
