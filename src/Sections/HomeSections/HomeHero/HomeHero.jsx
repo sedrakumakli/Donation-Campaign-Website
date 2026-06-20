@@ -43,11 +43,7 @@ function HomeHero() {
                 onclick: () => navigate("/in-kind-donation"),
               },
             ]}
-            sx={{
-              eight: '60px',
-              width: '300px',
-              fontSize: '24px',
-            }}
+            
           />
           <Button
             variant='outlined'
