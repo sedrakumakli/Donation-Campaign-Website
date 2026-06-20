@@ -1,73 +1,45 @@
-// import { Button } from "@mui/material";
-// import "./ProjectCard.css";
+import { ChevronLeft, LocateIcon, MapPin } from "lucide-react";
 
-// const ProjectCard = ({image,sector,gool,total,title,rate,city,region}) => {
-//     return (
-//         <div class="project-card">
+function ProjectCard({ project }) {
+  const pct = Math.round((project.raised / project.target) * 100);
+  const isDone = project.status === "done";
 
-//             <div class="image-wrapper">
-//                 <img src={image} alt="مشروع" />
-//                 <div class="sector top-right">{sector}</div>
+  return (
+    <div className="project-card">
+      <div className="project-img">
+        <img src={project.image} alt={project.title} />
+        <span className={`project-badge ${isDone ? "done" : ""}`}>
+          <span className="dot" />
+          {isDone ? "مكتمل" : "قيد التنفيذ"}
+        </span>
+      </div>
+      <div className="project-body">
+        <h3 className="project-title">{project.title}</h3>
+        <div className="project-desc"><MapPin  size={14}/>{project.location}</div>
 
-//                 {/* <div class="status top-left">بعد 3 يوم</div> */}
+        <div className="project-progress-track">
+          <div className="project-progress-fill" style={{ width: `${pct}%` }} />
+        </div>
+        <div className="project-amounts">
+          <span>
+            {project.raised.toLocaleString("en-US")}${" "}
+            <span className="of">/ {project.target.toLocaleString("en-US")}$</span>
+          </span>
+          <span>{pct}%</span>
+        </div>
 
-//             </div>
-
-//             <div class="card-content">
-//                 <h2>{title}</h2>
-//                 <div className="location-info">
-//                     <div className="location-icon"></div>
-//                     <p>{city} <span>-</span>{region}</p>
-//                 </div>
-//                 <div class="progress-info">
-//                     <span>نسبة الإنجاز</span>
-//                     <strong>{rate}</strong>
-//                 </div>
-
-//                 <div class="progress">
-//                     <div class="progress-fill"></div>
-//                 </div>
-//                 <div className="rate-bar">
-//                     <div className="rate-item">
-//                         <span>تم جمعه الأن</span>
-//                          <strong>{total}</strong>
-//                     </div>
-//                     <div className="rate-item">
-//                         <span>الهدف</span>
-//                          <strong>{gool}</strong>
-//                     </div>
-//                 </div>
-
-//                 {/* <div class="funding-bar">
-//                     <div class="funding-item">
-//                         <span>تم جمعه حتى الآن</span>
-//                         <strong>{total}</strong>
-//                     </div>
-
-//                     <div class="funding-item">
-//                         <span>الهدف</span>
-//                         <strong>{gool}</strong>
-//                     </div>
-//                 </div> */}
-
-//                 <hr />
-//                     <Button
-//                         variant="outlined"
-//                         sx={{
-//                             borderRadius: "8px",
-//                             borderColor: "#004A5B",
-//                             px: 4,
-//                             display: { xs: "none", md: "flex" },
-//                             bgcolor: "white",
-//                             color: "#004A5B",
-//                             width:"200px",
-//                             height:"40px"
-//                         }}
-//                     >
-//                        معرفة المزيد
-//                     </Button>
-//                 </div>
-//             </div>
-//     )
-// }
-// export default ProjectCard;
+        <div className="project-foot">
+          <div className="project-allocated">
+            المبلغ المخصص
+            <br />
+            <b>{project.allocated.toLocaleString("en-US")}$</b>
+          </div>
+          <a href="#" className="project-link">
+            التفاصيل <ChevronLeft size={14} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+export default ProjectCard;

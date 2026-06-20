@@ -280,8 +280,8 @@ const CampaignFilter = ({ filters, setFilters }) => {
         <label className="checkbox-row">
           <input
             type="checkbox"
-            name="finished"
-            checked={filters.status.includes("finished")}
+            name="ended"
+            checked={filters.status.includes("ended")}
             onChange={handleStatusChange}
           />
           منتهية

@@ -157,7 +157,8 @@ function NavBar() {
               borderRadius: '8px',
               px: 4,
               display: { xs: 'none', md: 'flex' },
-              bgcolor: '#004A5B',
+              background: 'linear-gradient(135deg, var(--teal-800), var(--teal-600))',
+              color:'var(--bg)',
             }}
           >
             تبرع الآن
