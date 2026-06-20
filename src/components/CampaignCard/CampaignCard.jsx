@@ -2,6 +2,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import "./CampaignCard.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DonateButton from "../DonateButton/DonateButton";
 
 const CampaignCard = ({
   id,
@@ -15,17 +16,17 @@ const CampaignCard = ({
   status
 }) => {
   const navigate = useNavigate();
-  const [anchorElDonate, setAnchorElDonate] = useState(null);
+  // const [anchorElDonate, setAnchorElDonate] = useState(null);
 
-  const handleOpenDonateMenu = (event) => {
-    setAnchorElDonate(event.currentTarget);
-  };
+  // const handleOpenDonateMenu = (event) => {
+  //   setAnchorElDonate(event.currentTarget);
+  // };
 
-  const handleCloseDonateMenu = () => {
-    setAnchorElDonate(null);
-  };
-  const [openDirectModal, setOpenDirectModal] = useState(false);
-  const [openPledgeModal, setOpenPledgeModal] = useState(false);
+  // const handleCloseDonateMenu = () => {
+  //   setAnchorElDonate(null);
+  // };
+  // const [openDirectModal, setOpenDirectModal] = useState(false);
+  // const [openPledgeModal, setOpenPledgeModal] = useState(false);
 
   const statusStyles = {
     "نشطة": "active",
@@ -35,7 +36,7 @@ const CampaignCard = ({
   };
 
   console.log(status);
-console.log(statusStyles[status]);
+  console.log(statusStyles[status]);
   return (
     <div className="campaignCard">
       {/* Header  */}
@@ -96,38 +97,24 @@ console.log(statusStyles[status]);
         <hr />
         {/* Buttons  */}
         <div className="actions">
-          <Button
-            variant="contained"
-            onClick={handleOpenDonateMenu}
-            className="btn primary"
+          <DonateButton
+            options={[
+              {
+                label: "تبرع مباشر",
+                onClick: () =>
+                  navigate(`/campaign/${id}/direct-donation`),
+              },
+              {
+                label: "تعهد",
+                onClick: () =>
+                  navigate(`/campaign/${id}/pledge`),
+              },
+            ]}
             sx={{
-              borderRadius: "8px",
-              px: 4,
-              display: { xs: "none", md: "flex" },
-              bgcolor: "#004A5B",
+              fontSize:'16px',
+              flex:'1',
             }}
-          >
-            تبرع الآن
-          </Button>
-          <Menu
-            anchorEl={anchorElDonate}
-            open={Boolean(anchorElDonate)}
-            onClose={handleCloseDonateMenu}
-          >
-            <MenuItem onClick={() => {
-              handleCloseDonateMenu();
-              setOpenDirectModal(true);
-            }}>
-              تبرع مباشر
-            </MenuItem>
-
-            <MenuItem onClick={() => {
-              handleCloseDonateMenu();
-              setOpenPledgeModal(true);
-            }}>
-              تعهد
-            </MenuItem>
-          </Menu>
+          />
           <Button
             variant='outlined'
             sx={{

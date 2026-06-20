@@ -1,6 +1,8 @@
 import { Button } from '@mui/material';
 import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
+import { HeartHandshake } from 'lucide-react';
+import DonateButton from '../../../components/DonateButton/DonateButton';
 function HomeHero() {
   return (
     <div className='home-hero'>
@@ -11,30 +13,47 @@ function HomeHero() {
           انضم إلى آلاف المتبرعين حول العالم.
         </p>
         <div className='btns'>
-          <Button
+          {/* <Button
             variant='contained'
             sx={{
               borderRadius: '8px',
               px: 4,
               display: { xs: 'none', md: 'flex' },
-              bgcolor: '#004A5B',
+              background: 'linear-gradient(135deg, var(--teal-800), var(--teal-600))',
+              color:'var(--bg)',
               height: '60px',
               width: '300px',
               fontSize: '24px',
+              displayPrint:"flex",
+              alignItems:"center",
+              gap:'8px',
             }}
           >
+            <HeartHandshake size={20}/>
             تبرع الآن
-          </Button>
+          </Button> */}
+          <DonateButton
+            options={[
+              {
+                label: "تبرع مادي",
+                onclick: () => navigate("/campaigns"),
+              },
+              {
+                label: "تبرع عيني",
+                onclick: () => navigate("/in-kind-donation"),
+              },
+            ]}
+            
+          />
           <Button
             variant='outlined'
             sx={{
               borderRadius: '8px',
-              // borderColor:"gray",
-              border: 'solid 2px',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
               px: 4,
               display: { xs: 'none', md: 'flex' },
-              bgcolor: 'white',
-              color: '#939393',
+              bgcolor: ' rgba(255, 255, 255, 0.1)',
+              color: '#fff',
               height: '60px',
               width: '300px',
               fontSize: '24px',

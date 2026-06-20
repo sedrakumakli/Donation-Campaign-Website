@@ -1,4 +1,9 @@
-import './App.css';
+import { useState } from 'react'
+import heroImg from './assets/hero.png'
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import './App.css'
 import TopBar from './components/TopBar/TopBar';
 import NavBar from './components/NavBar/NavBar';
 import Home from './Pages/Home/Home';
@@ -13,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import DonatePage from './Pages/Donate/DonatePage';
 
 function App() {
+
   return (
     <>
       {/* <div className="header">
@@ -20,10 +26,8 @@ function App() {
       <NavBar/> 
     </div> */}
       {/* <Home/> */}
-
       <TopBar />
       <NavBar />
-      <ToastContainer position='top-right' />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
@@ -35,7 +39,7 @@ function App() {
         <Route path='/news/:id' element={<NewsDetails />} />
       </Routes>
     </>
-  );
+  )
 }
 
 export default App;

@@ -10,7 +10,8 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import DonateButton from '../DonateButton/DonateButton';
 
 const pages = [
   { name: 'الرئيسية', path: '/' },
@@ -19,13 +20,6 @@ const pages = [
   { name: 'آخر الأخبار', path: '/news' },
   { name: 'تواصل معنا', path: '/contactUs' },
 ];
-/* const pages = [
-  "الرئيسية",
-  "حولنا",
-  "الحملات",
-  "آخر الأخبار",
-  "تواصل معنا"
-]; */
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -37,16 +31,16 @@ function NavBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const navigate = useNavigate();
+  // const [anchorElDonate, setAnchorElDonate] = React.useState(null);
 
-  const [anchorElDonate, setAnchorElDonate] = React.useState(null);
+  // const handleOpenDonateMenu = (event) => {
+  //   setAnchorElDonate(event.currentTarget);
+  // };
 
-  const handleOpenDonateMenu = (event) => {
-    setAnchorElDonate(event.currentTarget);
-  };
-
-  const handleCloseDonateMenu = () => {
-    setAnchorElDonate(null);
-  };
+  // const handleCloseDonateMenu = () => {
+  //   setAnchorElDonate(null);
+  // };
 
   return (
     <AppBar
@@ -150,27 +144,18 @@ function NavBar() {
           </Box>
 
           {/* Donate Button */}
-          <Button
-            variant='contained'
-            onClick={handleOpenDonateMenu}
-            sx={{
-              borderRadius: '8px',
-              px: 4,
-              display: { xs: 'none', md: 'flex' },
-              bgcolor: '#004A5B',
-            }}
-          >
-            تبرع الآن
-          </Button>
-          <Menu
-            anchorEl={anchorElDonate}
-            open={Boolean(anchorElDonate)}
-            onClose={handleCloseDonateMenu}
-          >
-            <MenuItem onClick={handleCloseDonateMenu}>تبرع مادي</MenuItem>
-
-            <MenuItem onClick={handleCloseDonateMenu}>تبرع عيني</MenuItem>
-          </Menu>
+          <DonateButton
+            options={[
+              {
+                label: "تبرع مادي",
+                onClick: () => navigate("/campaigns"),
+              },
+              {
+                label: "تبرع عيني",
+                onClick: () => navigate("/in-kind-donation"),
+              },
+            ]}
+          />
         </Toolbar>
       </Container>
     </AppBar>
