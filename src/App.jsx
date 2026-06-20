@@ -13,6 +13,9 @@ import ContactUs from './Pages/ContactUs/ContactUs';
 import News from './Pages/News/News';
 import Campaigns from './Pages/Campaigns/Campaigns';
 import CampaignDetails from './Pages/CampaignDetails/CampaignDetails';
+import DirectDonation from './Models/DirectDonation/DirectDonation';
+import Pledge from './Models/pledge/Pledge';
+// import InKindDonation from './Pages/InKindDonation/InKindDonation.jsx';
 
 
 function App() {
@@ -36,6 +39,19 @@ function App() {
           path="/campaign/:id"
           element={<CampaignDetails />}
         />
+        <Route
+          path="/campaign/:id/direct-donation"
+          element={<DirectDonation />}
+        />
+
+        <Route
+          path="/campaign/:id/pledge"
+          element={<Pledge />}
+        />
+        {/* <Route
+          path="/in-kind-donation"
+          element={<InKindDonation />}
+        /> */}
       </Routes>
     </>
   )

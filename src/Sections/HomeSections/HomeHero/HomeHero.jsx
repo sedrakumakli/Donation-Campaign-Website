@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
 import { HeartHandshake } from 'lucide-react';
+import DonateButton from '../../../components/DonateButton/DonateButton';
 function HomeHero() {
   return (
     <div className='home-hero'>
@@ -12,7 +13,7 @@ function HomeHero() {
           انضم إلى آلاف المتبرعين حول العالم.
         </p>
         <div className='btns'>
-          <Button
+          {/* <Button
             variant='contained'
             sx={{
               borderRadius: '8px',
@@ -30,7 +31,24 @@ function HomeHero() {
           >
             <HeartHandshake size={20}/>
             تبرع الآن
-          </Button>
+          </Button> */}
+          <DonateButton
+            options={[
+              {
+                label: "تبرع مادي",
+                onclick: () => navigate("/campaigns"),
+              },
+              {
+                label: "تبرع عيني",
+                onclick: () => navigate("/in-kind-donation"),
+              },
+            ]}
+            sx={{
+              eight: '60px',
+              width: '300px',
+              fontSize: '24px',
+            }}
+          />
           <Button
             variant='outlined'
             sx={{

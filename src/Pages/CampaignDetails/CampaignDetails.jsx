@@ -21,11 +21,14 @@ import "./CampaignDetails.css";
 import ProjectCard from "../../components/ProjectCard/ProjectCard";
 import BreadCrumb from "../../components/BreadCrumb";
 import { Button } from "@mui/material";
+import DonateButton from "../../components/DonateButton/DonateButton";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Hope Forward — صفحة تفاصيل الحملة
  * RTL / خط Cairo / لوحة الأخضر الغامق
  */
+
 
 const GOALS = [
   { icon: Home, text: "إعادة تأهيل 120 منزلًا متضررًا بشكل كامل أو جزئي" },
@@ -39,8 +42,8 @@ const PROJECTS = [
     id: 1,
     title: "ترميم المنازل المتضررة",
     desc: "إعادة تأهيل الوحدات السكنية المتضررة جزئيًا وتجهيزها للسكن الآمن.",
-    location:"حمص , خالدية",
-   sector:"التعليم",
+    location: "حمص , خالدية",
+    sector: "التعليم",
     image:
       "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop",
     status: "active", // active | done
@@ -52,8 +55,8 @@ const PROJECTS = [
     id: 2,
     title: "تأهيل شبكات المياه",
     desc: "إعادة مد وتأهيل شبكات المياه والصرف الصحي للقرى المستهدفة.",
-    location:"ريف دمشق , دوما",
-   sector:"بنية تحتية",
+    location: "ريف دمشق , دوما",
+    sector: "بنية تحتية",
     image:
       "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=800&auto=format&fit=crop",
     status: "active",
@@ -65,8 +68,8 @@ const PROJECTS = [
     id: 3,
     title: "تركيب أنظمة الطاقة الشمسية",
     desc: "تجهيز 40 وحدة سكنية بأنظمة طاقة شمسية مستقلة عن الشبكة.",
-    location:"حمص , جورة الشياح",
-   sector:"طاقة",
+    location: "حمص , جورة الشياح",
+    sector: "طاقة",
     image:
       "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=800&auto=format&fit=crop",
     status: "done",
@@ -122,7 +125,8 @@ function useCountUp(target, duration = 1200, start = false) {
 
 
 
-export default function CampaignDetails() {
+ function CampaignDetails() {
+  const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
   const pct = Math.round((campaign.raised / campaign.target) * 100);
   const raisedValue = useCountUp(campaign.raised, 1200, animate);
@@ -135,11 +139,11 @@ export default function CampaignDetails() {
   return (
     <div className="hf-page" dir="rtl">
       <BreadCrumb
-  dynamicItems={[
-    { label: "الحملات", path: "/campaigns" },
-    { label: campaign.title, path: `/campaign/${campaign.id}` },
-  ]}
-/>
+        dynamicItems={[
+          { label: "الحملات", path: "/campaigns" },
+          { label: campaign.title, path: `/campaign/${campaign.id}` },
+        ]}
+      />
       <div className="wrap">
         {/* Breadcrumb */}
         {/* <div className="breadcrumb">
@@ -149,7 +153,7 @@ export default function CampaignDetails() {
           <ChevronLeft size={14} />
           <span className="current">{CAMPAIGN.title}</span>
         </div> */}
- 
+
 
         {/* Hero */}
         <div className="hero">
@@ -158,7 +162,7 @@ export default function CampaignDetails() {
             <div>
               <span className="status-pill active">
                 {/* <span className="dot" />  */}
-                 نشطة 
+                نشطة
               </span>
               <h1 className="hero-title">{campaign.title}</h1>
               <div className="hero-meta">
@@ -180,20 +184,20 @@ export default function CampaignDetails() {
               {/* <button className="btn btn-gold">
                 <HeartHandshake size={16} /> تبرع الآن
               </button> */}
-                        <Button
-            variant="contained"
-            // onClick={handleOpenDonateMenu}
-            className="btn btn-gold"
-            sx={{
-              borderRadius: "8px",
-              px: 4,
-              display: { xs: "none", md: "flex" },
-              bgcolor: "#004A5B",
-            }}
-          >
-            <HeartHandshake size={16} /> 
-            تبرع الآن
-          </Button>
+              <DonateButton
+                options={[
+                  {
+                    label: "تبرع مباشر",
+                    onClick: () =>
+                      navigate(`/campaign/${id}/direct-donation`),
+                  },
+                  {
+                    label: "تعهد",
+                    onClick: () =>
+                      navigate(`/campaign/${id}/pledge`),
+                  },
+                ]}
+              />
             </div>
           </div>
         </div>
@@ -318,9 +322,20 @@ export default function CampaignDetails() {
                 </div> */}
               </div>
 
-              <button className="donate-btn">
-                <HeartHandshake size={17} /> تبرع لهذه الحملة
-              </button>
+              <DonateButton
+                options={[
+                  {
+                    label: "تبرع مباشر",
+                    onClick: () =>
+                      navigate(`/campaign/${id}/direct-donation`),
+                  },
+                  {
+                    label: "تعهد",
+                    onClick: () =>
+                      navigate(`/campaign/${id}/pledge`),
+                  },
+                ]}
+              />
 
               <div className="share-row">
                 {/* <button className="share-btn">
@@ -337,3 +352,4 @@ export default function CampaignDetails() {
     </div>
   );
 }
+export default CampaignDetails;
