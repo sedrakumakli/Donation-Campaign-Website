@@ -13,10 +13,9 @@ import ContactUs from './Pages/ContactUs/ContactUs';
 import News from './Pages/News/News';
 import Campaigns from './Pages/Campaigns/Campaigns';
 import CampaignDetails from './Pages/CampaignDetails/CampaignDetails';
-import DirectDonation from './Models/DirectDonation/DirectDonation';
-import Pledge from './Models/pledge/Pledge';
-// import InKindDonation from './Pages/InKindDonation/InKindDonation.jsx';
-
+import NewsDetails from './Pages/News/NewsDetails';
+import { ToastContainer } from 'react-toastify';
+import DonatePage from './Pages/Donate/DonatePage';
 
 function App() {
 
@@ -30,28 +29,14 @@ function App() {
       <TopBar />
       <NavBar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/campaigns" element={<Campaigns />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/contactUs" element={<ContactUs />} />
-        <Route
-          path="/campaign/:id"
-          element={<CampaignDetails />}
-        />
-        <Route
-          path="/campaign/:id/direct-donation"
-          element={<DirectDonation />}
-        />
-
-        <Route
-          path="/campaign/:id/pledge"
-          element={<Pledge />}
-        />
-        {/* <Route
-          path="/in-kind-donation"
-          element={<InKindDonation />}
-        /> */}
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/campaigns' element={<Campaigns />} />
+        <Route path='/news' element={<News />} />
+        <Route path='/donate' element={<DonatePage />} />
+        <Route path='/contactUs' element={<ContactUs />} />
+        <Route path='/campaign/:id' element={<CampaignDetails />} />
+        <Route path='/news/:id' element={<NewsDetails />} />
       </Routes>
     </>
   )

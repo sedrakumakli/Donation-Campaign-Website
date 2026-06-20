@@ -1,0 +1,267 @@
+import {
+  FormControl,
+  Select,
+  FormHelperText,
+  Typography,
+  TextField,
+  Input,
+  IconButton,
+  InputAdornment,
+  Autocomplete,
+} from '@mui/material';
+import { useState } from 'react';
+import { LuEye, LuEyeClosed } from 'react-icons/lu';
+
+const inputsStyles = {
+  '& .MuiInputBase-input': {
+    color: '#333',
+  },
+
+  /* ===== DEFAULT BORDER ===== */
+  '& .MuiInput-underline:before': {
+    borderBottomColor: '#ccc',
+  },
+
+  '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+    borderBottomColor: 'var(--secondary-color)',
+  },
+
+  '& .MuiInput-underline:after': {
+    borderBottomColor: 'var(--secondary-color)',
+  },
+
+  /* ===== ERROR STATE ===== */
+  '& .Mui-error:before': {
+    borderBottomColor: 'var(--error-color)',
+  },
+
+  '& .Mui-error:hover:not(.Mui-disabled):before': {
+    borderBottomColor: 'var(--error-color)',
+  },
+
+  '& .Mui-error:after': {
+    borderBottomColor: 'var(--error-color)',
+  },
+
+  '& .MuiFormLabel-root.Mui-error': {
+    color: 'var(--error-color)',
+  },
+
+  '& .MuiFormHelperText-root.Mui-error': {
+    color: 'var(--error-color)',
+    fontFamily: 'Cairo',
+  },
+
+  /* ===== SELECT ===== */
+  '& .MuiSelect-select': {
+    color: '#333',
+    fontFamily: 'Cairo',
+    padding: '8px 0',
+  },
+
+  /* ===== DISABLED ===== */
+  '& .Mui-disabled': {
+    backgroundColor: '#F5F6F8',
+    cursor: 'not-allowed',
+  },
+
+  '& .Mui-disabled:before': {
+    borderBottomColor: '#DADDE3',
+    borderBottomStyle: 'solid',
+  },
+
+  '& .Mui-disabled:after': {
+    borderBottomColor: '#DADDE3',
+    borderBottomStyle: 'solid',
+  },
+
+  '& .MuiSelect-select.Mui-disabled': {
+    color: '#9AA0A6',
+    WebkitTextFillColor: '#9AA0A6',
+  },
+
+  /* ===== LABEL ===== */
+  '& .MuiInputLabel-root': {
+    color: '#8c9ea0',
+    fontFamily: 'Cairo',
+  },
+
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: 'var(--main-color)',
+  },
+
+  /* ===== PLACEHOLDER ===== */
+  /* '& .MuiInputBase-input::placeholder': {
+    fontSize: '14px',
+    color: '#9AA0A6',
+    opacity: 1,
+  }, */
+};
+
+export default function CustomInput({
+  label,
+  isDisabled,
+  helperText,
+  children,
+  inputType,
+  placeholder,
+  styles,
+  value,
+  setValue,
+  inline,
+  errorMsg,
+  isNestedState,
+  isRequired = false,
+}) {
+  const handleChange = (e) => {
+    console.log(e);
+    if (isNestedState) setValue(e);
+    else setValue(e.target.value);
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div
+      style={
+        inline ? { display: 'flex', alignItems: 'center', gap: '16px' } : {}
+      }
+    >
+      {/* 🔹 LABEL */}
+      {inputType !== 'nativeSelect' && (
+        <Typography
+          sx={{
+            mb: inline ? 0 : 1,
+            fontFamily: 'Cairo',
+            fontSize: '16px',
+            color: '#374151',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {label}
+          {isRequired && <span style={{ color: 'var(--error-color)' }}>*</span>}
+        </Typography>
+      )}
+
+      <FormControl
+        fullWidth
+        variant='standard'
+        disabled={isDisabled}
+        sx={styles ? { ...inputsStyles, ...styles } : inputsStyles}
+        error={!!errorMsg}
+      >
+        {inputType === 'select' ? (
+          <Select
+            sx={{ minHeight: '48px' }}
+            value={value}
+            onChange={handleChange}
+            displayEmpty
+            required={isRequired}
+            renderValue={(selected) => {
+              if (!selected) {
+                return (
+                  <span style={{ color: '#9AA0A6', fontSize: '14px' }}>
+                    اختر {label}
+                  </span>
+                );
+              }
+
+              const selectedChild = Array.isArray(children)
+                ? children.find((child) => {
+                    if (!child?.props) return false;
+                    return child.props.value === selected;
+                  })
+                : null;
+
+              return selectedChild?.props?.children || selected;
+            }}
+          >
+            {children}
+          </Select>
+        ) : inputType === 'autocomplete' ? (
+          <Autocomplete
+            options={children || []}
+            getOptionLabel={(option) => option?.name || ''}
+            value={value || ''}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            disabled={isDisabled}
+            isRequired={isRequired}
+            sx={{
+              ...inputsStyles,
+
+              // 🔥 أهم جزء
+              '& .MuiInputBase-root': {
+                padding: '6px 0',
+              },
+
+              '& .MuiAutocomplete-inputRoot': {
+                padding: '6px 0 !important',
+              },
+
+              '& .MuiInputBase-input': {
+                padding: '8px 0 !important',
+              },
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant='standard'
+                placeholder={placeholder}
+                sx={{ backgroundColor: 'transparent' }}
+              />
+            )}
+          />
+        ) : inputType === 'input' ||
+          inputType === 'password' ||
+          inputType === 'email' ? (
+          <Input
+            type={
+              inputType === 'password'
+                ? showPassword
+                  ? 'text'
+                  : 'password'
+                : inputType === 'email'
+                  ? 'email'
+                  : 'text'
+            }
+            sx={{ minHeight: '48px' }}
+            placeholder={placeholder ?? 'ادخل قيمة'}
+            value={value}
+            onChange={handleChange}
+            endAdornment={
+              inputType === 'password' && (
+                <InputAdornment position='end'>
+                  <IconButton
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    edge='end'
+                  >
+                    {showPassword ? <LuEyeClosed /> : <LuEye />}
+                  </IconButton>
+                </InputAdornment>
+              )
+            }
+            required={isRequired}
+          />
+        ) : (
+          <TextField
+            id='standard-basic'
+            label={placeholder ? placeholder : 'ادخل قيمة'}
+            variant='standard'
+            value={value}
+            onChange={handleChange}
+          />
+        )}
+      </FormControl>
+
+      {/* 🔹 Helper text */}
+
+      {(helperText || errorMsg) && (
+        <FormHelperText error={!!errorMsg} sx={{ color: '#9AA0A6' }}>
+          {errorMsg || helperText}
+        </FormHelperText>
+      )}
+    </div>
+  );
+}

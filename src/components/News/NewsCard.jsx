@@ -5,11 +5,11 @@ import {
   CardMedia,
   Typography,
   Box,
-  Chip,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import config from '../../constants/enviroment';
 import { formatArabicDate } from '../../utils/methods';
+import config from '../../constants/enviroment';
+import NewsChip from './NewsChip';
 
 const NewsCard = ({
   uuid,
@@ -18,6 +18,7 @@ const NewsCard = ({
   excerpt,
   publish_date,
   category,
+  on_the_other_hand,
 }) => {
   const navigate = useNavigate();
 
@@ -80,17 +81,10 @@ const NewsCard = ({
           }}
         >
           <Box>
-            <Chip
-              label={category}
-              size='small'
-              sx={{
-                backgroundColor: 'rgba(1, 74, 91, 0.08)',
-                color: '#6f8285',
-                fontWeight: 600,
-                borderRadius: '6px',
-                fontSize: '12px',
+            <NewsChip
+              label={on_the_other_hand ?? category}
+              styles={{
                 mr: 1,
-                height: 22,
               }}
             />
             <Typography
