@@ -1,13 +1,6 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Typography,
-  Paper,
-  Stack,
-  Card,
-} from '@mui/material';
+import { Box, Button, Grid, Typography, Card } from '@mui/material';
 import QRCodeCard from './QRCodeCard';
+import { backBtnStyles, donateBtnStyles } from '../../utils/styles';
 
 const steps = [
   'افتح تطبيق شام كاش',
@@ -17,9 +10,7 @@ const steps = [
   'احتفظ بصورة الإيصال',
 ];
 
-const PaymentStep = ({ amount, onNext, onBack }) => {
-  const paymentUrl = 'shamcash://pay?to=014ed0aaa36700fc36e139f272dddfca';
-
+const PaymentStep = ({ formData, onNext, onBack }) => {
   return (
     <>
       <Typography variant='h5' sx={{ fontWeight: 700, mb: 4 }}>
@@ -29,7 +20,10 @@ const PaymentStep = ({ amount, onNext, onBack }) => {
       <Grid container spacing={4}>
         {/* QR */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <QRCodeCard amount={amount} paymentUrl={paymentUrl} />
+          <QRCodeCard
+            amount={formData.contribution_amount}
+            currency={formData.currency_type}
+          />
         </Grid>
 
         {/* STEPS */}
@@ -87,11 +81,11 @@ const PaymentStep = ({ amount, onNext, onBack }) => {
 
       {/* BUTTONS */}
       <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
-        <Button variant='outlined' onClick={onBack}>
+        <Button variant='outlined' sx={backBtnStyles} onClick={onBack}>
           رجوع
         </Button>
 
-        <Button variant='contained' onClick={onNext}>
+        <Button variant='contained' sx={donateBtnStyles} onClick={onNext}>
           لقد أتممت الدفع
         </Button>
       </Box>

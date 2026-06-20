@@ -128,7 +128,7 @@ export default function CustomInput({
       }
     >
       {/* 🔹 LABEL */}
-      {inputType !== 'nativeSelect' && (
+      {inputType !== 'nativeSelect' && label && (
         <Typography
           sx={{
             mb: inline ? 0 : 1,

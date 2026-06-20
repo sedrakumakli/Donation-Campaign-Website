@@ -1,31 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Grid, Paper } from '@mui/material';
-import DonationSuccess from '../../components/Donate/DonationSuccess';
 import DonateStepper from '../../components/Donate/DonateStepper';
 import DonationForm from '../../components/Donate/DonationForm';
 import ProofUploadStep from '../../components/Donate/ProofUploadStep';
 import PaymentStep from '../../components/Donate/PaymentStep';
 import DonationSummary from '../../components/Donate/DonationSummery';
 import CustomContainer from '../../components/common/CustomContainer';
-
-const disabledBtnStyles = {
-  opacity: 0.6,
-  cursor: 'not-allowed !important',
-  backgroundColor: '#7aa6af !important',
-  color: '#f5f7f8 !important',
-  boxShadow: 'none',
-  transform: 'none',
-};
+import SuccessDialog from '../../components/common/SuccessDialog';
+import { useMutationHandler } from '../../customHooks/reactQuery/useMutationHandler';
+import { useNavigate, useParams } from 'react-router-dom';
+import { donateDirectly } from '../../services/donate';
+import { toast } from 'react-toastify';
 
 const DonatePage = () => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const [amount, setAmount] = useState('');
+  const params = useParams();
+  const id = params?.id;
 
-  const [notes, setNotes] = useState('');
-
-  const [proofImage, setProofImage] = useState(null);
+  const [formData, setFormData] = useState({
+    contribution_amount: '',
+    currency_type: 'SYP',
+    contribution_details: '',
+    image: null,
+  });
 
   const [preview, setPreview] = useState(null);
 
@@ -35,19 +34,35 @@ const DonatePage = () => {
 
   const previousStep = () => setActiveStep((prev) => prev - 1);
 
+  const navigate = useNavigate();
+  const {
+    mutate: donate,
+    isPending: isDonating,
+    error: donationErr,
+  } = useMutationHandler({
+    mutationFn: (body) => donateDirectly(body),
+
+    onSuccess: () => {
+      setSuccess(true); // أو فتح modal النجاح
+      toast.success(
+        'تم إرسال طلب التبرع. سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.',
+      );
+      navigate('/');
+    },
+
+    onError: (error) => {
+      console.log('Error:', error);
+    },
+  });
   const handleSubmit = () => {
-    console.log({
-      amount,
-      notes,
-      proofImage,
-    });
-
-    setSuccess(true);
+    const data = new FormData();
+    data.append('contribution_amount', formData.contribution_amount);
+    data.append('contribution_details', formData.contribution_details);
+    data.append('currency_type', formData.currency_type);
+    data.append('image', formData.image);
+    data.append('campaign_uuid', id);
+    donate(data);
   };
-
-  if (success) {
-    return <DonationSuccess onHome={() => window.location.reload()} />;
-  }
 
   return (
     <CustomContainer styles={{ py: 6 }}>
@@ -69,18 +84,15 @@ const DonatePage = () => {
 
             {activeStep === 0 && (
               <DonationForm
-                amount={amount}
-                notes={notes}
-                setAmount={setAmount}
-                setNotes={setNotes}
+                formData={formData}
+                setFormData={setFormData}
                 onNext={nextStep}
-                disabledBtnStyles={disabledBtnStyles}
               />
             )}
 
             {activeStep === 1 && (
               <PaymentStep
-                amount={amount}
+                formData={formData}
                 onBack={previousStep}
                 onNext={nextStep}
               />
@@ -88,8 +100,8 @@ const DonatePage = () => {
 
             {activeStep === 2 && (
               <ProofUploadStep
-                proofImage={proofImage}
-                setProofImage={setProofImage}
+                formData={formData}
+                setFormData={setFormData}
                 preview={preview}
                 setPreview={setPreview}
                 onBack={previousStep}
@@ -105,9 +117,17 @@ const DonatePage = () => {
             md: 4,
           }}
         >
-          <DonationSummary amount={amount} activeStep={activeStep} />
+          <DonationSummary formData={formData} activeStep={activeStep} />
         </Grid>
       </Grid>
+      {/* <SuccessDialog
+        open={success}
+        title='تم إرسال طلب التبرع'
+        description='سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.'
+        buttonText='حسناً'
+        onClose={() => setSuccess(false)}
+        onAction={() => setSuccess(false)}
+      /> */}
     </CustomContainer>
   );
 };

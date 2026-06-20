@@ -24,3 +24,6 @@ export const formatArabicTime = (timeStr) => {
     hour12: true,
   }).format(date);
 };
+export const getCurrency = (currency) => {
+  return currency === 'SYP' ? 'ل.س' : currency === 'USD' ? '$' : '€';
+};

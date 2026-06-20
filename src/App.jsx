@@ -29,7 +29,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/campaigns' element={<Campaigns />} />
         <Route path='/news' element={<News />} />
-        <Route path='/donate' element={<DonatePage />} />
+        <Route path='/donate/:id' element={<DonatePage />} />
         <Route path='/contactUs' element={<ContactUs />} />
         <Route path='/campaign/:id' element={<CampaignDetails />} />
         <Route path='/news/:id' element={<NewsDetails />} />
