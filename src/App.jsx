@@ -10,6 +10,7 @@ import Campaigns from './Pages/Campaigns/Campaigns';
 import CampaignDetails from './Pages/CampaignDetails/CampaignDetails';
 import NewsDetails from './Pages/News/NewsDetails';
 import { ToastContainer } from 'react-toastify';
+import DonatePage from './Pages/Donate/DonatePage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/campaigns' element={<Campaigns />} />
         <Route path='/news' element={<News />} />
+        <Route path='/donate' element={<DonatePage />} />
         <Route path='/contactUs' element={<ContactUs />} />
         <Route path='/campaign/:id' element={<CampaignDetails />} />
         <Route path='/news/:id' element={<NewsDetails />} />

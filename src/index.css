@@ -40,3 +40,31 @@ ul {
 section:not(.Toastify) {
   padding-bottom: 100px;
 }
+.success-status {
+  color: #2e7d32;
+  background-color: #e8f5e9;
+}
+
+/* 🟣 مكتملة (نجاح أقوى) */
+.completed-status {
+  color: #6a1b9a;
+  background-color: #f3e5f5;
+}
+
+/* 🟠 متوقفة */
+.warning-status {
+  color: #ed6c02;
+  background-color: #fff3e0;
+}
+
+/* 🔴 منتهية */
+.error-status {
+  color: #d32f2f;
+  background-color: #fdecec;
+}
+
+/* 🔵 جديدة / draft */
+.draft-status {
+  color: #35618f;
+  background-color: #eaf2ff;
+}

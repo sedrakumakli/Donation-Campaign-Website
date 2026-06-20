@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Box, Grid, Typography, Chip, InputBase } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Grid, Typography } from '@mui/material';
 import NewsCard from '../../components/News/NewsCard';
 import CustomPagination from '../../components/CustomPagination';
 import BreadCrumb from '../../components/BreadCrumb';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import { filterNews, getNews, getNewsCategories } from '../../services/news.js';
 import CustomContainer from '../../components/common/CustomContainer.jsx';
+import FilterNews from '../../components/News/FilterNews.jsx';
 
 const News = () => {
   const [search, setSearch] = useState('');
@@ -65,8 +65,6 @@ const News = () => {
   );
   const emptyCards = cardsPerPage - currentNews.length;
 
-  const isCategoryFilterEnabled = category !== 'الكل';
-
   return (
     <>
       <BreadCrumb dynamicItems={[{ label: 'آخر الأخبار', path: '/news' }]} />
@@ -86,7 +84,7 @@ const News = () => {
         rgba(0, 0, 0, 0.55),
         rgba(0, 0, 0, 0.55)
       ),
-      url('https://images.unsplash.com/photo-1504711434969-e33886168f5c')
+      url('/newsHero.jpg')
     `,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -121,155 +119,15 @@ const News = () => {
           minHeight: '100vh',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            /* alignItems: 'end', */
-            gap: 3,
-            flexWrap: 'wrap',
-            mb: 4,
-          }}
-        >
-          {/* LEFT: Search */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'end',
-              flexDirection: {
-                xs: 'column',
-                sm: 'row',
-              },
-              gap: 2,
-            }}
-          >
-            <Box
-              sx={{
-                width: { xs: '100%', sm: '400px' },
-                borderBottom: '1px solid #d1d5db',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                py: 1,
-                '&:focus-within': {
-                  borderBottom: '2px solid #014a5b',
-                },
-              }}
-            >
-              <SearchIcon sx={{ color: '#8c9ea0' }} />
-
-              <InputBase
-                placeholder='ابحث حسب العنوان...'
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                sx={{
-                  flex: 1,
-                  fontSize: '18px',
-                }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                color: 'var(--desc-color)',
-                fontSize: '14px',
-                fontWeight: 500,
-                order: { xs: 2, md: 1 },
-              }}
-            >
-              {allNews.length} أخبار
-            </Typography>
-          </Box>
-
-          {/* RIGHT: Filter + Count */}
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 1.5,
-              flexWrap: 'wrap',
-              alignSelf: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Chip
-              key='الكل'
-              label='الكل'
-              onClick={() => setCategory('الكل')}
-              variant={!isCategoryFilterEnabled ? 'filled' : 'outlined'}
-              sx={{
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 600,
-                borderRadius: '8px',
-
-                transition: '0.3s',
-
-                /* ACTIVE */
-                ...(!isCategoryFilterEnabled && {
-                  backgroundColor: '#014a5b',
-                  color: '#fff',
-                  border: 'none',
-                  '&:hover': {
-                    backgroundColor: '#014a5b',
-                  },
-                }),
-
-                /* INACTIVE */
-                ...(isCategoryFilterEnabled && {
-                  /* borderColor: '#8c9ea0', */
-                  border: 'none',
-                  color: '#8c9ea0',
-                  '&:hover': {
-                    backgroundColor: 'transparent!important',
-                    color: '#014a5b',
-                  },
-                }),
-              }}
-            />
-            {categories.map((cat) => {
-              const isActive = category === cat;
-
-              return (
-                <Chip
-                  key={cat}
-                  label={cat}
-                  onClick={() => setCategory(cat)}
-                  variant={isActive ? 'filled' : 'outlined'}
-                  sx={{
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    borderRadius: '8px',
-
-                    transition: '0.3s',
-
-                    /* ACTIVE */
-                    ...(isActive && {
-                      backgroundColor: '#014a5b',
-                      color: '#fff',
-                      border: 'none',
-                      '&:hover': {
-                        backgroundColor: '#014a5b',
-                      },
-                    }),
-
-                    /* INACTIVE */
-                    ...(!isActive && {
-                      /* borderColor: '#8c9ea0', */
-                      border: 'none',
-                      color: '#8c9ea0',
-                      '&:hover': {
-                        backgroundColor: 'transparent!important',
-                        color: '#014a5b',
-                      },
-                    }),
-                  }}
-                />
-              );
-            })}
-          </Box>
-        </Box>
+        <FilterNews
+          categories={categories}
+          news={news}
+          search={search}
+          onSearchChange={setSearch}
+          category={category}
+          onCategoryChange={setCategory}
+          resultsCount={allNews.length}
+        />
 
         {allNews.length === 0 ? (
           <Typography
