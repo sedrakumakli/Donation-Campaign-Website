@@ -162,7 +162,7 @@ const CampaignCard = ({ campaign }) => {
               color: 'var(--main-color)',
               border: '1px solid #E0E0E0',
               borderRadius: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: 'flex',
             }}
             onClick={() => navigate(`/campaign/${campaign.uuid}`)}
           >
