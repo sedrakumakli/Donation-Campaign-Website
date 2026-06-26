@@ -1,6 +1,5 @@
 .home-hero {
   /* padding-bottom: 16.5%; */
-  padding-top: 141.2px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,28 +11,23 @@
     linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
     url('/src/assets/homehero.png.png');
   position: relative;
-  margin-bottom: 150px;
 }
-.home-hero section {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 160px;
+.home-hero .container {
+  text-align: center;
 }
-.home-hero section .btns {
+.home-hero .btns {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 24px;
 }
-.home-hero section h1 {
+.home-hero h1 {
   font-size: 64px;
   /* font-size: 4.4vw; */
   font-weight: 600;
   color: white;
 }
-.home-hero section p.desc {
+.home-hero p.desc {
   /* margin: 30px 0px 60px; */
   margin: 2.1vw 0px 4.2vw;
   font-weight: 400;

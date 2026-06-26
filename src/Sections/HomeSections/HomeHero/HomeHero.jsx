@@ -3,17 +3,19 @@ import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
 import { HeartHandshake } from 'lucide-react';
 import DonateButton from '../../../components/DonateButton/DonateButton';
+import CustomContainer from '../../../components/common/CustomContainer';
 function HomeHero() {
   return (
-    <div className='home-hero'>
-      <section>
-        <h1>معاً نصنع فارقاً حقيقياً في حياة الآخرين</h1>
-        <p className='desc'>
-          كل تبرع — مهما كان صغيراً — يُشعل شمعة أمل في حياة أسرة تحتاج دعمك.
-          انضم إلى آلاف المتبرعين حول العالم.
-        </p>
-        <div className='btns'>
-          {/* <Button
+    <>
+      <div className='home-hero'>
+        <CustomContainer styles={{ textAlign: 'center' }}>
+          <h1>معاً نصنع فارقاً حقيقياً في حياة الآخرين</h1>
+          <p className='desc'>
+            كل تبرع — مهما كان صغيراً — يُشعل شمعة أمل في حياة أسرة تحتاج دعمك.
+            انضم إلى آلاف المتبرعين حول العالم.
+          </p>
+          <div className='btns'>
+            {/* <Button
             variant='contained'
             sx={{
               borderRadius: '8px',
@@ -32,39 +34,39 @@ function HomeHero() {
             <HeartHandshake size={20}/>
             تبرع الآن
           </Button> */}
-          <DonateButton
-            options={[
-              {
-                label: "تبرع مادي",
-                onclick: () => navigate("/campaigns"),
-              },
-              {
-                label: "تبرع عيني",
-                onclick: () => navigate("/in-kind-donation"),
-              },
-            ]}
-            
-          />
-          <Button
-            variant='outlined'
-            sx={{
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.35)',
-              px: 4,
-              display: { xs: 'none', md: 'flex' },
-              bgcolor: ' rgba(255, 255, 255, 0.1)',
-              color: '#fff',
-              height: '60px',
-              width: '300px',
-              fontSize: '24px',
-            }}
-          >
-            اسكتشف الحملات
-          </Button>
-        </div>
-      </section>
+            <DonateButton
+              options={[
+                {
+                  label: 'تبرع مادي',
+                  onclick: () => navigate('/campaigns'),
+                },
+                {
+                  label: 'تبرع عيني',
+                  onclick: () => navigate('/in-kind-donation'),
+                },
+              ]}
+            />
+            <Button
+              variant='outlined'
+              sx={{
+                borderRadius: '8px',
+                border: '1px solid rgba(255, 255, 255, 0.35)',
+                px: 4,
+                display: { xs: 'none', md: 'flex' },
+                bgcolor: ' rgba(255, 255, 255, 0.1)',
+                color: '#fff',
+                height: '60px',
+                width: '300px',
+                fontSize: '24px',
+              }}
+            >
+              اسكتشف الحملات
+            </Button>
+          </div>
+        </CustomContainer>
+      </div>
       <Experts />
-    </div>
+    </>
   );
 }
 export default HomeHero;

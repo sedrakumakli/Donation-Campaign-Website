@@ -1,6 +1,6 @@
 import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
-import { Box, Button, Card, Typography } from '@mui/material';
+import { Box, Button, Card, Skeleton, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { getCurrency } from '../../utils/methods';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
@@ -58,17 +58,31 @@ const QRCodeCard = ({ amount, currency }) => {
             padding: 12,
             borderRadius: 12,
             display: 'inline-flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <QRCode value={paymentUrl} size={220} />
+          {isFetchingQr ? (
+            <Skeleton
+              variant='rectangular'
+              width={220}
+              height={220}
+              sx={{
+                borderRadius: 2,
+              }}
+            />
+          ) : (
+            <QRCode value={paymentUrl} size={220} />
+          )}
         </Box>
 
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 3, mt: 2 }}>
           <Typography
             sx={{ fontWeight: 600, color: 'var(--secondary-color)', mt: 1 }}
           >
             مبلغ الدفع
           </Typography>
+
           <Typography variant='h5' sx={{ fontWeight: 700 }}>
             {amount} {getCurrency(currency)}
           </Typography>
@@ -87,7 +101,9 @@ const QRCodeCard = ({ amount, currency }) => {
             color: 'white',
             backgroundColor: 'var(--main-color)',
           },
+          '&.Mui-disabled': { cursor: 'not-allowed !important' },
         }}
+        disabled={isFetchingQr}
       >
         تحميل QR
       </Button>

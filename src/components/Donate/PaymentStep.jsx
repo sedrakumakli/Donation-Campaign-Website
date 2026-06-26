@@ -1,6 +1,8 @@
 import { Box, Button, Grid, Typography, Card } from '@mui/material';
 import QRCodeCard from './QRCodeCard';
 import { backBtnStyles, donateBtnStyles } from '../../utils/styles';
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import { getQRData } from '../../services/donate';
 
 const steps = [
   'افتح تطبيق شام كاش',
@@ -11,6 +13,10 @@ const steps = [
 ];
 
 const PaymentStep = ({ formData, onNext, onBack }) => {
+  const { isFetching: isFetchingQr, error: QrErr } = useGetData({
+    queryKey: ['QrCode'],
+    queryFn: getQRData,
+  });
   return (
     <>
       <Typography variant='h5' sx={{ fontWeight: 700, mb: 4 }}>
@@ -85,7 +91,12 @@ const PaymentStep = ({ formData, onNext, onBack }) => {
           رجوع
         </Button>
 
-        <Button variant='contained' sx={donateBtnStyles} onClick={onNext}>
+        <Button
+          variant='contained'
+          sx={donateBtnStyles}
+          onClick={onNext}
+          disabled={isFetchingQr}
+        >
           لقد أتممت الدفع
         </Button>
       </Box>

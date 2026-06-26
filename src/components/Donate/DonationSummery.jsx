@@ -64,7 +64,7 @@ const DonationSummary = ({ formData, activeStep }) => {
         <Typography sx={{ fontWeight: 700, pr: 1.5 }}>
           {formData?.contribution_amount
             ? Number(formData?.contribution_amount).toLocaleString()
-            : 0}
+            : 0}{' '}
           {getCurrency(formData?.currency_type)}
         </Typography>
       </Box>
