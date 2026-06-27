@@ -125,7 +125,7 @@ function useCountUp(target, duration = 1200, start = false) {
 
 
 
- function CampaignDetails() {
+function CampaignDetails() {
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
   const pct = Math.round((campaign.raised / campaign.target) * 100);
@@ -189,7 +189,7 @@ function useCountUp(target, duration = 1200, start = false) {
                   {
                     label: "تبرع مباشر",
                     onClick: () =>
-                      navigate(`/campaign/${id}/direct-donation`),
+                      navigate(`/donate`),
                   },
                   {
                     label: "تعهد",
@@ -327,7 +327,7 @@ function useCountUp(target, duration = 1200, start = false) {
                   {
                     label: "تبرع مباشر",
                     onClick: () =>
-                      navigate(`/campaign/${id}/direct-donation`),
+                      navigate(`/donate`),
                   },
                   {
                     label: "تعهد",
@@ -335,6 +335,11 @@ function useCountUp(target, duration = 1200, start = false) {
                       navigate(`/campaign/${id}/pledge`),
                   },
                 ]}
+                sx={{
+                  height: '60px',
+                  width: '100%',
+                  fontSize: '20px',
+                }}
               />
 
               <div className="share-row">

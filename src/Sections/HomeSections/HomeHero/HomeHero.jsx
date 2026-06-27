@@ -3,7 +3,9 @@ import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
 import { HeartHandshake } from 'lucide-react';
 import DonateButton from '../../../components/DonateButton/DonateButton';
+import { useNavigate } from 'react-router-dom';
 function HomeHero() {
+  const navigate = useNavigate();
   return (
     <div className='home-hero'>
       <section>
@@ -36,14 +38,19 @@ function HomeHero() {
             options={[
               {
                 label: "تبرع مادي",
-                onclick: () => navigate("/campaigns"),
+                onClick: () => navigate("/campaigns"),
               },
               {
                 label: "تبرع عيني",
-                onclick: () => navigate("/in-kind-donation"),
+                onClick: () => navigate("/in-kind-donation"),
               },
             ]}
-            
+            sx={{
+              height: '60px',
+              width: '300px',
+              fontSize: '24px',
+
+            }}
           />
           <Button
             variant='outlined'

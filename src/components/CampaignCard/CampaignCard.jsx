@@ -102,7 +102,7 @@ const CampaignCard = ({
               {
                 label: "تبرع مباشر",
                 onClick: () =>
-                  navigate(`/campaign/${id}/direct-donation`),
+                  navigate(`/donate`),
               },
               {
                 label: "تعهد",
