@@ -188,7 +188,8 @@ function CampaignDetails() {
                 options={[
                   {
                     label: 'تبرع مباشر',
-                    onClick: () => navigate(`/donate`),
+                    onClick: () =>
+                      navigate(`/donate/f7069989-0b5e-453f-8abf-6560da32534a`),
                   },
                   {
                     label: 'تعهد',
@@ -327,7 +328,8 @@ function CampaignDetails() {
                 options={[
                   {
                     label: 'تبرع مباشر',
-                    onClick: () => navigate(`/donate`),
+                    onClick: () =>
+                      navigate(`/donate/f7069989-0b5e-453f-8abf-6560da32534a`),
                   },
                   {
                     label: 'تعهد',
