@@ -188,7 +188,7 @@ function CampaignDetails() {
                 options={[
                   {
                     label: 'تبرع مباشر',
-                    onClick: () => navigate(`/campaign/${id}/direct-donation`),
+                    onClick: () => navigate(`/donate`),
                   },
                   {
                     label: 'تعهد',
@@ -327,13 +327,18 @@ function CampaignDetails() {
                 options={[
                   {
                     label: 'تبرع مباشر',
-                    onClick: () => navigate(`/campaign/${id}/direct-donation`),
+                    onClick: () => navigate(`/donate`),
                   },
                   {
                     label: 'تعهد',
                     onClick: () => navigate(`/campaign/${id}/pledge`),
                   },
                 ]}
+                sx={{
+                  height: '60px',
+                  width: '100%',
+                  fontSize: '20px',
+                }}
               />
 
               <div className='share-row'>

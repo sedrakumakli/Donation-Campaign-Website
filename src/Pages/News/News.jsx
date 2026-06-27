@@ -4,9 +4,10 @@ import NewsCard from '../../components/News/NewsCard';
 import CustomPagination from '../../components/CustomPagination';
 import BreadCrumb from '../../components/BreadCrumb';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-import { filterNews, getNews, getNewsCategories } from '../../services/news.js';
+import { filterNews, getNews } from '../../services/news.js';
 import CustomContainer from '../../components/common/CustomContainer.jsx';
 import FilterNews from '../../components/News/FilterNews.jsx';
+import NewsCardSkeleton from '../../Skeleton/NewsCardSkeleton.jsx';
 
 const News = () => {
   const [search, setSearch] = useState('');
@@ -15,16 +16,6 @@ const News = () => {
 
   const cardsPerPage = 6;
 
-  const {
-    data: categoriesData,
-    isFetching: isFetchingCategories,
-    error: categoriesErr,
-  } = useGetData({
-    queryKey: ['news-categories'],
-    queryFn: getNewsCategories,
-  });
-
-  const categories = categoriesData?.data || [];
   const {
     data: newsData,
     isFetching: isFetchingNews,
@@ -68,59 +59,15 @@ const News = () => {
   return (
     <>
       <BreadCrumb dynamicItems={[{ label: 'آخر الأخبار', path: '/news' }]} />
-      <Box
-        sx={{
-          minHeight: '300px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          px: 4,
-          py: 8,
-          mb: 4,
-
-          backgroundImage: `
-      linear-gradient(
-        rgba(0, 0, 0, 0.55),
-        rgba(0, 0, 0, 0.55)
-      ),
-      url('/newsHero.jpg')
-    `,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          /*  borderRadius: 3, */
-          color: '#fff',
-        }}
-      >
-        <Box>
-          <Typography variant='h3' fontWeight={700} color='#ffffff'>
-            آخر الأخبار والتحديثات
-          </Typography>
-
-          <Typography
-            sx={{
-              mt: 2,
-              color: 'rgba(255,255,255,0.8)',
-              maxWidth: '700px',
-              lineHeight: 1.8,
-            }}
-          >
-            تابع آخر المستجدات حول حملات التبرع، والتحديثات الجديدة على المنصة،
-            بالإضافة إلى قصص العطاء والمبادرات الإنسانية التي يتم تنفيذها عبر
-            نظامنا.
-          </Typography>
-        </Box>
-      </Box>
       <CustomContainer
         styles={{
-          pb: 4,
+          py: 4,
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
         }}
       >
         <FilterNews
-          categories={categories}
           news={news}
           search={search}
           onSearchChange={setSearch}
@@ -129,7 +76,9 @@ const News = () => {
           resultsCount={allNews.length}
         />
 
-        {allNews.length === 0 ? (
+        {isFetchingNews || isFiltering ? (
+          <NewsCardSkeleton />
+        ) : allNews.length === 0 ? (
           <Typography
             variant='h5'
             align='center'
