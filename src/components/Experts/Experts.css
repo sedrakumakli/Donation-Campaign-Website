@@ -15,6 +15,10 @@
 /* .experts-holder .experts .card:not(:last-child) {
   border-left: 1px solid #004A5B;
 } */
+.experts-holder {
+  display: flex;
+  justify-content: center;
+}
 .experts-holder .experts .card {
   padding: 0px 0px;
   text-align: center;
@@ -30,7 +34,7 @@
   font-weight: 400;
   color: #939393;
   margin: 0px;
-} 
+}
 
 /* .experts-holder{
   
@@ -44,9 +48,6 @@
   padding: 40px;
   border-radius: 10px;
   /* border: solid 1px #004A5B; */
-  position: absolute;
-  bottom: -96px;
-  right: 215px;
   background-color: white;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }

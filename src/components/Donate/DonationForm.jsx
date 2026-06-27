@@ -1,6 +1,8 @@
 import { Box, Button, Chip, MenuItem, Stack, Typography } from '@mui/material';
 import Textarea from '../common/Textarea';
 import CustomInput from '../common/CustomInput';
+import { donateBtnStyles } from '../../utils/styles';
+import { getCurrency } from '../../utils/methods';
 
 const currencies = [
   { label: 'الليرة السورية', value: 'SYP' },
@@ -22,17 +24,10 @@ const getSuggestedAmounts = (currency) => {
   }
 };
 
-const DonationForm = ({
-  amount,
-  notes,
-  setAmount,
-  setNotes,
-  currency = 'SYP',
-  setCurrency,
-  onNext,
-  disabledBtnStyles,
-}) => {
-  const suggestedAmounts = getSuggestedAmounts(currency);
+const DonationForm = ({ formData, setFormData, onNext }) => {
+  const suggestedAmounts = getSuggestedAmounts(
+    formData?.currency_type || 'SYP',
+  );
   return (
     <>
       {/* TITLE */}
@@ -40,95 +35,108 @@ const DonationForm = ({
         بيانات التبرع
       </Typography>
 
-      {/* 🔥 CURRENCY SELECT */}
-      <CustomInput
-        inputType='select'
-        label='العملة'
-        value={currency}
-        setValue={setCurrency}
-        styles={{ mb: 3 }}
-      >
-        {currencies.map((cur) => (
-          <MenuItem key={cur.value} value={cur.value}>
-            {cur.label}
-          </MenuItem>
-        ))}
-      </CustomInput>
-
-      {/* SUB TITLE */}
-      <Typography sx={{ mb: 2, color: 'var(--secondary-color)' }}>
-        اختر مبلغاً جاهزاً أو أدخل مبلغاً مخصصاً
-      </Typography>
-
-      {/* CHIPS */}
-      <Stack sx={{ flexDirection: 'row', flexWrap: 'wrap', gap: 1, mb: 3 }}>
-        {suggestedAmounts.map((value) => {
-          const isSelected = Number(amount) === value;
-
-          return (
-            <Chip
-              key={value}
-              label={`${value.toLocaleString()} ${currency}`}
-              clickable
-              onClick={() => setAmount(value)}
-              sx={{
-                cursor: 'pointer',
-                fontWeight: 600,
-                backgroundColor: isSelected ? 'var(--main-color)' : '#f3f4f6',
-                color: isSelected ? '#fff' : '#374151',
-                border: isSelected
-                  ? '1px solid var(--main-color)'
-                  : '1px solid #e5e7eb',
-                transition: '0.2s',
-                '&:hover': {
-                  backgroundColor: isSelected ? 'var(--main-color)' : '#e5e7eb',
-                },
-              }}
-            />
-          );
-        })}
-      </Stack>
-
-      {/* INPUT */}
-      <CustomInput
-        inputType='input'
-        placeholder='مبلغ التبرع'
-        value={amount}
-        setValue={(e) => {
-          const value = e.target.value;
-
-          if (/^\d*$/.test(value)) {
-            setAmount(value);
+      <Box sx={{ height: '417px', overflowY: 'auto' }}>
+        {/* 🔥 CURRENCY SELECT */}
+        <CustomInput
+          inputType='select'
+          label='العملة'
+          value={formData?.currency_type}
+          setValue={(e) =>
+            setFormData((prev) => ({ ...prev, currency_type: e.target.value }))
           }
-        }}
-        isNestedState={true}
-        styles={{ mb: 3 }}
-      />
+          styles={{ mb: 3 }}
+          isNestedState={true}
+        >
+          {currencies.map((cur) => (
+            <MenuItem key={cur.value} value={cur.value}>
+              {cur.label}
+            </MenuItem>
+          ))}
+        </CustomInput>
 
-      {/* TEXTAREA */}
-      <Textarea
-        label='ملاحظات (اختياري)'
-        value={notes}
-        setValue={setNotes}
-        inputType='textarea'
-      />
+        {/* SUB TITLE */}
+        <Typography sx={{ mb: 2, color: 'var(--secondary-color)' }}>
+          اختر مبلغاً جاهزاً أو أدخل مبلغاً مخصصاً
+        </Typography>
+
+        {/* CHIPS */}
+        <Stack sx={{ flexDirection: 'row', flexWrap: 'wrap', gap: 1 }}>
+          {suggestedAmounts.map((value) => {
+            const isSelected = Number(formData?.contribution_amount) === value;
+
+            return (
+              <Chip
+                key={value}
+                label={`${value.toLocaleString()} ${getCurrency(formData?.currency_type)}`}
+                clickable
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    contribution_amount: value,
+                  }))
+                }
+                sx={{
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  backgroundColor: isSelected ? 'var(--main-color)' : '#f3f4f6',
+                  color: isSelected ? '#fff' : '#374151',
+                  border: isSelected
+                    ? '1px solid var(--main-color)'
+                    : '1px solid #e5e7eb',
+                  transition: '0.2s',
+                  '&:hover': {
+                    backgroundColor: isSelected
+                      ? 'var(--main-color)'
+                      : '#e5e7eb',
+                  },
+                }}
+              />
+            );
+          })}
+        </Stack>
+
+        {/* INPUT */}
+        <CustomInput
+          inputType='input'
+          placeholder='مبلغ التبرع'
+          value={formData?.contribution_amount}
+          setValue={(e) => {
+            const value = e.target.value;
+
+            if (/^\d*$/.test(value)) {
+              setFormData((prev) => ({
+                ...prev,
+                contribution_amount: value,
+              }));
+            }
+          }}
+          isNestedState={true}
+          styles={{ mb: 3 }}
+          isNestedState={true}
+        />
+
+        {/* TEXTAREA */}
+        <Textarea
+          label='ملاحظات (اختياري)'
+          value={formData?.contribution_details}
+          setValue={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              contribution_details: e.target.value,
+            }))
+          }
+          inputType='textarea'
+          isNestedState={true}
+        />
+      </Box>
 
       {/* BUTTON */}
       <Box sx={{ mt: 4 }}>
         <Button
           variant='contained'
           onClick={onNext}
-          disabled={!amount}
-          sx={{
-            borderRadius: 1,
-            backgroundColor: 'var(--main-color)',
-            '&.Mui-disabled': disabledBtnStyles,
-            '&:hover': {
-              opacity: 0.9,
-              transform: 'translateY(-1px)',
-              transition: '0.2s',
-            },
-          }}
+          disabled={!formData?.contribution_amount}
+          sx={donateBtnStyles}
         >
           متابعة الدفع
         </Button>

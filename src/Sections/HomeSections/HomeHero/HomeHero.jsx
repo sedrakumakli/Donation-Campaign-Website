@@ -3,19 +3,21 @@ import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
 import { HeartHandshake } from 'lucide-react';
 import DonateButton from '../../../components/DonateButton/DonateButton';
+import CustomContainer from '../../../components/common/CustomContainer';
 import { useNavigate } from 'react-router-dom';
 function HomeHero() {
   const navigate = useNavigate();
   return (
-    <div className='home-hero'>
-      <section>
-        <h1>معاً نصنع فارقاً حقيقياً في حياة الآخرين</h1>
-        <p className='desc'>
-          كل تبرع — مهما كان صغيراً — يُشعل شمعة أمل في حياة أسرة تحتاج دعمك.
-          انضم إلى آلاف المتبرعين حول العالم.
-        </p>
-        <div className='btns'>
-          {/* <Button
+    <>
+      <div className='home-hero'>
+        <CustomContainer styles={{ textAlign: 'center' }}>
+          <h1>معاً نصنع فارقاً حقيقياً في حياة الآخرين</h1>
+          <p className='desc'>
+            كل تبرع — مهما كان صغيراً — يُشعل شمعة أمل في حياة أسرة تحتاج دعمك.
+            انضم إلى آلاف المتبرعين حول العالم.
+          </p>
+          <div className='btns'>
+            {/* <Button
             variant='contained'
             sx={{
               borderRadius: '8px',
@@ -69,9 +71,10 @@ function HomeHero() {
             اسكتشف الحملات
           </Button>
         </div>
-      </section>
+        </CustomContainer>
+      </div>
       <Experts />
-    </div>
+    </>
   );
 }
 export default HomeHero;

@@ -1,6 +1,7 @@
 import { Box, Card, Chip, Divider, Typography } from '@mui/material';
+import { getCurrency } from '../../utils/methods';
 
-const DonationSummary = ({ amount, activeStep }) => {
+const DonationSummary = ({ formData, activeStep }) => {
   const getStatus = () => {
     if (activeStep === 0)
       return {
@@ -61,7 +62,10 @@ const DonationSummary = ({ amount, activeStep }) => {
         </Typography>
 
         <Typography sx={{ fontWeight: 700, pr: 1.5 }}>
-          {amount ? Number(amount).toLocaleString() : 0} ل.س
+          {formData?.contribution_amount
+            ? Number(formData?.contribution_amount).toLocaleString()
+            : 0}{' '}
+          {getCurrency(formData?.currency_type)}
         </Typography>
       </Box>
       <Box
