@@ -3,7 +3,9 @@ import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
 import { HeartHandshake } from 'lucide-react';
 import DonateButton from '../../../components/DonateButton/DonateButton';
-function HomeHero() {
+function 
+
+HomeHero() {
   return (
     <div className='home-hero'>
       <section>
