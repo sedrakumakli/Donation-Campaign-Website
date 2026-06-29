@@ -7,22 +7,23 @@ import ProofUploadStep from '../../components/Donate/ProofUploadStep';
 import PaymentStep from '../../components/Donate/PaymentStep';
 import DonationSummary from '../../components/Donate/DonationSummery';
 import CustomContainer from '../../components/common/CustomContainer';
-import SuccessDialog from '../../components/common/SuccessDialog';
 import { useMutationHandler } from '../../customHooks/reactQuery/useMutationHandler';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { donateDirectly } from '../../services/donate';
 import { toast } from 'react-toastify';
+import ErrorMessage from '../../components/Messages/ErrorMessage';
 
 const DonatePage = () => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const params = useParams();
-  const id = params?.id;
+  const [searchParams] = useSearchParams();
+  const id = searchParams?.get('id');
 
   const [formData, setFormData] = useState({
     contribution_amount: '',
     currency_type: 'SYP',
     contribution_details: '',
+    campaign_uuid: '',
     image: null,
   });
 
@@ -59,13 +60,20 @@ const DonatePage = () => {
     data.append('contribution_amount', formData.contribution_amount);
     data.append('contribution_details', formData.contribution_details);
     data.append('currency_type', formData.currency_type);
+    data.append('campaign_uuid', formData.campaign_uuid);
     data.append('image', formData.image);
-    data.append('campaign_uuid', id);
     donate(data);
   };
 
+  useEffect(() => {
+    if (id) {
+      setFormData((prev) => ({ ...prev, campaign_uuid: id }));
+    }
+  }, [id]);
+
   return (
     <CustomContainer styles={{ py: 6 }}>
+      {donationErr && <ErrorMessage>{donationErr?.message}</ErrorMessage>}
       <Grid container spacing={3}>
         <Grid
           size={{
@@ -106,6 +114,7 @@ const DonatePage = () => {
                 setPreview={setPreview}
                 onBack={previousStep}
                 onSubmit={handleSubmit}
+                isSubmitting={isDonating}
               />
             )}
           </Paper>

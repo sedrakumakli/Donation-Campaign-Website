@@ -90,9 +90,7 @@ const DonationFlow = () => {
             borderRadius: 2,
             px: 4,
             width: { xs: '100%', sm: 'auto' },
-            '&:hover': {
-              bgcolor: '#0e7a5a',
-            },
+            '&:hover': {},
           }}
         >
           ابدأ التبرع الآن

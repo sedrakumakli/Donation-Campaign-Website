@@ -58,6 +58,12 @@ const SectionWrapper = ({
                 color: 'var(--main-color)',
                 borderColor: 'var(--main-color)',
                 borderRadius: 2,
+                py: 1,
+                transition: '0.5s',
+                '&:hover': {
+                  backgroundColor: 'var(--main-color)',
+                  color: 'white',
+                },
               }}
               {...buttonProps}
             >

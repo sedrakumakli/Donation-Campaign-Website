@@ -41,12 +41,14 @@ const InKindDonations = () => {
         {/* CTA */}
         <Button
           variant='contained'
+          size='large'
           sx={{
             mt: 4,
             bgcolor: 'var(--main-color)',
             borderRadius: 2,
             px: 4,
             '&:hover': {},
+            width: { xs: '100%', sm: 'auto' },
           }}
         >
           سجّل تبرعك العيني

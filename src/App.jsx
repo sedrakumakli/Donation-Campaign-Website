@@ -16,6 +16,8 @@ import CampaignDetails from './Pages/CampaignDetails/CampaignDetails';
 import NewsDetails from './Pages/News/NewsDetails';
 import { ToastContainer } from 'react-toastify';
 import DonatePage from './Pages/Donate/DonatePage';
+import Footer from './components/Footer/Footer';
+import { Box } from '@mui/material';
 
 function App() {
   return (
@@ -26,18 +28,23 @@ function App() {
     </div> */}
       {/* <Home/> */}
       <ToastContainer position='top left' />
-      <TopBar />
-      <NavBar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/campaigns' element={<Campaigns />} />
-        <Route path='/news' element={<News />} />
-        <Route path='/donate/:id' element={<DonatePage />} />
-        <Route path='/contactUs' element={<ContactUs />} />
-        <Route path='/campaign/:id' element={<CampaignDetails />} />
-        <Route path='/news/:id' element={<NewsDetails />} />
-      </Routes>
+      <Box sx={{ width: '100%', position: 'fixed', zIndex: 10 }}>
+        <TopBar />
+        <NavBar />
+      </Box>
+      <Box sx={{ pt: '126px' }}>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/campaigns' element={<Campaigns />} />
+          <Route path='/news' element={<News />} />
+          <Route path='/donate' element={<DonatePage />} />
+          <Route path='/contactUs' element={<ContactUs />} />
+          <Route path='/campaign/:id' element={<CampaignDetails />} />
+          <Route path='/news/:id' element={<NewsDetails />} />
+        </Routes>
+      </Box>
+      <Footer />
     </>
   );
 }

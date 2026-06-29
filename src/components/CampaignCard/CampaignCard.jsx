@@ -91,8 +91,7 @@ const CampaignCard = ({
             options={[
               {
                 label: 'تبرع مباشر',
-                onClick: () =>
-                  navigate(`/donate/f7069989-0b5e-453f-8abf-6560da32534a`),
+                onClick: () => navigate(`/donate`),
               },
               {
                 label: 'تعهد',

@@ -1,13 +1,23 @@
-import { Box, Button, Chip, MenuItem, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Grid,
+  MenuItem,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Textarea from '../common/Textarea';
 import CustomInput from '../common/CustomInput';
 import { donateBtnStyles } from '../../utils/styles';
 import { getCurrency } from '../../utils/methods';
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import { getCampaigns } from '../../services/campaigns';
 
 const currencies = [
-  { label: 'الليرة السورية', value: 'SYP' },
-  { label: 'الدولار الأمريكي', value: 'USD' },
-  { label: 'اليورو', value: 'EUR' },
+  { label: 'ليرة السورية', value: 'SYP' },
+  { label: 'دولار الأمريكي', value: 'USD' },
+  { label: 'يورو', value: 'EUR' },
 ];
 
 const getSuggestedAmounts = (currency) => {
@@ -28,6 +38,12 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
   const suggestedAmounts = getSuggestedAmounts(
     formData?.currency_type || 'SYP',
   );
+  const { data: campaignsData } = useGetData({
+    queryKey: ['campaigns'],
+    queryFn: getCampaigns,
+  });
+  const campaigns = campaignsData?.data;
+
   return (
     <>
       {/* TITLE */}
@@ -39,19 +55,22 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
         {/* 🔥 CURRENCY SELECT */}
         <CustomInput
           inputType='select'
-          label='العملة'
-          value={formData?.currency_type}
+          label='الحملة'
+          value={formData?.campaign_uuid}
           setValue={(e) =>
-            setFormData((prev) => ({ ...prev, currency_type: e.target.value }))
+            setFormData((prev) => ({ ...prev, campaign_uuid: e.target.value }))
           }
           styles={{ mb: 3 }}
           isNestedState={true}
         >
-          {currencies.map((cur) => (
-            <MenuItem key={cur.value} value={cur.value}>
-              {cur.label}
-            </MenuItem>
-          ))}
+          {campaigns?.map((info) => {
+            const campaign = info.campaing;
+            return (
+              <MenuItem key={campaign?.uuid} value={campaign?.uuid}>
+                {campaign.name}
+              </MenuItem>
+            );
+          })}
         </CustomInput>
 
         {/* SUB TITLE */}
@@ -96,24 +115,48 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
         </Stack>
 
         {/* INPUT */}
-        <CustomInput
-          inputType='input'
-          placeholder='مبلغ التبرع'
-          value={formData?.contribution_amount}
-          setValue={(e) => {
-            const value = e.target.value;
+        <Grid container spacing={1}>
+          <Grid size={{ md: 9 }}>
+            <CustomInput
+              inputType='input'
+              placeholder='مبلغ التبرع'
+              value={formData?.contribution_amount}
+              setValue={(e) => {
+                const value = e.target.value;
 
-            if (/^\d*$/.test(value)) {
-              setFormData((prev) => ({
-                ...prev,
-                contribution_amount: value,
-              }));
-            }
-          }}
-          isNestedState={true}
-          styles={{ mb: 3 }}
-          isNestedState={true}
-        />
+                if (/^\d*$/.test(value)) {
+                  setFormData((prev) => ({
+                    ...prev,
+                    contribution_amount: value,
+                  }));
+                }
+              }}
+              isNestedState={true}
+              styles={{ mb: 3 }}
+              isNestedState={true}
+            />
+          </Grid>
+          <Grid size={{ md: 3 }}>
+            <CustomInput
+              inputType='select'
+              value={formData?.currency_type}
+              setValue={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  currency_type: e.target.value,
+                }))
+              }
+              styles={{ mb: 3 }}
+              isNestedState={true}
+            >
+              {currencies.map((cur) => (
+                <MenuItem key={cur.value} value={cur.value}>
+                  {cur.label}
+                </MenuItem>
+              ))}
+            </CustomInput>
+          </Grid>
+        </Grid>
 
         {/* TEXTAREA */}
         <Textarea

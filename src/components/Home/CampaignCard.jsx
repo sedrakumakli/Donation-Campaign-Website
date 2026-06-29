@@ -11,6 +11,7 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import DonateButton from '../DonateButton/DonateButton';
+import config from '../../constants/enviroment';
 
 const statusColors = {
   نشطة: 'success',
@@ -20,7 +21,9 @@ const statusColors = {
 };
 
 const CampaignCard = ({ campaign }) => {
+  const campaignInfo = campaign?.campaing;
   const navigate = useNavigate();
+  if (!campaignInfo) return null;
 
   return (
     <Card
@@ -43,13 +46,13 @@ const CampaignCard = ({ campaign }) => {
         <CardMedia
           component='img'
           height='200'
-          image={campaign.image}
-          alt={campaign.name}
+          image={config.baseUrl + campaignInfo?.image}
+          alt={campaignInfo.name}
         />
 
         <Chip
-          label={campaign.status}
-          color={statusColors[campaign.status] || 'default'}
+          label={campaignInfo.status}
+          color={statusColors[campaignInfo.status] || 'default'}
           size='small'
           sx={{
             position: 'absolute',
@@ -63,8 +66,12 @@ const CampaignCard = ({ campaign }) => {
       {/* BODY */}
       <CardContent sx={{ px: 2 }}>
         {/* TITLE */}
-        <Typography variant='h6' sx={{ fontWeight: '600' }} textAlign='center'>
-          {campaign.name}
+        <Typography
+          variant='h6'
+          sx={{ fontWeight: '600', height: '64px' }}
+          textAlign='center'
+        >
+          {campaignInfo.name}
         </Typography>
 
         {/* AMOUNTS */}
@@ -84,7 +91,7 @@ const CampaignCard = ({ campaign }) => {
               fontWeight='bold'
               color='var(--main-color)'
             >
-              {campaign.collected_amount}
+              {campaignInfo.collected_amount}
             </Typography>
           </Box>
 
@@ -93,7 +100,7 @@ const CampaignCard = ({ campaign }) => {
               الهدف
             </Typography>
             <Typography sx={{ fontWeight: '600' }}>
-              {campaign.target_amount}
+              {campaignInfo.target_amount}
             </Typography>
           </Box>
         </Box>
@@ -110,7 +117,7 @@ const CampaignCard = ({ campaign }) => {
           >
             <Box
               sx={{
-                width: `${campaign.progress || 0}%`,
+                width: `${campaignInfo.progress || 0}%`,
                 height: '100%',
                 background: 'var(--main-color)',
               }}
@@ -133,7 +140,9 @@ const CampaignCard = ({ campaign }) => {
             >
               نسبة الإنجاز:
             </Typography>
-            <Typography variant='caption'>{campaign.progress || 0}%</Typography>
+            <Typography variant='caption'>
+              {campaignInfo.progress || 0}%
+            </Typography>
           </Typography>
         </Box>
 
@@ -143,11 +152,11 @@ const CampaignCard = ({ campaign }) => {
             options={[
               {
                 label: 'تبرع مباشر',
-                onClick: () => navigate(`/donate/${campaign.uuid}`),
+                onClick: () => navigate(`/donate?id=${campaignInfo.uuid}`),
               },
               {
                 label: 'تعهد',
-                onClick: () => navigate(`/pledge/${campaign.uuid}`),
+                onClick: () => navigate(`/pledge?id=${campaignInfo.uuid}`),
               },
             ]}
             sx={{ flex: 1, fontSize: '14px' }}
@@ -164,7 +173,7 @@ const CampaignCard = ({ campaign }) => {
               borderRadius: 2,
               display: 'flex',
             }}
-            onClick={() => navigate(`/campaign/${campaign.uuid}`)}
+            onClick={() => navigate(`/campaign/${campaignInfo.uuid}`)}
           >
             المزيد
           </Button>
