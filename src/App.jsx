@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import DonatePage from './Pages/Donate/DonatePage';
 import Footer from './components/Footer/Footer';
 import { Box } from '@mui/material';
+import DonorProfilePage from './Pages/DonerProfilePage/DonerProfilePage';
 
 function App() {
   return (
@@ -42,7 +43,8 @@ function App() {
           <Route path='/contactUs' element={<ContactUs />} />
           <Route path='/campaign/:id' element={<CampaignDetails />} />
           <Route path='/news/:id' element={<NewsDetails />} />
-        </Routes>
+          <Route path='/profile' element={<DonorProfilePage/>}/>
+      </Routes>
       </Box>
       <Footer />
     </>
