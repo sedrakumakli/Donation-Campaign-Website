@@ -189,7 +189,7 @@ function CampaignDetails() {
                   {
                     label: "تبرع مباشر",
                     onClick: () =>
-                      navigate(`/donate`),
+                      navigate(`/donate/:id`),
                   },
                   {
                     label: "تعهد",
@@ -327,7 +327,7 @@ function CampaignDetails() {
                   {
                     label: "تبرع مباشر",
                     onClick: () =>
-                      navigate(`/donate`),
+                      navigate(`/donate/:id`),
                   },
                   {
                     label: "تعهد",

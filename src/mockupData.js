@@ -117,3 +117,95 @@ export const upcomingCampaigns = [
     collected_amount: '0.00 $',
   },
 ];
+
+export const financialDonationsData = [
+  {
+    id: 1,
+    amount: "1,200 ر.س",
+    dueDate: "2026-07-01",
+    campaign: "إعادة بناء مدرسة الأمل",
+    type: "pledge",
+    compliance: "compliant",
+    payment: "paid",
+  },
+  {
+    id: 2,
+    amount: "500 ر.س",
+    dueDate: "2026-06-20",
+    campaign: "سلال غذائية لشهر رمضان",
+    type: "direct",
+    compliance: "compliant",
+    payment: "unpaid",
+  },
+  {
+    id: 3,
+    amount: "3,000 ر.س",
+    dueDate: "2026-08-15",
+    campaign: "كسوة الشتاء للأيتام",
+    type: "pledge",
+    compliance: "non_compliant",
+    payment: "unpaid",
+  },
+  {
+    id: 4,
+    amount: "750 ر.س",
+    dueDate: "2026-05-30",
+    campaign: "دعم المرضى المحتاجين",
+    type: "direct",
+    compliance: "compliant",
+    payment: "paid",
+  },
+];
+
+export const inKindDonationsData = [
+  {
+    id: 1,
+    name: "كرسي متحرك",
+    category: "أجهزة طبية",
+    location: "الرياض - حي النخيل",
+    quantity: 2,
+    image: null,
+    condition: "new",
+    delivery: "delivered",
+  },
+  {
+    id: 2,
+    name: "ملابس شتوية",
+    category: "أدوات منزلية",
+    location: "جدة - حي الروضة",
+    quantity: 40,
+    image: null,
+    condition: "used",
+    delivery: "pending",
+  },
+  {
+    id: 3,
+    name: "أدوات مطبخ",
+    category: "أدوات منزلية",
+    location: "الدمام - حي الفيصلية",
+    quantity: 12,
+    image: null,
+    condition: "new",
+    delivery: "delivered",
+  },
+  {
+    id: 4,
+    name: "أجهزة لوحية",
+    category: "أجهزة إلكترونية",
+    location: "مكة - حي العزيزية",
+    quantity: 5,
+    image: null,
+    condition: "used",
+    delivery: "pending",
+  },
+];
+
+export const donorData = {
+  name: "سارة أحمد المنصوري",
+  phone: "+971 50 123 4567",
+  email: "sara.almansouri@example.com",
+  type: "individual",
+  avatar: null,
+  totalCampaigns: 14,
+  totalInKind: 6,
+};
