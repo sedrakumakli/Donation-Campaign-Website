@@ -4,7 +4,7 @@
 }
 .nav-link {
   padding: 12px;
-  color: var(--main-color);
+  color: black;
   transition: 0.5s;
 }
 .nav-link:hover {
