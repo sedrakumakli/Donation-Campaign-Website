@@ -36,41 +36,40 @@ function HomeHero() {
             <HeartHandshake size={20}/>
             تبرع الآن
           </Button> */}
-          <DonateButton
-            options={[
-              {
-                label: "تبرع مادي",
-                onClick: () => navigate("/campaigns"),
-              },
-              {
-                label: "تبرع عيني",
-                onClick: () => navigate("/in-kind-donation"),
-              },
-            ]}
-            sx={{
-              height: '60px',
-              width: '300px',
-              fontSize: '24px',
-
-            }}
-          />
-          <Button
-            variant='outlined'
-            sx={{
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.35)',
-              px: 4,
-              display: { xs: 'none', md: 'flex' },
-              bgcolor: ' rgba(255, 255, 255, 0.1)',
-              color: '#fff',
-              height: '60px',
-              width: '300px',
-              fontSize: '24px',
-            }}
-          >
-            اسكتشف الحملات
-          </Button>
-        </div>
+            <DonateButton
+              options={[
+                {
+                  label: 'تبرع مادي',
+                  onClick: () => navigate('/donate'),
+                },
+                {
+                  label: 'تبرع عيني',
+                  onClick: () => navigate('/in-kind-donation'),
+                },
+              ]}
+              sx={{
+                height: '60px',
+                width: '300px',
+                fontSize: '24px',
+              }}
+            />
+            <Button
+              variant='outlined'
+              sx={{
+                borderRadius: '8px',
+                border: '1px solid rgba(255, 255, 255, 0.35)',
+                px: 4,
+                display: { xs: 'none', md: 'flex' },
+                bgcolor: ' rgba(255, 255, 255, 0.1)',
+                color: '#fff',
+                height: '60px',
+                width: '300px',
+                fontSize: '24px',
+              }}
+            >
+              اسكتشف الحملات
+            </Button>
+          </div>
         </CustomContainer>
       </div>
       <Experts />

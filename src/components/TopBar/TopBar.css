@@ -28,3 +28,8 @@
   align-items: center;
   gap: 8px;
 }
+@media (max-width: 500px) {
+  .top-bar .container {
+    flex-direction: column;
+  }
+}

@@ -2,3 +2,17 @@
   color: white;
   text-decoration: none;
 }
+.nav-link {
+  padding: 12px;
+  color: var(--main-color);
+  transition: 0.5s;
+}
+.nav-link:hover {
+  /* color: var(--primary-color); */
+  font-weight: 500;
+  color: var(--gold);
+}
+.nav-link.active {
+  font-weight: 600;
+  color: var(--gold);
+}

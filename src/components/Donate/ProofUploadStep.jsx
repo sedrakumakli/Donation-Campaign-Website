@@ -12,6 +12,7 @@ const ProofUploadStep = ({
   setPreview,
   onBack,
   onSubmit,
+  isSubmitting,
 }) => {
   const fileInputRef = useRef(null);
 
@@ -49,7 +50,7 @@ const ProofUploadStep = ({
       <Box>
         <Box
           sx={{
-            height: '417px',
+            height: '350px',
             overflowY: 'auto',
             border: '2px dashed',
             borderColor: preview ? '#d1d5db' : 'var(--main-color)',
@@ -205,7 +206,7 @@ const ProofUploadStep = ({
           onClick={onSubmit}
           sx={donateBtnStyles}
         >
-          إرسال التبرع
+          {isSubmitting ? <div className='btn-loader'></div> : ' إرسال التبرع'}
         </Button>
       </Box>
     </>
