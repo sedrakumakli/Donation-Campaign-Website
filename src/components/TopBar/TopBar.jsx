@@ -1,9 +1,6 @@
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
-import { Box, flex } from '@mui/system';
-import Stack from '@mui/material/Stack';
 import './TopBar.css';
 
 function TopBar() {

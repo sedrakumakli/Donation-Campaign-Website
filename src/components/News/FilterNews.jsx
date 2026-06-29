@@ -13,6 +13,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckIcon from '@mui/icons-material/Check';
 import CustomInput from '../common/CustomInput';
+import NewsCategoriesSkeleton from '../../Skeleton/NewsCategoriesSkeleton';
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import { getNewsCategories } from '../../services/news';
 
 const BRAND_COLOR = '#014a5b';
 
@@ -20,9 +23,9 @@ const getPillSx = (isActive) => ({
   cursor: 'pointer',
   fontSize: '13px',
   fontWeight: 500,
-  borderRadius: '999px',
   height: '34px',
   border: 'none',
+  borderRadius: 2,
   backgroundColor: isActive ? BRAND_COLOR : 'transparent',
   color: isActive ? '#fff' : '#8c9ea0',
   transition: '0.2s',
@@ -50,7 +53,6 @@ const getPillSx = (isActive) => ({
  * - topCategoriesCount?: number     how many chips to show before "أخرى" (default 4)
  */
 const FilterNews = ({
-  categories = [],
   news = [],
   search,
   onSearchChange,
@@ -60,6 +62,17 @@ const FilterNews = ({
 }) => {
   const [moreAnchorEl, setMoreAnchorEl] = useState(null);
   const [categorySearchTerm, setCategorySearchTerm] = useState('');
+
+  const {
+    data: categoriesData,
+    isFetching: isFetchingCategories,
+    error: categoriesErr,
+  } = useGetData({
+    queryKey: ['news-categories'],
+    queryFn: getNewsCategories,
+  });
+
+  const categories = categoriesData?.data || [];
 
   const isCategoryFilterEnabled = category !== 'الكل';
 
@@ -122,45 +135,49 @@ const FilterNews = ({
           setValue={onSearchChange}
         />
 
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 0.75,
-            flexWrap: 'wrap',
-            alignItems: 'center',
-          }}
-        >
-          <Chip
-            label='الكل'
-            onClick={() => onCategoryChange('الكل')}
-            sx={getPillSx(!isCategoryFilterEnabled)}
-          />
-
-          {topCategories.map((cat) => (
+        {isFetchingCategories ? (
+          <NewsCategoriesSkeleton />
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 0.75,
+              flexWrap: 'wrap',
+              alignItems: 'center',
+            }}
+          >
             <Chip
-              key={cat}
-              label={cat}
-              onClick={() => onCategoryChange(cat)}
-              sx={getPillSx(category === cat)}
+              label='الكل'
+              onClick={() => onCategoryChange('الكل')}
+              sx={getPillSx(!isCategoryFilterEnabled)}
             />
-          ))}
 
-          {otherCategories.length > 0 && (
-            <Chip
-              icon={
-                <MoreHorizIcon
-                  sx={{
-                    fontSize: '18px',
-                    color: isOtherCategorySelected ? '#fff' : '#8c9ea0',
-                  }}
-                />
-              }
-              label={otherChipLabel}
-              onClick={handleMoreClick}
-              sx={getPillSx(isOtherCategorySelected)}
-            />
-          )}
-        </Box>
+            {topCategories.map((cat) => (
+              <Chip
+                key={cat}
+                label={cat}
+                onClick={() => onCategoryChange(cat)}
+                sx={getPillSx(category === cat)}
+              />
+            ))}
+
+            {otherCategories.length > 0 && (
+              <Chip
+                icon={
+                  <MoreHorizIcon
+                    sx={{
+                      fontSize: '18px',
+                      color: isOtherCategorySelected ? '#fff' : '#8c9ea0',
+                    }}
+                  />
+                }
+                label={otherChipLabel}
+                onClick={handleMoreClick}
+                sx={getPillSx(isOtherCategorySelected)}
+              />
+            )}
+          </Box>
+        )}
       </Box>
 
       <Popover

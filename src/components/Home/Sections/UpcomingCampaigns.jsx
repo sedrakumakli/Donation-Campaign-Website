@@ -1,11 +1,11 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import CampaignTile from '../CampaignTile';
-import CustomContainer from '../../common/CustomContainer';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import SectionWrapper from '../SectionWrapper';
 
 const chunkArray = (array, size) => {
   const result = [];
@@ -21,41 +21,11 @@ const UpcomingCampaigns = ({ campaigns }) => {
   const slides = chunkArray(campaigns, 7);
 
   return (
-    <CustomContainer styles={{ my: 8 }}>
-      {/* HEADER */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 5,
-          flexWrap: 'wrap',
-          gap: 2,
-        }}
-      >
-        <Box>
-          <Typography variant='h4' sx={{ fontWeight: 'bold' }}>
-            الحملات القادمة
-          </Typography>
-
-          <Typography sx={{ mt: 1, maxWidth: 550, color: 'var(--desc-color)' }}>
-            استعد للمشاركة في حملات جديدة تُطلق قريبًا لدعم مشاريع إنسانية
-            وتنموية.
-          </Typography>
-        </Box>
-
-        <Button
-          variant='outlined'
-          sx={{
-            borderColor: 'var(--main-color)',
-            color: 'var(--main-color)',
-            borderRadius: 2,
-          }}
-        >
-          اكتشف الحملات القادمة
-        </Button>
-      </Box>
-
+    <SectionWrapper
+      title='الحملات القادمة'
+      description='استعد للمشاركة في حملات جديدة تُطلق قريبًا.'
+      buttonText='تابع الحملات القادمة'
+    >
       {/* SWIPER */}
       <Swiper
         modules={[Pagination]}
@@ -93,7 +63,7 @@ const UpcomingCampaigns = ({ campaigns }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </CustomContainer>
+    </SectionWrapper>
   );
 };
 

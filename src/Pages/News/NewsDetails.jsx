@@ -10,6 +10,7 @@ import NewsDetailsHeader from '../../components/News/NewsDetailsHeader';
 import NewsGallery from '../../components/News/NewsGallery';
 import NewsLightbox from '../../components/News/NewsLightBox';
 import LatestNewsSection from '../../components/News/LatestNewsSection';
+import NewsDetailsSkeleton from '../../Skeleton/NewsDetailsSkeleton';
 
 const getParagraphs = (text) => {
   return text
@@ -98,6 +99,10 @@ const NewsDetails = () => {
 
     return latestNewsData.data.filter((item) => item.uuid !== id);
   }, [latestNewsData, id]);
+
+  if (isFetchingNews) {
+    return <NewsDetailsSkeleton />;
+  }
 
   return (
     <>
