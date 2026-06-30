@@ -9,14 +9,14 @@ const ProfileTabs = ({ activeTab,
         onClick={() => setActiveTab("financial")}
       >
         التبرعات المادية
-        <span className="hf-tab__count">{financialCount.length}</span>
+        {/* <span className="hf-tab__count">{financialCount.length}</span> */}
       </button>
       <button
         className={`hf-tab ${activeTab === "inkind" ? "hf-tab--active" : ""}`}
         onClick={() => setActiveTab("inkind")}
       >
         التبرعات العينية
-        <span className="hf-tab__count">{inKindCount.length}</span>
+        {/* <span className="hf-tab__count">{inKindCount.length}</span> */}
       </button>
     </div>
       // <div className="hf-tabs-divider" />

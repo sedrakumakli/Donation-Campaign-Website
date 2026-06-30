@@ -63,9 +63,6 @@ ul {
 }
 section:not(.Toastify) {
   padding-bottom: 100px;
-  section {
-    padding-bottom: 80px;
-  }
 }
 .success-status {
   color: #2e7d32;

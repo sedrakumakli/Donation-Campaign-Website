@@ -147,7 +147,7 @@ function NavBar() {
           {/* Donate Button */}
           <Stack spacing={1} direction='row'>
             {/* زر الأيقونة */}
-            <IconButton>
+            <IconButton onClick={() => navigate('/profile')}>
               <LuUserRound style={iconStyles} />
             </IconButton>
             <IconButton onClick={() => navigate('/cart')}>

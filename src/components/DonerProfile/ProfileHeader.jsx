@@ -26,10 +26,6 @@ const ProfileHeader = () => {
             setAvatar(url);
         }
     };
-//     const DonorTypeIcon =
-//   donorData.type === "organization"
-//     ? Building2
-//     : UserRound;
     return (
         <>
             <div className="hf-header-card">

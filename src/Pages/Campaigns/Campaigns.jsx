@@ -155,6 +155,7 @@ const Campaigns = () => {
     governorate: "",
     city: "",
     region: "",
+    project: null,
     status: [],
   });
 
@@ -184,7 +185,7 @@ const Campaigns = () => {
     c.title.toLowerCase().includes(searchKey.toLowerCase())
   );
   const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = 6;
+  const cardsPerPage = 8;
 
   const totalPages = Math.ceil(
     filteredCampaigns.length / cardsPerPage
