@@ -1,8 +1,8 @@
-import { Box, Fade, Paper, Typography } from "@mui/material";
+import { Box, Fade, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { PRIMARY } from "./theme";
 
-export default function SuccessScreen({ refCode }) {
+export default function SuccessScreen() {
   return (
     <Fade in>
       <Box sx={{ textAlign: "center", py: 4 }}>
@@ -36,8 +36,6 @@ export default function SuccessScreen({ refCode }) {
           <br />
           سيتواصل معك فريقنا خلال 24 ساعة.
         </Typography>
-
-    
 
       
       </Box>

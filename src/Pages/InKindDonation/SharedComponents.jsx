@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 
-// عنوان كل خطوة
+
 export function SectionTitle({ children }) {
   return (
     <Typography

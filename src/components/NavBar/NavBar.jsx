@@ -8,10 +8,13 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import DonateButton from '../DonateButton/DonateButton';
+import { NavLink, useNavigate } from 'react-router-dom';
+import './NavBar.css';
+import CustomContainer from '../common/CustomContainer';
+import { FiSearch } from 'react-icons/fi';
+import { LuUserRound } from 'react-icons/lu';
+import { Stack } from '@mui/material';
+import { MdOutlineNotificationsNone } from 'react-icons/md';
 
 const pages = [
   { name: 'الرئيسية', path: '/' },
@@ -20,6 +23,8 @@ const pages = [
   { name: 'آخر الأخبار', path: '/news' },
   { name: 'تواصل معنا', path: '/contactUs' },
 ];
+
+const iconStyles = { color: 'black', fontSize: '22px' };
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -53,11 +58,9 @@ function NavBar() {
       }}
       className='nav-bar'
     >
-      <Container
-        maxWidth='xl'
-        sx={{
-          py: 0.5,
-          px: { xs: 2, md: 6, lg: 10 },
+      <CustomContainer
+        styles={{
+          py: 1,
         }}
       >
         <Toolbar disableGutters sx={{ width: '100%' }}>
@@ -129,35 +132,33 @@ function NavBar() {
             }}
           >
             {pages.map((page) => (
-              <Button
+              <NavLink
                 key={page.path}
                 component={NavLink}
                 to={page.path}
                 color='inherit'
-                sx={{
-                  fontSize: '16px',
-                }}
+                className='nav-link'
               >
                 {page.name}
-              </Button>
+              </NavLink>
             ))}
           </Box>
 
           {/* Donate Button */}
-          <DonateButton
-            options={[
-              {
-                label: "تبرع مادي",
-                onClick: () => navigate("/campaigns"),
-              },
-              {
-                label: "تبرع عيني",
-                onClick: () => navigate("/in-kind-donation"),
-              },
-            ]}
-          />
+          <Stack spacing={1} direction='row'>
+            {/* زر الأيقونة */}
+            <IconButton>
+              <LuUserRound style={iconStyles} />
+            </IconButton>
+            <IconButton onClick={() => navigate('/cart')}>
+              <MdOutlineNotificationsNone style={iconStyles} />
+            </IconButton>
+            <IconButton onClick={() => navigate('/shop')}>
+              <FiSearch style={iconStyles} />
+            </IconButton>
+          </Stack>
         </Toolbar>
-      </Container>
+      </CustomContainer>
     </AppBar>
   );
 }

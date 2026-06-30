@@ -84,6 +84,10 @@ const inputsStyles = {
   '& .MuiInputLabel-root': {
     color: '#8c9ea0',
     fontFamily: 'Cairo',
+    py: 1.5,
+  },
+  '& .MuiInputLabel-root + .MuiInputBase-root': {
+    py: 1.5,
   },
 
   '& .MuiInputLabel-root.Mui-focused': {
@@ -128,7 +132,7 @@ export default function CustomInput({
       }
     >
       {/* 🔹 LABEL */}
-      {inputType !== 'nativeSelect' && (
+      {inputType !== 'nativeSelect' && label && (
         <Typography
           sx={{
             mb: inline ? 0 : 1,

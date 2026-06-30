@@ -10,7 +10,7 @@ export const getById = async (endpoint, id) => {
   return res.data;
 };
 
-export const filter = async (endpoint, body) => {
+export const postData = async (endpoint, body) => {
   const res = await api.post(`/${endpoint}`, body);
 
   return res.data;

@@ -3,6 +3,7 @@ import {
   Chip,
   CircularProgress,
   Fade,
+  FormHelperText,
   IconButton,
   Stack,
   TextField,
@@ -13,12 +14,22 @@ import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import { PRIMARY } from "./theme";
 import { FieldLabel, SectionTitle } from "./SharedComponents";
 
-export default function StepDonation({ form, setForm, types, loadingTypes }) {
+export default function StepDonation({
+  form,
+  setForm,
+  types,
+  loadingTypes,
+  nameError,
+  setNameError,
+  typeError,
+  setTypeError,
+}) {
 
   const handleQty = (delta) =>
     setForm((f) => ({ ...f, quantity: Math.max(1, (f.quantity || 1) + delta) }));
 
   const handleTypeSelect = (t) => {
+    setTypeError("");
     if (t === "غير ذلك") {
       setForm((f) => ({ ...f, typeName: "", isCustomType: true }));
     } else {
@@ -40,17 +51,21 @@ export default function StepDonation({ form, setForm, types, loadingTypes }) {
           <FieldLabel required>اسم التبرع</FieldLabel>
           <TextField
             fullWidth
+            variant="standard"
             placeholder="مثال: براد كهربائي، بطانيات..."
             value={form.name}
-            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            slotProps={{ htmlInput: { dir: "rtl" } }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: 2,
-                "&.Mui-focused fieldset": { borderColor: PRIMARY },
-              },
+            error={!!nameError}
+            onChange={(e) => {
+              setForm((f) => ({ ...f, name: e.target.value }));
+              if (nameError) setNameError("");
             }}
+            slotProps={{ htmlInput: { dir: "rtl" } }}
           />
+          {nameError && (
+            <FormHelperText error sx={{ fontFamily: "'Cairo', sans-serif", mt: 0.5 }}>
+              {nameError}
+            </FormHelperText>
+          )}
         </Box>
 
         {/* نوع التبرع */}
@@ -86,22 +101,25 @@ export default function StepDonation({ form, setForm, types, loadingTypes }) {
                 })}
               </Box>
 
+              {typeError && (
+                <FormHelperText error sx={{ fontFamily: "'Cairo', sans-serif" }}>
+                  {typeError}
+                </FormHelperText>
+              )}
+
               {form.isCustomType && (
                 <TextField
                   fullWidth
                   autoFocus
+                  variant="standard"
                   placeholder="اكتب نوع التبرع..."
                   value={form.typeName}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, typeName: e.target.value }))
-                  }
-                  slotProps={{ htmlInput: { dir: "rtl" } }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: 2,
-                      "&.Mui-focused fieldset": { borderColor: PRIMARY },
-                    },
+                  error={!!typeError}
+                  onChange={(e) => {
+                    setForm((f) => ({ ...f, typeName: e.target.value }));
+                    if (typeError) setTypeError("");
                   }}
+                  slotProps={{ htmlInput: { dir: "rtl" } }}
                 />
               )}
             </Stack>
@@ -128,6 +146,7 @@ export default function StepDonation({ form, setForm, types, loadingTypes }) {
             </IconButton>
 
             <TextField
+              variant="standard"
               value={form.quantity || 1}
               onChange={(e) =>
                 setForm((f) => ({
@@ -144,12 +163,6 @@ export default function StepDonation({ form, setForm, types, loadingTypes }) {
                     width: 52,
                     padding: "6px 0",
                   },
-                },
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  "&.Mui-focused fieldset": { borderColor: PRIMARY },
                 },
               }}
             />

@@ -1,5 +1,5 @@
 import config from '../constants/enviroment';
-import { getAll, getById, filter } from './common';
+import { getAll, getById, postData } from './common';
 
 export const getNews = () => getAll(config.news.all);
 
@@ -9,4 +9,4 @@ export const getSingleNews = (id) => getById(config.news.details, id);
 
 export const getNewsCategories = () => getAll(config.news.categories);
 
-export const filterNews = (body) => filter(config.news.filter, body);
+export const filterNews = (body) => postData(config.news.filter, body);

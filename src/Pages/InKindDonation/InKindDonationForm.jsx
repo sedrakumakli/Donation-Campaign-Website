@@ -40,9 +40,11 @@ const INITIAL_FORM = {
   notes: "",
 };
 
+const ARABIC_ONLY = /^[\u0600-\u06FF\s\،\,\.\-]+$/;
+
 export default function InKindDonationForm({ open, onClose }) {
-  const [step, setStep]               = useState(0);
-  const [form, setForm]               = useState(INITIAL_FORM);
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState(INITIAL_FORM);
 
   const [types,        setTypes]        = useState([]);
   const [governorates, setGovernorates] = useState([]);
@@ -56,6 +58,8 @@ export default function InKindDonationForm({ open, onClose }) {
   const [error,      setError]      = useState("");
   const [success,    setSuccess]    = useState(false);
   const [refCode,    setRefCode]    = useState("");
+  const [nameError,  setNameError]  = useState("");
+  const [typeError,  setTypeError]  = useState("");
 
   const handleClose = () => {
     if (submitting) return;
@@ -64,6 +68,8 @@ export default function InKindDonationForm({ open, onClose }) {
     setError("");
     setSuccess(false);
     setRefCode("");
+    setNameError("");
+    setTypeError("");
     onClose();
   };
 
@@ -112,9 +118,12 @@ export default function InKindDonationForm({ open, onClose }) {
 
   const validate = () => {
     if (step === 0) {
-      if (!form.name.trim())                          return "أدخل اسم التبرع";
+      if (!form.name.trim()) return "أدخل اسم التبرع";
+      if (form.name.trim().length < 3) return "اسم التبرع يجب أن يكون 3 أحرف على الأقل";
+      if (!ARABIC_ONLY.test(form.name.trim())) return "اسم التبرع يجب أن يكون باللغة العربية فقط";
       if (form.isCustomType && !form.typeName.trim()) return "أدخل نوع التبرع";
-      if (!form.isCustomType && !form.typeName)       return "اختر نوع التبرع";
+      if (form.isCustomType && form.typeName.trim().length < 3) return "نوع التبرع يجب أن يكون 3 أحرف على الأقل";
+      if (!form.isCustomType && !form.typeName) return "اختر نوع التبرع";
     }
     if (step === 1) {
       if (!form.governorateId) return "اختر المحافظة";
@@ -125,13 +134,34 @@ export default function InKindDonationForm({ open, onClose }) {
 
   const handleNext = () => {
     const err = validate();
-    if (err) { setError(err); return; }
+    if (err) {
+      setError(err);
+      if (
+        err === "أدخل اسم التبرع" ||
+        err === "اسم التبرع يجب أن يكون 3 أحرف على الأقل" ||
+        err === "اسم التبرع يجب أن يكون باللغة العربية فقط"
+      ) {
+        setNameError(err);
+      }
+      if (
+        err === "أدخل نوع التبرع" ||
+        err === "اختر نوع التبرع" ||
+        err === "نوع التبرع يجب أن يكون 3 أحرف على الأقل"
+      ) {
+        setTypeError(err);
+      }
+      return;
+    }
     setError("");
+    setNameError("");
+    setTypeError("");
     setStep((s) => s + 1);
   };
 
   const handleBack = () => {
     setError("");
+    setNameError("");
+    setTypeError("");
     setStep((s) => s - 1);
   };
 
@@ -148,7 +178,7 @@ export default function InKindDonationForm({ open, onClose }) {
       formData.append("status_of_materail", form.condition);
 
       if (form.isCustomType && form.typeName.trim()) {
-        formData.append("other_type", form.typeName);
+        formData.append("on_the_other_hand", form.typeName);
       }
 
       form.images.forEach((img) => formData.append("images[]", img.file));
@@ -172,7 +202,6 @@ export default function InKindDonationForm({ open, onClose }) {
   return (
     <ThemeProvider theme={theme}>
 
-      {/* ── شاشة النجاح ── */}
       <Dialog
         open={open && success}
         onClose={handleClose}
@@ -190,11 +219,10 @@ export default function InKindDonationForm({ open, onClose }) {
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ pt: 1, px: 3, pb: 3 }}>
-          <SuccessScreen refCode={refCode} onClose={handleClose} />
+          <SuccessScreen onClose={handleClose} />
         </DialogContent>
       </Dialog>
 
-      {/* ── الفورم الرئيسي ── */}
       <Dialog
         open={open && !success}
         onClose={handleClose}
@@ -209,7 +237,6 @@ export default function InKindDonationForm({ open, onClose }) {
           },
         }}
       >
-        {/* ── Header ── */}
         <DialogTitle
           sx={{
             display: "flex",
@@ -223,7 +250,6 @@ export default function InKindDonationForm({ open, onClose }) {
             borderColor: "divider",
           }}
         >
-          {/* زر الإغلاق — يسار */}
           <IconButton
             onClick={handleClose}
             disabled={submitting}
@@ -232,15 +258,11 @@ export default function InKindDonationForm({ open, onClose }) {
           >
             <CloseIcon fontSize="small" />
           </IconButton>
-
-          {/* العنوان — يمين */}
           <Box component="span">تبرع عيني</Box>
         </DialogTitle>
 
-        {/* ── Content ── */}
-        <DialogContent dir="rtl" sx={{ px: 3, pt:3, pb: 3 }}>
+        <DialogContent dir="rtl" sx={{ px: 3, pt: 3, pb: 3 }}>
 
-          {/* Stepper */}
           <Stepper activeStep={step} alternativeLabel sx={{ mt: 3, mb: 3 }}>
             {STEPS.map((label) => (
               <Step key={label}>
@@ -249,7 +271,6 @@ export default function InKindDonationForm({ open, onClose }) {
             ))}
           </Stepper>
 
-          {/* محتوى الخطوة */}
           <Paper
             elevation={0}
             variant="outlined"
@@ -261,6 +282,10 @@ export default function InKindDonationForm({ open, onClose }) {
                 setForm={setForm}
                 types={types}
                 loadingTypes={loadingTypes}
+                nameError={nameError}
+                setNameError={setNameError}
+                typeError={typeError}
+                setTypeError={setTypeError}
               />
             )}
             {step === 1 && (
@@ -277,14 +302,12 @@ export default function InKindDonationForm({ open, onClose }) {
             {step === 3 && <StepReview form={form} />}
           </Paper>
 
-          {/* رسالة الخطأ */}
           {error && (
             <Alert severity="error" sx={{ mb: 2, borderRadius: 2, fontSize: 13 }}>
               {error}
             </Alert>
           )}
 
-          {/* أزرار التنقل */}
           <Box sx={{ display: "flex", gap: 1.5 }}>
             {step > 0 && (
               <Button
