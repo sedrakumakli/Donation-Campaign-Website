@@ -1,13 +1,9 @@
-import { useState } from 'react';
-import heroImg from './assets/hero.png';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+
 import './App.css';
 import TopBar from './components/TopBar/TopBar';
 import NavBar from './components/NavBar/NavBar';
 import Home from './Pages/Home/Home';
-import About from './Pages/About/About';
+
 import { Route, Routes } from 'react-router-dom';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import News from './Pages/News/News';
@@ -19,6 +15,8 @@ import DonatePage from './Pages/Donate/DonatePage';
 import Footer from './components/Footer/Footer';
 import { Box } from '@mui/material';
 import DonorProfilePage from './Pages/DonerProfilePage/DonerProfilePage';
+import Aboutuspage from './Pages/About/Aboutuspage.jsx';
+import FAQSection from './Pages/FAQSection/FAQSection.jsx';
 
 function App() {
   return (
@@ -36,7 +34,7 @@ function App() {
       <Box sx={{ pt: '126px' }}>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/about' element={<About />} />
+          <Route path='/about' element={<Aboutuspage/>} />
           <Route path='/campaigns' element={<Campaigns />} />
           <Route path='/news' element={<News />} />
           <Route path='/donate' element={<DonatePage />} />
@@ -44,6 +42,7 @@ function App() {
           <Route path='/campaign/:id' element={<CampaignDetails />} />
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/profile' element={<DonorProfilePage/>}/>
+          <Route path='/FAQSection' element={<FAQSection/>}/>
       </Routes>
       </Box>
       <Footer />
