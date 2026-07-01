@@ -31,7 +31,7 @@ const  PasswordCard = () => {
               <input
                 type={showCurrent ? "text" : "password"}
                 className="hf-field__input"
-                placeholder="ادخلي كلمة السر الحالية"
+                placeholder="ادخل كلمة السر الحالية"
               />
               <button
                 type="button"
@@ -50,7 +50,25 @@ const  PasswordCard = () => {
               <input
                 type={showNew ? "text" : "password"}
                 className="hf-field__input"
-                placeholder="ادخلي كلمة السر الجديدة"
+                placeholder="ادخل كلمة السر الجديدة"
+              />
+              <button
+                type="button"
+                className="hf-field__toggle"
+                onClick={() => setShowNew((s) => !s)}
+                aria-label="إظهار كلمة السر"
+              >
+                {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+          </label>
+          <label className="hf-field">
+            <span className="hf-field__label"> تأكيد كلمة السر </span>
+            <div className="hf-field__input-wrap">
+              <input
+                type={showNew ? "text" : "password"}
+                className="hf-field__input"
+                placeholder="تأكيد كلمة السر"
               />
               <button
                 type="button"

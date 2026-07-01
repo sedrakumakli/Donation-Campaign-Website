@@ -22,6 +22,7 @@ const pages = [
   { name: 'الحملات', path: '/campaigns' },
   { name: 'آخر الأخبار', path: '/news' },
   { name: 'تواصل معنا', path: '/contactUs' },
+  {name:'الأسئلة الشائعة' , path:'/FAQSection'}
 ];
 
 const iconStyles = { color: 'black', fontSize: '22px' };
@@ -147,7 +148,7 @@ function NavBar() {
           {/* Donate Button */}
           <Stack spacing={1} direction='row'>
             {/* زر الأيقونة */}
-            <IconButton>
+            <IconButton onClick={() => navigate('/profile')}>
               <LuUserRound style={iconStyles} />
             </IconButton>
             <IconButton onClick={() => navigate('/cart')}>

@@ -189,7 +189,8 @@ export const completedProjects = [
 export const financialDonationsData = [
   {
     id: 1,
-    amount: "1,200 ر.س",
+    amount: "1,200",
+    currency: "dollar",
     dueDate: "2026-07-01",
     campaign: "إعادة بناء مدرسة الأمل",
     type: "pledge",
@@ -198,7 +199,8 @@ export const financialDonationsData = [
   },
   {
     id: 2,
-    amount: "500 ر.س",
+    amount: "500",
+    currency: "euro",
     dueDate: "2026-06-20",
     campaign: "سلال غذائية لشهر رمضان",
     type: "direct",
@@ -207,7 +209,8 @@ export const financialDonationsData = [
   },
   {
     id: 3,
-    amount: "3,000 ر.س",
+    amount: "3,000",
+    currency: "syrian_pound",
     dueDate: "2026-08-15",
     campaign: "كسوة الشتاء للأيتام",
     type: "pledge",
@@ -216,7 +219,8 @@ export const financialDonationsData = [
   },
   {
     id: 4,
-    amount: "750 ر.س",
+    amount: "750",
+    currency: "syrian_pound",
     dueDate: "2026-05-30",
     campaign: "دعم المرضى المحتاجين",
     type: "direct",
@@ -272,7 +276,7 @@ export const donorData = {
   name: "سارة أحمد المنصوري",
   phone: "+971 50 123 4567",
   email: "sara.almansouri@example.com",
-  type: "individual",
+  type: "organization",
   avatar: null,
   totalCampaigns: 14,
   totalInKind: 6,
