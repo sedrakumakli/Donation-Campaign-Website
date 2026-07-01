@@ -30,12 +30,17 @@ const DELIVERY_STATUS = {
   delivered: { label: "تم التسليم", tone: "success" },
   pending: { label: "لم يتم التسليم", tone: "danger" },
 };
-
+const CURRENCY_TYPE = {
+  dollar: { label: "دولار" },
+  euro: { label: "يورو" },
+  syrian_pound: { label: "ليرة سورية" },
+}
 export {
-DONOR_TYPES,
-PAYMENT_STATUS,
-DONATION_COMPLIANCE,
-DONATION_TYPE,
-ITEM_CONDITION,
-DELIVERY_STATUS
+  DONOR_TYPES,
+  PAYMENT_STATUS,
+  DONATION_COMPLIANCE,
+  DONATION_TYPE,
+  ITEM_CONDITION,
+  DELIVERY_STATUS,
+  CURRENCY_TYPE,
 }

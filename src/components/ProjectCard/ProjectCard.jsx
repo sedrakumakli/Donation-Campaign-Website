@@ -22,15 +22,16 @@ function ProjectCard({ project }) {
         </div>
         <div className="project-amounts">
           <span>
-            {project.raised.toLocaleString("en-US")}${" "}
-            <span className="of">/ {project.target.toLocaleString("en-US")}$</span>
+            {/* {project.raised.toLocaleString("en-US")}${" "}
+            <span className="of">/ {project.target.toLocaleString("en-US")}$</span> */}
+            <span>نسبة الإنجاز </span>
           </span>
           <span>{pct}%</span>
         </div>
 
         <div className="project-foot">
           <div className="project-allocated">
-            المبلغ المخصص
+           الكلفة المقدرة
             <br />
             <b>{project.allocated.toLocaleString("en-US")}$</b>
           </div>

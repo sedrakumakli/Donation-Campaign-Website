@@ -27,6 +27,9 @@ import PasswordCard from "../../components/DonerProfile/PasswordCard";
 import InKindTable from "../../components/DonerProfile/InKindTable";
 import { donorData, financialDonationsData, inKindDonationsData } from "../../mockupData";
 import ProfileTabs from "../../components/DonerProfile/ProfileTabs";
+import LogOut from "../../components/DonerProfile/LogOut";
+import { toast } from "react-toastify";
+import LogOutConfrimModal from "../../components/DonerProfile/LogOutConfrimModal";
 /* -------------------------------------------------------------------------
    Hope Forward — صفحة الملف الشخصي للمتبرع
    لوحة الألوان موروثة من صفحة تفاصيل الحملة (تركواز #004A5B)
@@ -37,9 +40,15 @@ const DonorProfilePage = () => {
     const [donor, setDonor] = useState(donorData);
     const [financialDonations, setFinancialDonations] = useState(financialDonationsData);
     const [inKindDonations, setInKindDonations] = useState(inKindDonationsData);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
+    const handleConfirmLogout = () => {
+        setShowLogoutModal(false);
+        toast.success("تم تسجيل الخروج بنجاح");
+        navigate("/login");
+    };
     return (
-        <div className="profile" style={{paddingBottom:'64px'}}>
+        <div className="profile">
             <BreadCrumb
                 dynamicItems={[
                     {
@@ -48,25 +57,31 @@ const DonorProfilePage = () => {
                     },
                 ]}
             />
+
             <div className="wrap">
+                <LogOut onClick={() => setShowLogoutModal(true)} />
+                <LogOutConfrimModal
+                    open={showLogoutModal}
+                    onCancel={() => setShowLogoutModal(false)}
+                    onConfirm={handleConfirmLogout} />
                 <ProfileHeader donor={donor} />
 
-            <PasswordCard />
+                <PasswordCard />
 
-            <ProfileTabs
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                financialCount={financialDonations.length}
-                inKindCount={inKindDonations.length}
-            />
+                <ProfileTabs
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    financialCount={financialDonations.length}
+                    inKindCount={inKindDonations.length}
+                />
 
-            {activeTab === "financial" ? (
-                <FinancialTable rows={financialDonations} />
-            ) : (
-                <InKindTable rows={inKindDonations} />
-            )}
+                {activeTab === "financial" ? (
+                    <FinancialTable rows={financialDonations} />
+                ) : (
+                    <InKindTable rows={inKindDonations} />
+                )}
             </div>
-            
+
         </div>
     );
 };
