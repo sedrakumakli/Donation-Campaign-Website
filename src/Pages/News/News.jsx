@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import NewsCard from '../../components/News/NewsCard';
 import CustomPagination from '../../components/CustomPagination';
@@ -8,11 +8,15 @@ import { filterNews, getNews } from '../../services/news.js';
 import CustomContainer from '../../components/common/CustomContainer.jsx';
 import FilterNews from '../../components/News/FilterNews.jsx';
 import NewsCardSkeleton from '../../Skeleton/NewsCardSkeleton.jsx';
+import { useSearchParams } from 'react-router-dom';
 
 const News = () => {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState('الكل');
+
+  const [searchParams] = useSearchParams();
+  const initCategory = searchParams?.get('category');
 
   const cardsPerPage = 6;
 
@@ -55,6 +59,11 @@ const News = () => {
     page * cardsPerPage,
   );
   const emptyCards = cardsPerPage - currentNews.length;
+  useEffect(() => {
+    if (initCategory) {
+      setCategory(initCategory);
+    }
+  }, []);
 
   return (
     <>

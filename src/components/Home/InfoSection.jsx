@@ -7,7 +7,7 @@ const InfoSection = ({ children, image, order }) => {
       <Grid
         container
         spacing={{ xs: 3, md: 5, lg: 8 }}
-        sx={{ alignItems: order ? 'center' : 'start' }}
+        sx={{ alignItems: 'stretch' }}
       >
         {/* IMAGE */}
         <Grid size={{ xs: 12, md: 6 }} sx={{ order: order }}>
@@ -17,7 +17,7 @@ const InfoSection = ({ children, image, order }) => {
             alt='donation'
             sx={{
               width: '100%',
-              height: { xs: 220, sm: 300, md: ' 100%' },
+              height: { xs: 220, sm: 300, md: '100%' },
               borderRadius: 4,
               objectFit: 'cover',
               display: 'block',

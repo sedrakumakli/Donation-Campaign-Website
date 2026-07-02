@@ -18,11 +18,13 @@ const SectionWrapper = ({
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: { md: 'space-between', xs: 'center' },
             alignItems: 'center',
             gap: 2,
+            flexDirection: { xs: 'column', md: 'row' },
             flexWrap: 'wrap',
             mb: 5,
+            textAlign: { xs: 'center', md: 'left' },
           }}
         >
           <Box>

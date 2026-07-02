@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SectionWrapper from '../SectionWrapper';
-import AchievementCard from '../AchievementCard';
 import { PROJECTS } from '../../../Pages/CampaignDetails/CampaignDetails';
 import ProjectCard from '../../ProjectCard/ProjectCard';
 
@@ -21,8 +20,8 @@ const CompletedProjects = ({ projects }) => {
     <SectionWrapper
       title='إنجازاتنا'
       description='مشاريع اكتملت بفضل مساهمات المتبرعين وشراكاتنا المجتمعية، لتترك أثرًا حقيقيًا في حياة المستفيدين.'
-      buttonText='عرض جميع الإنجازات'
-      onButtonClick={() => navigate('/projects')}
+      buttonText='تعرّف على أثر مبادراتنا'
+      onButtonClick={() => navigate('/stats')}
     >
       <div className='hf-page'>
         <Grid container spacing={3}>

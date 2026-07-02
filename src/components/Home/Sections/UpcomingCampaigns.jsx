@@ -6,6 +6,7 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import SectionWrapper from '../SectionWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const chunkArray = (array, size) => {
   const result = [];
@@ -16,15 +17,17 @@ const chunkArray = (array, size) => {
 };
 
 const UpcomingCampaigns = ({ campaigns }) => {
-  if (!campaigns?.length) return null;
-
   const slides = chunkArray(campaigns, 7);
+  const navigate = useNavigate();
+
+  if (!campaigns?.length) return null;
 
   return (
     <SectionWrapper
       title='الحملات القادمة'
       description='استعد للمشاركة في حملات جديدة تُطلق قريبًا.'
       buttonText='تابع الحملات القادمة'
+      onButtonClick={() => navigate('/news?category=حملات جديدة')}
     >
       {/* SWIPER */}
       <Swiper

@@ -10,6 +10,7 @@ import CampaignCard from '../CampaignCard';
 import SectionWrapper from '../SectionWrapper';
 import { useGetData } from '../../../customHooks/reactQuery/useGetData';
 import { getCampaigns } from '../../../services/campaigns';
+import { useNavigate } from 'react-router-dom';
 
 const chunkArray = (array, size) => {
   const result = [];
@@ -30,12 +31,14 @@ const CurrentCampaigns = () => {
   /* if (!campaigns?.length) return null; */
 
   const slides = chunkArray(campaigns, 8);
+  const navigate = useNavigate();
 
   return (
     <SectionWrapper
       title='الحملات الحالية'
       description='ساهم اليوم في الحملات الإنسانية الجارية وكن جزءًا من صناعة أثر حقيقي.'
       buttonText='عرض جميع الحملات'
+      onButtonClick={() => navigate('/campaigns')}
     >
       <Swiper modules={[Pagination]} pagination={{ clickable: true }}>
         {slides.map((group, index) => (
