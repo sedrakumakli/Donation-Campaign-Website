@@ -1,30 +1,30 @@
-import * as React from 'react';
+import * as React from "react";
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
-import { NavLink, useNavigate } from 'react-router-dom';
-import './NavBar.css';
-import CustomContainer from '../common/CustomContainer';
-import { FiSearch } from 'react-icons/fi';
-import { LuUserRound } from 'react-icons/lu';
-import { Stack } from '@mui/material';
-import { MdOutlineNotificationsNone } from 'react-icons/md';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MenuIcon from "@mui/icons-material/Menu";
+import { NavLink, useNavigate } from "react-router-dom";
+import "./NavBar.css";
+import CustomContainer from "../common/CustomContainer";
+import { FiSearch } from "react-icons/fi";
+import { LuUserRound } from "react-icons/lu";
+import { Stack } from "@mui/material";
+import { MdOutlineNotificationsNone } from "react-icons/md";
 
 const pages = [
-  { name: 'الرئيسية', path: '/' },
-  { name: 'حولنا', path: '/about' },
-  { name: 'الحملات', path: '/campaigns' },
-  { name: 'آخر الأخبار', path: '/news' },
-  { name: 'تواصل معنا', path: '/contactUs' },
+  { name: "الرئيسية", path: "/" },
+  { name: "حولنا", path: "/about" },
+  { name: "الحملات", path: "/campaigns" },
+  { name: "آخر الأخبار", path: "/news" },
+  { name: "تواصل معنا", path: "/contactUs" },
 ];
 
-const iconStyles = { color: 'black', fontSize: '22px' };
+const iconStyles = { color: "black", fontSize: "22px" };
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -49,27 +49,27 @@ function NavBar() {
 
   return (
     <AppBar
-      position='static'
+      position="static"
       sx={{
-        bgcolor: '#fff',
-        color: '#000',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-        fontSize: '16px',
+        bgcolor: "#fff",
+        color: "#000",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+        fontSize: "16px",
       }}
-      className='nav-bar'
+      className="nav-bar"
     >
       <CustomContainer
         styles={{
           py: 1,
         }}
       >
-        <Toolbar disableGutters sx={{ width: '100%' }}>
+        <Toolbar disableGutters sx={{ width: "100%" }}>
           {/* LOGO - Desktop */}
           <Typography
-            variant='h5'
+            variant="h5"
             sx={{
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 'bold',
+              display: { xs: "none", md: "flex" },
+              fontWeight: "bold",
             }}
           >
             LOGO
@@ -78,13 +78,13 @@ function NavBar() {
           {/* Mobile Menu */}
           <Box
             sx={{
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
             }}
           >
             <IconButton
-              size='large'
+              size="large"
               onClick={handleOpenNavMenu}
-              color='inherit'
+              color="inherit"
             >
               <MenuIcon />
             </IconButton>
@@ -94,12 +94,12 @@ function NavBar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+                vertical: "bottom",
+                horizontal: "right",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
             >
               {pages.map((page) => (
@@ -112,11 +112,11 @@ function NavBar() {
 
           {/* LOGO - Mobile */}
           <Typography
-            variant='h6'
+            variant="h6"
             sx={{
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontWeight: 'bold',
+              fontWeight: "bold",
             }}
           >
             LOGO
@@ -126,8 +126,8 @@ function NavBar() {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: 'none', md: 'flex' },
-              justifyContent: 'center',
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
               gap: 4,
             }}
           >
@@ -136,8 +136,8 @@ function NavBar() {
                 key={page.path}
                 component={NavLink}
                 to={page.path}
-                color='inherit'
-                className='nav-link'
+                color="inherit"
+                className="nav-link"
               >
                 {page.name}
               </NavLink>
@@ -145,15 +145,15 @@ function NavBar() {
           </Box>
 
           {/* Donate Button */}
-          <Stack spacing={1} direction='row'>
+          <Stack spacing={1} direction="row">
             {/* زر الأيقونة */}
-            <IconButton>
+            <IconButton onClick={() => navigate("/login")}>
               <LuUserRound style={iconStyles} />
             </IconButton>
-            <IconButton onClick={() => navigate('/cart')}>
+            <IconButton onClick={() => navigate("/cart")}>
               <MdOutlineNotificationsNone style={iconStyles} />
             </IconButton>
-            <IconButton onClick={() => navigate('/shop')}>
+            <IconButton onClick={() => navigate("/shop")}>
               <FiSearch style={iconStyles} />
             </IconButton>
           </Stack>
