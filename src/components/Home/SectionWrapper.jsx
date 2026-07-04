@@ -55,13 +55,13 @@ const SectionWrapper = ({
               variant='outlined'
               onClick={onButtonClick}
               sx={{
-                color: 'var(--main-color)',
-                borderColor: 'var(--main-color)',
+                color: 'var(--gold)',
+                borderColor: 'var(--gold)',
                 borderRadius: 2,
                 py: 1,
                 transition: '0.5s',
                 '&:hover': {
-                  backgroundColor: 'var(--main-color)',
+                  backgroundColor: 'var(--gold)',
                   color: 'white',
                 },
               }}
