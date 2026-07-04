@@ -1,6 +1,7 @@
 import { Box, Typography, Chip } from '@mui/material';
 import { getCampaignStatusText } from '../../utils/methods';
 import { useNavigate } from 'react-router-dom';
+import config from '../../constants/enviroment';
 
 const CampaignTile = ({ campaign, isBig }) => {
   const statusInfo = getCampaignStatusText(campaign);
@@ -13,7 +14,7 @@ const CampaignTile = ({ campaign, isBig }) => {
         borderRadius: 4,
         overflow: 'hidden',
         cursor: 'pointer',
-        backgroundImage: `url(${campaign.image})`,
+        backgroundImage: `url(${config.baseUrl}${campaign.image})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         transition: '0.3s',

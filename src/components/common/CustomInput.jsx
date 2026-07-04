@@ -127,6 +127,7 @@ export default function CustomInput({
 
   return (
     <div
+      className='custom-input-holder'
       style={
         inline ? { display: 'flex', alignItems: 'center', gap: '16px' } : {}
       }

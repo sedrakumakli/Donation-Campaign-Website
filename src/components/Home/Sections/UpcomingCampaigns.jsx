@@ -7,6 +7,9 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import SectionWrapper from '../SectionWrapper';
 import { useNavigate } from 'react-router-dom';
+import { useGetData } from '../../../customHooks/reactQuery/useGetData';
+import { filterCampaigns } from '../../../services/campaigns';
+import CampaignTileSkeleton from '../../../Skeleton/CampaignTileSkeleton';
 
 const chunkArray = (array, size) => {
   const result = [];
@@ -16,9 +19,35 @@ const chunkArray = (array, size) => {
   return result;
 };
 
-const UpcomingCampaigns = ({ campaigns }) => {
-  const slides = chunkArray(campaigns, 7);
+const UpcomingCampaigns = () => {
   const navigate = useNavigate();
+
+  const payload = new FormData();
+  payload.append('status[]', 'جديدة');
+
+  const { data: campaignsData, isFetching: isLoading } = useGetData({
+    queryKey: ['campaigns', 'upcoming'],
+    queryFn: () => filterCampaigns(payload),
+  });
+  const campaigns = campaignsData?.data || [];
+
+  const slides = chunkArray(campaigns, 7);
+
+  const getContent = (slide) =>
+    isLoading
+      ? Array.from({ length: 7 }).map((_, index) => (
+          <CampaignTileSkeleton key={index} isBig={index === 0} />
+        ))
+      : slide.map((campaignData, i) => {
+          const campaign = campaignData?.campaing;
+          return (
+            <CampaignTile
+              key={campaign.uuid}
+              campaign={campaign}
+              isBig={i === 0} // أول عنصر بس كبير
+            />
+          );
+        });
 
   if (!campaigns?.length) return null;
 
@@ -30,6 +59,15 @@ const UpcomingCampaigns = ({ campaigns }) => {
       onButtonClick={() => navigate('/news?category=حملات جديدة')}
     >
       {/* SWIPER */}
+      {/*   <Box
+        sx={{
+          '& .swiper-wrapper': {
+            paddingTop: '10px',
+            paddingLeft: '20px',
+          },
+        }}
+      >
+      </Box> */}
       <Swiper
         modules={[Pagination]}
         pagination={{ clickable: true }}
@@ -52,16 +90,11 @@ const UpcomingCampaigns = ({ campaigns }) => {
                 },
                 gap: 2,
                 height: '100%',
-                marginBottom: '64px',
+                marginBottom:
+                  slides.length === campaigns.length ? '64px' : '0px',
               }}
             >
-              {slide.map((campaign, i) => (
-                <CampaignTile
-                  key={campaign.uuid}
-                  campaign={campaign}
-                  isBig={i === 0} // أول عنصر بس كبير
-                />
-              ))}
+              {getContent(slide)}
             </Box>
           </SwiperSlide>
         ))}

@@ -8,7 +8,7 @@ const DonationFlow = () => {
   const navigate = useNavigate();
 
   return (
-    <InfoSection image='/DonateFlowSection.jpg'>
+    <InfoSection image='/DonateFlowSection.jpg' isFull={true}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Typography
           variant='h4'

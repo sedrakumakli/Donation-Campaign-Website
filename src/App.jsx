@@ -36,7 +36,7 @@ function App() {
         <TopBar />
         <NavBar />
       </Box>
-      <Box sx={{ pt: '126px' }}>
+      <Box sx={{ pt: '126px', minHeight: '100vh' }}>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<Aboutuspage />} />

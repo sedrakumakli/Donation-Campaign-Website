@@ -100,10 +100,6 @@ const NewsDetails = () => {
     return latestNewsData.data.filter((item) => item.uuid !== id);
   }, [latestNewsData, id]);
 
-  if (isFetchingNews) {
-    return <NewsDetailsSkeleton />;
-  }
-
   return (
     <>
       <BreadCrumb
@@ -113,47 +109,62 @@ const NewsDetails = () => {
         ]}
       />
 
-      <CustomContainer
-        styles={{
-          py: 6,
-        }}
-      >
-        {/* Header */}
-        <NewsDetailsHeader {...news} />
-
-        {/* Cover Image */}
-        <Box
-          component='img'
-          src={config.baseUrl + news.cover_image}
-          alt={news.title}
-          sx={{
-            width: '100%',
-            height: { xs: 250, md: 500 },
-            objectFit: 'cover',
-            borderRadius: 4,
-            mb: 4,
+      {isFetchingNews ? (
+        <NewsDetailsSkeleton />
+      ) : (
+        <CustomContainer
+          styles={{
+            py: 6,
           }}
-        />
+        >
+          {/* Header */}
+          <NewsDetailsHeader {...news} />
 
-        {/* Content */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          {articles}
-        </Box>
+          {/* Cover Image */}
+          <Box
+            component='img'
+            src={config.baseUrl + news.cover_image}
+            alt={news.title}
+            sx={{
+              width: '100%',
+              height: { xs: 250, md: 500 },
+              objectFit: 'cover',
+              borderRadius: 4,
+              mb: 4,
+            }}
+          />
 
-        <Divider sx={{ my: 6 }} />
+          {/* Content */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {articles}
+          </Box>
 
-        {/* Gallery */}
-        <NewsGallery images={news.images} onImageClick={setLightboxMedia} />
-        <NewsLightbox
-          image={lightboxMedia ? config.baseUrl + lightboxMedia : null}
-          onClose={() => setLightboxMedia(null)}
-        />
+          <Divider sx={{ my: 6 }} />
 
-        <Divider sx={{ my: 8 }} />
+          {/* Gallery */}
+          {news.images.length > 0 && (
+            <>
+              <NewsGallery
+                images={news.images}
+                onImageClick={setLightboxMedia}
+              />
+              <NewsLightbox
+                image={lightboxMedia ? config.baseUrl + lightboxMedia : null}
+                onClose={() => setLightboxMedia(null)}
+              />
+            </>
+          )}
 
-        {/* Related News */}
-        <LatestNewsSection latestNews={latestNews} />
-      </CustomContainer>
+          {latestNews.length > 0 && (
+            <>
+              <Divider sx={{ my: 8 }} />
+
+              {/* Related News */}
+              <LatestNewsSection latestNews={latestNews} />
+            </>
+          )}
+        </CustomContainer>
+      )}
     </>
   );
 };
