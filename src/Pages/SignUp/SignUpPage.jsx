@@ -23,21 +23,16 @@ import signupImg from "../../assets/child.jpg";
 import SyrianFlag from "../../assets/SyrianFlag.svg";
 
 export default function SignUpPage() {
-  const [areas, setAreas] = useState([]);
-  const [isLoadingAreas, setIsLoadingAreas] = useState(false);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [selectedArea, setSelectedArea] = useState("");
   const [selectUserType, setSelectUserType] = useState("");
 
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const [areaError, setAreaError] = useState("");
   const [userTypeError, setUserTypeError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -47,25 +42,10 @@ export default function SignUpPage() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsLoadingAreas(true);
-    getAll("areas") // TODO: تأكدي من اسم الـ endpoint الصحيح لجلب المناطق
-      .then((res) => {
-        console.log("رد المناطق:", res); // 👈 ضيفي هاد السطر مؤقتاً
-        setAreas(res || []);
-        setIsLoadingAreas(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoadingAreas(false);
-      });
-  }, []);
-
   const resetErrors = () => {
     setNameError("");
     setEmailError("");
     setPhoneError("");
-    setAreaError("");
     setUserTypeError("");
     setPasswordError("");
     setConfirmPasswordError("");
@@ -86,10 +66,7 @@ export default function SignUpPage() {
       setPhoneError("رقم الهاتف مطلوب");
       isValid = false;
     }
-    if (!selectedArea) {
-      setAreaError("الرجاء اختيار المنطقة");
-      isValid = false;
-    }
+
     if (!selectUserType) {
       setUserTypeError("الرجاء اختيار نوع المستخدم");
       isValid = false;
@@ -117,7 +94,6 @@ export default function SignUpPage() {
       name,
       email,
       phone,
-      city: selectedArea,
       type: selectUserType,
       password,
       password_confirmation: confirmPassword, // شائع بمشاريع Laravel، تأكدي إنه الاسم الصحيح عندكم
@@ -133,7 +109,6 @@ export default function SignUpPage() {
       if (fieldErrors?.name) setNameError(fieldErrors.name);
       if (fieldErrors?.email) setEmailError(fieldErrors.email);
       if (fieldErrors?.phone) setPhoneError(fieldErrors.phone);
-      if (fieldErrors?.city) setAreaError(fieldErrors.city);
       if (fieldErrors?.type) setUserTypeError(fieldErrors.type);
       if (fieldErrors?.password) setPasswordError(fieldErrors.password);
       if (fieldErrors?.password_confirmation)
@@ -152,7 +127,6 @@ export default function SignUpPage() {
     setPhone("");
     setPassword("");
     setConfirmPassword("");
-    setSelectedArea("");
     setSelectUserType("");
 
     setOpenSuccess(true);
@@ -163,70 +137,79 @@ export default function SignUpPage() {
       sx={{
         display: "flex",
         minHeight: "calc(100vh - 122px)",
-        mt: "20px",
         flexWrap: { xs: "wrap-reverse", md: "nowrap" },
       }}
     >
-      {/* القسم الأيمن - الصورة */}
       <Box
         sx={{
           width: { xs: "100%", md: "50%" },
-          display: { xs: "none", md: "block" },
-          backgroundImage: `url(${signupImg})`,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${signupImg})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
           position: "relative",
         }}
       >
         <Box
+          // sx={{
+          //   position: "absolute",
+          //   top: "50%",
+          //   transform: "translateY(-50%)",
+          //   bgcolor: "var(--third-color)",
+          //   opacity: 0.6,
+          //   wordSpacing: "4px",
+          //   mx: "10%",
+          //   p: "32px 30px",
+          //   width: "fit-content",
+          // }}
           sx={{
             position: "absolute",
-            top: "40%",
+            top: "50%",
             transform: "translateY(-50%)",
-            bgcolor: "var(--white)",
-            opacity: 0.6,
             wordSpacing: "4px",
-            mx: "10%",
-            p: "32px 64px",
-            width: "fit-content",
+            maxWidth: "450px",
           }}
         >
           <Typography
             component="h1"
             sx={{
               fontFamily: "Cairo",
-              fontSize: "35px",
-              fontWeight: 600,
-              color: "var(--ink)",
-              mb: "24px",
+              fontSize: "40px",
+              fontWeight: 500,
+              color: "var(--white)",
+              mb: "20px",
             }}
           >
-            انضم إلينا وابدأ التغيير
+            حوّل عطائك إلى أثرٍ حقيقي{" "}
           </Typography>
-          <Box component="ul" sx={{ pr: "20px", m: 0 }}>
+
+          {/* <Box component="ul" sx={{ pr: "20px", m: 0 }}>
             {[
               "أنشئ حملات تبرع غير محدودة",
               "استخدم قوالب جاهزة لحملتك",
               "مساحة تخزين كافية لصورك ومستنداتك",
               "تابع إحصائيات حملتك أولاً بأول",
-            ].map((item, i) => (
-              <Typography
-                component="li"
-                key={i}
-                sx={{
-                  fontFamily: "Cairo",
-                  color: "var(--ink)",
-                  fontSize: "17px",
-                  maxWidth: "370px",
-                  lineHeight: "30px",
-                  p: "10px",
-                }}
-              >
-                {item}
-              </Typography>
-            ))}
-          </Box>
+            ].map((item, i) => ( */}
+          <Typography
+            // component="li"
+            // key={i}
+            sx={{
+              fontFamily: "Cairo",
+              color: "var(--white)",
+              fontSize: "17px",
+              lineHeight: "30px",
+              p: "10px",
+            }}
+          >
+            لأن الخير يستحق أن يصل بالشكل الصحيح، نوفر منصة تربط المتبرعين
+            بالمبادرات الإنسانية وتتابع أثر كل مساهمة.{" "}
+          </Typography>
+          {/* ))} */}
+          {/* </Box> */}
         </Box>
       </Box>
 
@@ -237,6 +220,7 @@ export default function SignUpPage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          mt: "20px",
         }}
       >
         <CustomContainer
@@ -244,7 +228,6 @@ export default function SignUpPage() {
             maxWidth: "90% !important",
             mx: "auto",
             px: { xs: "20px", md: "0" },
-            py: "20px",
           }}
         >
           <Typography
@@ -261,7 +244,7 @@ export default function SignUpPage() {
             إنشاء حساب جديد
           </Typography>
 
-          <Button
+          {/* <Button
             fullWidth
             startIcon={<FaFacebook style={{ width: 18, height: 18 }} />}
             sx={{
@@ -294,19 +277,19 @@ export default function SignUpPage() {
             }}
           >
             التسجيل عبر جوجل
-          </Button>
+          </Button> */}
 
-          <Divider
+          {/* <Divider
             sx={{
               my: "20px",
               fontFamily: "Cairo",
               fontSize: "14px",
-              color: "var(--muted)",
+              color: "var(--gold)",
               "&::before, &::after": { borderColor: "var(--border-grey)" },
             }}
           >
             أو
-          </Divider>
+          </Divider> */}
 
           <Box component="form" onSubmit={handleSubmit}>
             <Box sx={{ mb: 2 }}>
@@ -383,34 +366,6 @@ export default function SignUpPage() {
               )}
             </Box>
 
-            {/* المنطقة */}
-            <Box sx={{ mb: 2 }}>
-              <CustomInput
-                label="المنطقة"
-                inputType="select"
-                value={selectedArea}
-                setValue={setSelectedArea}
-                errorMsg={areaError}
-                isRequired
-              >
-                {isLoadingAreas ? (
-                  <MenuItem disabled>جاري تحميل المناطق...</MenuItem>
-                ) : (
-                  [
-                    <MenuItem key="1" value="حمص">
-                      حمص
-                    </MenuItem>,
-                    <MenuItem key="2" value="دمشق">
-                      دمشق
-                    </MenuItem>,
-                    <MenuItem key="3" value="حلب">
-                      حلب
-                    </MenuItem>,
-                  ]
-                )}
-              </CustomInput>
-            </Box>
-
             {/* نوع المستخدم */}
             <Box sx={{ mb: 2 }}>
               <CustomInput
@@ -421,9 +376,9 @@ export default function SignUpPage() {
                 errorMsg={userTypeError}
                 isRequired
               >
-                <MenuItem value="متبرع">متبرع</MenuItem>
-                <MenuItem value="رجل أعمال">رجال أعمال</MenuItem>
-                <MenuItem value="منظمة">منظمة</MenuItem>
+                <MenuItem value="فردي">متبرع</MenuItem>
+                <MenuItem value="رجال أعمال">رجل أعمال</MenuItem>
+                <MenuItem value="منظمات">منظمة</MenuItem>
               </CustomInput>
             </Box>
 

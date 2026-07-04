@@ -24,7 +24,12 @@ const SuccessDialog = ({
       }}
     >
       <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          p: "22px 70px",
+        }}
       >
         <CheckCircleIcon
           sx={{

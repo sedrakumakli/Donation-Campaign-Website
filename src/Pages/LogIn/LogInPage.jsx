@@ -52,7 +52,6 @@ export default function LogInPage() {
       if (result.fieldErrors?.password)
         setPasswordError(result.fieldErrors.password);
 
-      // خطأ عام (نص واحد أو مشكلة اتصال)
       if (result.generalError) toast.error(result.generalError);
       return;
     }
@@ -91,7 +90,7 @@ export default function LogInPage() {
             top: "50%",
             transform: "translateY(-50%)",
             wordSpacing: "4px",
-            maxWidth: "370px",
+            maxWidth: "450px",
           }}
         >
           <Typography
@@ -104,7 +103,7 @@ export default function LogInPage() {
               mb: "20px",
             }}
           >
-            أهلاً بك من جديد
+            حوّل عطائك إلى أثرٍ حقيقي{" "}
           </Typography>
           <Typography
             sx={{
@@ -114,8 +113,8 @@ export default function LogInPage() {
               color: "var(--white)",
             }}
           >
-            سجّل دخولك لمتابعة حملات التبرع ودعم القضايا التي تهمك، وكن جزءًا من
-            التغيير.
+            منصة تجمع المتبرعين وأصحاب المبادرات الإنسانية في مكان واحد، وتوفر
+            حملات موثوقة وتقارير شفافة تضمن أن يصل عطاؤك إلى من يحتاجه.
           </Typography>
         </Box>
       </Box>
@@ -126,7 +125,7 @@ export default function LogInPage() {
           width: { xs: "100%", md: "50%" },
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          // alignItems: "center",
           mt: "20px",
         }}
       >
@@ -150,8 +149,54 @@ export default function LogInPage() {
           >
             تسجيل الدخول
           </Typography>
+
+          {/* <Button
+            fullWidth
+            startIcon={<FaFacebook style={{ width: 18, height: 18 }} />}
+            sx={{
+              height: "60px",
+              borderRadius: "2px",
+              bgcolor: "#1877f2",
+              color: "var(--white)",
+              fontWeight: "bold",
+              fontFamily: "Cairo",
+              boxShadow: "var(--shadow-1)",
+              mb: "16px",
+              "&:hover": { bgcolor: "#1877f2", opacity: 0.9 },
+            }}
+          >
+            الدخول عبر فيسبوك
+          </Button>
+
+          <Button
+            fullWidth
+            startIcon={<FcGoogle style={{ width: 18, height: 18 }} />}
+            sx={{
+              height: "60px",
+              borderRadius: "2px",
+              bgcolor: "var(--white)",
+              border: "1px solid var(--border-grey)",
+              fontWeight: "bold",
+              fontFamily: "Cairo",
+              boxShadow: "var(--shadow-1)",
+              "&:hover": { bgcolor: "var(--bg)" },
+            }}
+          >
+            الدخول عبر جوجل
+          </Button> */}
+          {/* <Divider
+            sx={{
+              my: "20px",
+              fontFamily: "Cairo",
+              fontSize: "14px",
+              color: "var(--gold)",
+              "&::before, &::after": { borderColor: "var(--border-grey)" },
+            }}
+          >
+            أو
+          </Divider> */}
           <Box component="form" onSubmit={handleSubmit}>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2, marginTop: "60px" }}>
               <CustomInput
                 label="البريد الإلكتروني"
                 inputType="email"
@@ -208,51 +253,6 @@ export default function LogInPage() {
               {isSubmitting ? "جارِ تسجيل الدخول..." : "تسجيل الدخول"}
             </Button>
           </Box>
-          <Divider
-            sx={{
-              my: "20px",
-              fontFamily: "Cairo",
-              fontSize: "14px",
-              color: "var(--muted)",
-              "&::before, &::after": { borderColor: "var(--border-grey)" },
-            }}
-          >
-            أو
-          </Divider>
-          <Button
-            fullWidth
-            startIcon={<FaFacebook style={{ width: 18, height: 18 }} />}
-            sx={{
-              height: "60px",
-              borderRadius: "2px",
-              bgcolor: "#1877f2",
-              color: "var(--white)",
-              fontWeight: "bold",
-              fontFamily: "Cairo",
-              boxShadow: "var(--shadow-1)",
-              mb: "16px",
-              "&:hover": { bgcolor: "#1877f2", opacity: 0.9 },
-            }}
-          >
-            الدخول عبر فيسبوك
-          </Button>
-
-          <Button
-            fullWidth
-            startIcon={<FcGoogle style={{ width: 18, height: 18 }} />}
-            sx={{
-              height: "60px",
-              borderRadius: "2px",
-              bgcolor: "var(--white)",
-              border: "1px solid var(--border-grey)",
-              fontWeight: "bold",
-              fontFamily: "Cairo",
-              boxShadow: "var(--shadow-1)",
-              "&:hover": { bgcolor: "var(--bg)" },
-            }}
-          >
-            الدخول عبر جوجل
-          </Button>
 
           <Typography
             sx={{

@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
 import "./CampaignFilter.css";
-import { MenuItem, Select, FormControl, Button } from "@mui/material";
+import { MenuItem, Select, FormControl, Button, Autocomplete, TextField } from "@mui/material";
 import axios from "axios";
 
+const projects = [
+  { id: 1, name: "بئر ماء في ريف حلب" },
+  { id: 2, name: "ترميم مدرسة الأمل" },
+  { id: 3, name: "السلال الغذائية" },
+  { id: 4, name: "كسوة الشتاء" },
+  { id: 5, name: "مخيمات النازحين" },
+  { id: 6, name: "إفطار صائم" },
+];
+console.log(projects);
 const CampaignFilter = ({ filters, setFilters }) => {
+
+
 
   const [governorates, setGovernorates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -22,6 +33,7 @@ const CampaignFilter = ({ filters, setFilters }) => {
       console.log(error);
     }
   };
+
 
   const handleGovernorateChange = async (e) => {
     const governorateId = e.target.value;
@@ -92,6 +104,7 @@ const CampaignFilter = ({ filters, setFilters }) => {
       governorate: "",
       city: "",
       region: "",
+      project : null,
       status: [],
     });
 
@@ -242,10 +255,67 @@ const CampaignFilter = ({ filters, setFilters }) => {
         </FormControl>
       </div>
 
+<div className="filter-section">
+  <h3>المشروع</h3>
+<FormControl
+  variant="standard"
+  fullWidth
+  sx={{
+    borderBottom: "1px solid #E0E0E0",
+    pb: 1,
+  }}
+>
+  <Autocomplete
+    options={projects}
+    getOptionLabel={(option) => option.name}
+    value={
+      projects.find((project) => project.id === filters.project) || null
+    }
+    onChange={(event, value) => {
+      setFilters((prev) => ({
+        ...prev,
+        project: value?.id || null,
+      }));
+    }}
+    sx={{
+      "& .MuiInputBase-root": {
+        padding: 0,
+        minHeight: "40px",
+        
+      },
 
-      {/* حالة المشروع */}
+      "& fieldset": {
+        border: "none",
+      },
+
+      "& .MuiOutlinedInput-notchedOutline": {
+        border: "none",
+      },
+
+      "& input": {
+        textAlign: "left",
+        padding: "8px 0",
+        fontSize: "16px",
+      },
+
+      "& .MuiAutocomplete-endAdornment": {
+        left:"auto",
+        right: 0,
+      },
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        variant="outlined"
+        placeholder="ابحث عن مشروع"
+      />
+    )}
+  />
+</FormControl>
+</div>
+      {/* حالة الحملة */}
       <div className="filter-section">
-        <h3>حالة المشروع</h3>
+        <h3>حالة الحملة</h3>
 
         <label className="checkbox-row">
           <input

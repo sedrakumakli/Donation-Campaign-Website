@@ -1,12 +1,16 @@
 import { Button } from '@mui/material';
 import './HomeHero.css';
 import Experts from '../../../components/Experts/Experts';
-import { HeartHandshake } from 'lucide-react';
 import DonateButton from '../../../components/DonateButton/DonateButton';
 import CustomContainer from '../../../components/common/CustomContainer';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import InKindDonationForm from '../../../Pages/InKindDonation/InKindDonationForm';
+
 function HomeHero() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
       <div className='home-hero'>
@@ -17,25 +21,6 @@ function HomeHero() {
             انضم إلى آلاف المتبرعين حول العالم.
           </p>
           <div className='btns'>
-            {/* <Button
-            variant='contained'
-            sx={{
-              borderRadius: '8px',
-              px: 4,
-              display: { xs: 'none', md: 'flex' },
-              background: 'linear-gradient(135deg, var(--teal-800), var(--teal-600))',
-              color:'var(--bg)',
-              height: '60px',
-              width: '300px',
-              fontSize: '24px',
-              displayPrint:"flex",
-              alignItems:"center",
-              gap:'8px',
-            }}
-          >
-            <HeartHandshake size={20}/>
-            تبرع الآن
-          </Button> */}
             <DonateButton
               options={[
                 {
@@ -44,7 +29,7 @@ function HomeHero() {
                 },
                 {
                   label: 'تبرع عيني',
-                  onClick: () => navigate('/in-kind-donation'),
+                  onClick: () => setIsOpen(true), 
                 },
               ]}
               sx={{
@@ -60,7 +45,7 @@ function HomeHero() {
                 border: '1px solid rgba(255, 255, 255, 0.35)',
                 px: 4,
                 display: { xs: 'none', md: 'flex' },
-                bgcolor: ' rgba(255, 255, 255, 0.1)',
+                bgcolor: 'rgba(255, 255, 255, 0.1)',
                 color: '#fff',
                 height: '60px',
                 width: '300px',
@@ -72,8 +57,16 @@ function HomeHero() {
           </div>
         </CustomContainer>
       </div>
+
       <Experts />
+
+     
+      <InKindDonationForm
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   );
 }
+
 export default HomeHero;
