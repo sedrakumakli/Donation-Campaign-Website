@@ -1,11 +1,11 @@
-import { Dialog, Box, Typography, Button } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Dialog, Box, Typography, Button } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const SuccessDialog = ({
   open,
   title,
   description,
-  buttonText = 'العودة للرئيسية',
+  buttonText = "العودة للرئيسية",
   onClose,
   onAction,
 }) => {
@@ -17,29 +17,34 @@ const SuccessDialog = ({
         sx: {
           borderRadius: 4,
           p: 4,
-          textAlign: 'center',
+          textAlign: "center",
           width: 420,
-          maxWidth: '90%',
+          maxWidth: "90%",
         },
       }}
     >
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          p: "22px 70px",
+        }}
       >
         <CheckCircleIcon
           sx={{
             fontSize: 90,
-            color: 'var(--main-color)',
+            color: "var(--main-color)",
           }}
         />
 
         <Typography
           sx={{
-            fontSize: '20px',
+            fontSize: "20px",
             fontWeight: 700,
             mt: 2,
-            fontFamily: 'Cairo',
-            color: '#111827',
+            fontFamily: "Cairo",
+            color: "#111827",
           }}
         >
           {title}
@@ -48,27 +53,27 @@ const SuccessDialog = ({
         <Typography
           sx={{
             mt: 2,
-            color: 'var(--secondary-color)',
-            fontSize: '14px',
-            fontFamily: 'Cairo',
+            color: "var(--secondary-color)",
+            fontSize: "14px",
+            fontFamily: "Cairo",
           }}
         >
           {description}
         </Typography>
 
         <Button
-          variant='contained'
+          variant="contained"
           onClick={onAction}
           sx={{
             mt: 4,
-            backgroundColor: 'var(--main-color)',
-            borderRadius: '999px',
+            backgroundColor: "var(--main-color)",
+            borderRadius: "999px",
             px: 4,
             py: 1.2,
-            textTransform: 'none',
+            textTransform: "none",
             fontWeight: 600,
-            '&:hover': {
-              backgroundColor: 'var(--main-color)',
+            "&:hover": {
+              backgroundColor: "var(--main-color)",
               opacity: 0.9,
             },
           }}
