@@ -30,6 +30,7 @@ import ProfileTabs from "../../components/DonerProfile/ProfileTabs";
 import LogOut from "../../components/DonerProfile/LogOut";
 import { toast } from "react-toastify";
 import LogOutConfrimModal from "../../components/DonerProfile/LogOutConfrimModal";
+import { Navigate, useNavigate } from "react-router-dom";
 /* -------------------------------------------------------------------------
    Hope Forward — صفحة الملف الشخصي للمتبرع
    لوحة الألوان موروثة من صفحة تفاصيل الحملة (تركواز #004A5B)
@@ -41,7 +42,7 @@ const DonorProfilePage = () => {
     const [financialDonations, setFinancialDonations] = useState(financialDonationsData);
     const [inKindDonations, setInKindDonations] = useState(inKindDonationsData);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
-
+    const navigate = useNavigate();
     const handleConfirmLogout = () => {
         setShowLogoutModal(false);
         toast.success("تم تسجيل الخروج بنجاح");

@@ -168,7 +168,7 @@ function CampaignDetails() {
                   <MapPin size={16} /> {campaign.location}
                 </span> */}
                 <span>
-                  <Calendar size={16} /> {campaign.startDate} —{' '}
+                  <Calendar size={16} color='var(--gold)'/> {campaign.startDate} —{' '}
                   {campaign.endDate}
                 </span>
                 <span>
@@ -210,7 +210,7 @@ function CampaignDetails() {
             {/* Quick info */}
             <div className='panel'>
               <h2 className='panel-title'>
-                <Info size={19} /> معلومات الحملة
+                <Info size={19} color='var(--gold)'/> معلومات الحملة
               </h2>
               <div className='info-grid'>
                 <div className='info-item'>
@@ -255,7 +255,7 @@ function CampaignDetails() {
             {/* Goals */}
             <div className='panel'>
               <h2 className='panel-title'>
-                <Target size={19} /> أهداف الحملة
+                <Target size={19} color='var(--gold)'/> أهداف الحملة
               </h2>
               <div className='goals-list'>
                 {GOALS.map((goal, i) => {
@@ -276,7 +276,7 @@ function CampaignDetails() {
             <div className='projects-section'>
               <div className='section-head'>
                 <h2>
-                  <Folders size={19} /> المشاريع المرتبطة
+                  <Folders size={19} color='var(--gold)'/> المشاريع المرتبطة
                 </h2>
                 <span className='count'>{PROJECTS.length} مشاريع</span>
               </div>

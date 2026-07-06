@@ -6,6 +6,7 @@ import "./Campaigns.css";
 import axios from "axios";
 import BreadCrumb from "../../components/BreadCrumb";
 import CustomPagination from "../../components/CustomPagination";
+import CustomContainer from "../../components/common/CustomContainer";
 
 const mockCampaigns = [
   // {
