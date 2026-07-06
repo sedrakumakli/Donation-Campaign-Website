@@ -49,7 +49,7 @@ export default function StepLocation({
 
         {/* المحافظة */}
         <Box>
-          <FieldLabel required>المحافظة</FieldLabel>
+          <FieldLabel required>المحافظة التي ترغب بإرسال التبرع لها </FieldLabel>
           {loadingGov ? (
             <Box sx={{ display: "flex", justifyContent: "center", py: 2.5 }}>
               <CircularProgress size={22} sx={{ color: PRIMARY }} />

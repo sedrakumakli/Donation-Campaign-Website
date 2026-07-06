@@ -80,7 +80,7 @@ export default function InKindDonationForm({ open, onClose }) {
       try {
         const [typesRes, govRes, condRes] = await Promise.all([
           axios.get("/inkinddonation/type"),
-          axios.get("/governorates/all"),
+          axios.get("/inkinddonation/governorates"),
           axios.get("/inkinddonation/statusmaterail"),
         ]);
 
@@ -169,6 +169,8 @@ export default function InKindDonationForm({ open, onClose }) {
     setSubmitting(true);
     setError("");
 
+    console.log("DEBUG form.notes =>", JSON.stringify(form.notes));
+
     try {
       const formData = new FormData();
       formData.append("name_of_material",   form.name);
@@ -179,6 +181,10 @@ export default function InKindDonationForm({ open, onClose }) {
 
       if (form.isCustomType && form.typeName.trim()) {
         formData.append("on_the_other_hand", form.typeName);
+      }
+
+      if (form.notes && form.notes.trim()) {
+        formData.append("notes", form.notes);
       }
 
       form.images.forEach((img) => formData.append("images[]", img.file));
