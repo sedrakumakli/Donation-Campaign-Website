@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Grid, Paper } from '@mui/material';
+import { Box, Grid, Paper } from '@mui/material';
 import DonateStepper from '../../components/Donate/DonateStepper';
 import DonationForm from '../../components/Donate/DonationForm';
 import ProofUploadStep from '../../components/Donate/ProofUploadStep';
@@ -126,7 +126,14 @@ const DonatePage = () => {
             md: 4,
           }}
         >
-          <DonationSummary formData={formData} activeStep={activeStep} />
+          <Box
+            sx={{
+              position: { md: 'sticky' },
+              top: { md: '140px' }, // تحت الناف مباشرة
+            }}
+          >
+            <DonationSummary formData={formData} activeStep={activeStep} />
+          </Box>
         </Grid>
       </Grid>
       {/* <SuccessDialog

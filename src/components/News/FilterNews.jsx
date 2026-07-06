@@ -119,13 +119,14 @@ const FilterNews = ({
           gap: 2,
           mb: 5,
           borderRadius: 3,
+          '& .custom-input-holder': { xs: '100%', sm: 400 },
         }}
       >
         <CustomInput
           inputType='textField'
           placeholder='ابحث حسب العنوان...'
           styles={{
-            width: '400px',
+            width: { xs: '100%', md: '400px' },
             height: 'auto',
             '& .MuiInputLabel-root.Mui-focused': {
               color: 'var(--main-color)', // لون اللابل عند focus

@@ -35,6 +35,7 @@ const CampaignCard = ({ campaign }) => {
         display: 'flex',
         flexDirection: 'column',
         transition: '0.3s',
+        boxShadow: 'none',
         '&:hover': {
           transform: 'translateY(-6px)',
           boxShadow: 6,

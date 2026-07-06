@@ -13,6 +13,9 @@ const BreadCrumb = ({ dynamicItems = [] }) => {
     <Box
       sx={{
         backgroundColor: '#EEF2F3',
+        position: { md: 'sticky' },
+        top: { md: '125px' },
+        zIndex: 10,
       }}
     >
       <CustomContainer
