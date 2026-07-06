@@ -17,6 +17,9 @@ const config = {
     details: 'blogApi/show',
     categories: `${campaignsBase}/categories`,
   },
+  projects: {
+    all: 'projects',
+  },
   donate: { QRData: 'donation/qr', direct: 'donate/directly' },
 };
 export default config;

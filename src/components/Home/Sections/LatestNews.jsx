@@ -1,29 +1,43 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/material';
 
 import { useGetData } from '../../../customHooks/reactQuery/useGetData';
-import { getNews } from '../../../services/news';
+import { getLastestNews } from '../../../services/news';
 import NewsCard from '../../News/NewsCard';
-import CustomContainer from '../../common/CustomContainer';
 import SectionWrapper from '../SectionWrapper';
 import NewsCardSkeleton from '../../../Skeleton/NewsCardSkeleton';
 
 const LastestNews = () => {
-  const navigate = useNavigate();
   const {
     data: newsData,
     isFetching: isFetchingNews,
     error: newsErr,
   } = useGetData({
-    queryKey: ['news'],
-    queryFn: getNews,
+    queryKey: ['letest-news'],
+    queryFn: getLastestNews,
   });
 
-  const news = newsData?.data || [];
+  const latestNews = newsData?.data.slice(0, 3) || [];
 
-  /* if (!news?.length) return null; */
+  const content = isFetchingNews ? (
+    <NewsCardSkeleton size={3} />
+  ) : (
+    <Grid container spacing={3}>
+      {latestNews.map((item) => (
+        <Grid
+          key={item.uuid || item.id}
+          size={{
+            xs: 12,
+            sm: 6,
+            lg: 4,
+          }}
+        >
+          <NewsCard {...item} />
+        </Grid>
+      ))}
+    </Grid>
+  );
 
-  const latestNews = news.slice(0, 3);
+  if (!latestNews?.length) return null;
 
   return (
     <SectionWrapper
@@ -32,24 +46,7 @@ const LastestNews = () => {
       buttonText='جميع الأخبار'
     >
       {/* News */}
-      {isFetchingNews ? (
-        <NewsCardSkeleton size={3} />
-      ) : (
-        <Grid container spacing={3}>
-          {latestNews.map((item) => (
-            <Grid
-              key={item.uuid || item.id}
-              size={{
-                xs: 12,
-                sm: 6,
-                md: 4,
-              }}
-            >
-              <NewsCard {...item} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
+      {content}
     </SectionWrapper>
   );
 };

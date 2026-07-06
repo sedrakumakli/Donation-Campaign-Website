@@ -1,9 +1,12 @@
 import { Grid, Typography, Button } from '@mui/material';
 import InfoSection from '../InfoSection';
+import { useState } from 'react';
+import InKindDonationForm from '../../../Pages/InKindDonation/InKindDonationForm';
 
 const InKindDonations = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <InfoSection order={1} image='/inKind.jpg'>
+    <InfoSection order={1} image='/InKindSection.jpg'>
       {/* CONTENT */}
       <Grid size={{ xs: 12, md: 6 }}>
         <Typography variant='h4' sx={{ fontWeight: 700 }}>
@@ -50,10 +53,12 @@ const InKindDonations = () => {
             '&:hover': {},
             width: { xs: '100%', sm: 'auto' },
           }}
+          onClick={() => setIsOpen(true)}
         >
           سجّل تبرعك العيني
         </Button>
       </Grid>
+      <InKindDonationForm open={isOpen} onClose={() => setIsOpen(false)} />
     </InfoSection>
   );
 };

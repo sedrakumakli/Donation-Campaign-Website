@@ -1,100 +1,195 @@
-import { Grid, Box, Typography, Button } from '@mui/material';
-
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';
-import LinkIcon from '@mui/icons-material/Link';
-import UpdateIcon from '@mui/icons-material/Update';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import { Grid, Typography, Button, Paper, Box } from '@mui/material';
+import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivismOutlined';
+import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import InfoSection from '../InfoSection';
-
-const points = [
-  {
-    title: 'تتبع كل تبرع بشكل مباشر',
-    desc: 'يمكنك معرفة أين وصل تبرعك في كل مرحلة',
-    icon: TrackChangesIcon,
-  },
-  {
-    title: 'ربط التبرعات بالمشاريع الفعلية',
-    desc: 'كل تبرع يُخصص مباشرة لمشروع محدد وواضح',
-    icon: LinkIcon,
-  },
-  {
-    title: 'تحديث مستمر عبر آخر الأخبار',
-    desc: 'نشارك التقدم بشكل دوري وشفاف',
-    icon: UpdateIcon,
-  },
-  {
-    title: 'إشراف من منظمات معتمدة',
-    desc: 'ضمان وصول التبرعات عبر جهات موثوقة',
-    icon: VerifiedUserIcon,
-  },
-];
+import { Link, useNavigate } from 'react-router-dom';
 
 const DonationFlow = () => {
+  const navigate = useNavigate();
+
   return (
-    <InfoSection image='https://images.unsplash.com/photo-1488521787991-ed7bbaae773c'>
-      {/* CONTENT */}
-      <Grid item size={{ xs: 12, md: 6 }}>
+    <InfoSection image='/DonateFlowSection.jpg' isFull={true}>
+      <Grid size={{ xs: 12, md: 6 }}>
         <Typography
           variant='h4'
           sx={{
             fontWeight: 700,
-            fontSize: { xs: 22, sm: 28, md: 34 },
+            fontSize: { xs: 24, md: 34 },
           }}
         >
-          كيف نضمن وصول تبرعاتك؟
+          كيف يمكنك المساهمة؟
         </Typography>
 
-        <Typography sx={{ mt: 2, color: 'var(--desc-color)' }}>
-          نحن نعمل على ربط كل تبرع مباشرة بالمشاريع الإنسانية داخل المجتمع، مع
-          متابعة شفافة لكل مرحلة من التنفيذ حتى الوصول للمستفيدين.
+        <Typography
+          sx={{
+            mt: 2,
+            color: 'var(--desc-color)',
+            lineHeight: 2,
+            fontSize: { xs: 15, md: 16 },
+          }}
+        >
+          تتيح لك منصة أثر أكثر من طريقة للمشاركة في دعم المبادرات الإنسانية،
+          سواء من خلال التبرع المباشر أو تسجيل تعهد بالتبرع في وقت لاحق، مع
+          توثيق جميع المساهمات ومتابعة أثرها بشفافية كاملة.
         </Typography>
 
-        {/* POINTS */}
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-          {points.map((item, index) => {
-            const Icon = item.icon;
-
-            return (
-              <Grid
-                size={{ xs: 12, md: 12, sm: 6 }}
-                key={index}
+        {/* Cards */}
+        <Grid container spacing={2} sx={{ mt: 3 }}>
+          {/* Donation */}
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 3,
+                height: '100%',
+                borderRadius: 3,
+                border: '1px solid rgba(1,74,91,0.12)',
+                transition: '.3s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                },
+              }}
+            >
+              <Box
                 sx={{
+                  width: 52,
+                  height: 52,
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(201,162,75,0.12)',
                   display: 'flex',
-                  gap: 1.5,
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2,
                 }}
               >
-                <Icon sx={{ color: 'var(--gold)' }} />
+                <VolunteerActivismOutlinedIcon
+                  sx={{
+                    color: 'var(--gold)',
+                  }}
+                />
+              </Box>
 
-                <Box>
-                  <Typography sx={{ fontWeight: 600, mb: 0.5 }}>
-                    {item.title}
-                  </Typography>
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  mb: 1,
+                }}
+              >
+                التبرع المباشر
+              </Typography>
 
-                  <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>
-                    {item.desc}
-                  </Typography>
-                </Box>
-              </Grid>
-            );
-          })}
+              <Typography
+                sx={{
+                  color: 'var(--desc-color)',
+                  lineHeight: 1.9,
+                  fontSize: 14,
+                }}
+              >
+                قدّم مساهمتك مباشرة لدعم مشروع أو حملة إنسانية، مع إمكانية
+                متابعة مراحل التنفيذ والاطلاع على أثر تبرعك.
+              </Typography>
+
+              <Button
+                component={Link}
+                to='/donate'
+                variant='contained'
+                sx={{
+                  mt: 3,
+                  bgcolor: 'var(--main-color)',
+                  borderRadius: 2,
+                }}
+              >
+                تبرع الآن
+              </Button>
+            </Paper>
+          </Grid>
+
+          {/* Pledge */}
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 3,
+                height: '100%',
+                borderRadius: 3,
+                border: '1px solid rgba(1,74,91,0.12)',
+                transition: '.3s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  width: 52,
+                  height: 52,
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(1,74,91,0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 2,
+                }}
+              >
+                <HandshakeOutlinedIcon
+                  sx={{
+                    color: 'var(--main-color)',
+                  }}
+                />
+              </Box>
+
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  mb: 1,
+                }}
+              >
+                التعهد بالتبرع
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: 'var(--desc-color)',
+                  lineHeight: 1.9,
+                  fontSize: 14,
+                }}
+              >
+                إذا كنت ترغب بالمساهمة لاحقاً، يمكنك تسجيل تعهد بالتبرع ليتم
+                التواصل معك واستكمال مساهمتك عندما تصبح جاهزاً.
+              </Typography>
+
+              <Button
+                variant='outlined'
+                sx={{
+                  mt: 3,
+                  borderColor: 'var(--main-color)',
+                  color: 'var(--main-color)',
+                  borderRadius: 2,
+                  '&:hover': {
+                    borderColor: 'var(--main-color)',
+                    bgcolor: 'rgba(1,74,91,0.05)',
+                  },
+                }}
+              >
+                قدّم تعهداً
+              </Button>
+            </Paper>
+          </Grid>
         </Grid>
 
-        {/* CTA */}
-        <Button
-          variant='contained'
-          size='large'
+        <Typography
           sx={{
             mt: 3,
-            bgcolor: 'var(--main-color)',
-            borderRadius: 2,
-            px: 4,
-            width: { xs: '100%', sm: 'auto' },
-            '&:hover': {},
+            color: 'var(--secondary-color)',
+            lineHeight: 1.8,
+            fontSize: 14,
           }}
         >
-          ابدأ التبرع الآن
-        </Button>
+          سواء اخترت التبرع المباشر أو التعهد بالمساهمة لاحقاً، فإن منصة أثر
+          تضمن توثيق جميع المساهمات وربطها بالمشاريع المناسبة بشفافية كاملة.
+        </Typography>
       </Grid>
     </InfoSection>
   );

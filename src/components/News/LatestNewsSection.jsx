@@ -27,7 +27,8 @@ const LatestNewsSection = ({ latestNews }) => {
             key={item.id}
             size={{
               xs: 12,
-              md: 4,
+              sm: 6,
+              lg: 4,
             }}
           >
             <NewsCard {...item} />

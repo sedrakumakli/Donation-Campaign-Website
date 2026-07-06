@@ -9,7 +9,7 @@ const NewsCardSkeleton = ({ size = 6 }) => {
           size={{
             xs: 12,
             sm: 6,
-            md: 4,
+            lg: 4,
           }}
         >
           <Box>

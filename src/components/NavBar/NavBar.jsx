@@ -17,11 +17,12 @@ import { Stack } from "@mui/material";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 
 const pages = [
-  { name: "الرئيسية", path: "/" },
-  { name: "حولنا", path: "/about" },
-  { name: "الحملات", path: "/campaigns" },
-  { name: "آخر الأخبار", path: "/news" },
-  { name: "تواصل معنا", path: "/contactUs" },
+  { name: 'الرئيسية', path: '/' },
+  { name: 'حولنا', path: '/about' },
+  { name: 'الحملات', path: '/campaigns' },
+  { name: 'آخر الأخبار', path: '/news' },
+  { name: 'تواصل معنا', path: '/contactUs' },
+  { name: 'الأسئلة الشائعة', path: '/FAQSection' },
 ];
 
 const iconStyles = { color: "black", fontSize: "22px" };
@@ -65,15 +66,21 @@ function NavBar() {
       >
         <Toolbar disableGutters sx={{ width: "100%" }}>
           {/* LOGO - Desktop */}
-          <Typography
-            variant="h5"
+          {/*  <Typography
+            variant='h5'
             sx={{
               display: { xs: "none", md: "flex" },
               fontWeight: "bold",
             }}
           >
-            LOGO
-          </Typography>
+            أثر
+          </Typography> */}
+          <Box
+            component='img'
+            src='/logo.png'
+            alt='أثر'
+            sx={{ width: '80px', display: { xs: 'none', md: 'flex' } }}
+          />
 
           {/* Mobile Menu */}
           <Box
@@ -111,16 +118,17 @@ function NavBar() {
           </Box>
 
           {/* LOGO - Mobile */}
-          <Typography
-            variant="h6"
-            sx={{
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontWeight: "bold",
-            }}
-          >
-            LOGO
-          </Typography>
+          <Box sx={{ flexGrow: 1 }}>
+            <Box
+              component='img'
+              src='/logo.png'
+              alt='أثر'
+              sx={{
+                display: { xs: 'flex', md: 'none' },
+                width: '50px',
+              }}
+            />
+          </Box>
 
           {/* Links - Desktop */}
           <Box

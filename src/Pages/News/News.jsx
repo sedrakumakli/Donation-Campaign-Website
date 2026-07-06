@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import NewsCard from '../../components/News/NewsCard';
 import CustomPagination from '../../components/CustomPagination';
@@ -8,11 +8,16 @@ import { filterNews, getNews } from '../../services/news.js';
 import CustomContainer from '../../components/common/CustomContainer.jsx';
 import FilterNews from '../../components/News/FilterNews.jsx';
 import NewsCardSkeleton from '../../Skeleton/NewsCardSkeleton.jsx';
+import { useSearchParams } from 'react-router-dom';
+import './News.css';
 
 const News = () => {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState('الكل');
+
+  const [searchParams] = useSearchParams();
+  const initCategory = searchParams?.get('category');
 
   const cardsPerPage = 6;
 
@@ -55,6 +60,11 @@ const News = () => {
     page * cardsPerPage,
   );
   const emptyCards = cardsPerPage - currentNews.length;
+  useEffect(() => {
+    if (initCategory) {
+      setCategory(initCategory);
+    }
+  }, []);
 
   return (
     <>
@@ -66,6 +76,7 @@ const News = () => {
           flexDirection: 'column',
           minHeight: '100vh',
         }}
+        className='news'
       >
         <FilterNews
           news={news}
@@ -96,13 +107,13 @@ const News = () => {
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={4}>
                 {currentNews.map((blog) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={blog.id}>
+                  <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={blog.id}>
                     <NewsCard {...blog} />
                   </Grid>
                 ))}
 
                 {Array.from({ length: emptyCards }).map((_, index) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={`empty-${index}`}>
+                  <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={`empty-${index}`}>
                     <Box sx={{ visibility: 'hidden' }}>
                       <NewsCard />
                     </Box>
