@@ -16,17 +16,6 @@ const CampaignCard = ({
   status,
 }) => {
   const navigate = useNavigate();
-  // const [anchorElDonate, setAnchorElDonate] = useState(null);
-
-  // const handleOpenDonateMenu = (event) => {
-  //   setAnchorElDonate(event.currentTarget);
-  // };
-
-  // const handleCloseDonateMenu = () => {
-  //   setAnchorElDonate(null);
-  // };
-  // const [openDirectModal, setOpenDirectModal] = useState(false);
-  // const [openPledgeModal, setOpenPledgeModal] = useState(false);
 
   const statusStyles = {
     نشطة: 'active',
@@ -35,8 +24,6 @@ const CampaignCard = ({
     جديدة: 'new',
   };
 
-  console.log(status);
-  console.log(statusStyles[status]);
   return (
     <div className='campaignCard'>
       {/* Header  */}
@@ -47,7 +34,7 @@ const CampaignCard = ({
 
       {/* Content  */}
       <div className='card-body'>
-        <h2 className='title'>{title}</h2>
+        <h6 className='title'>{title}</h6>
 
         <div className='stats'>
           <div className='stat'>

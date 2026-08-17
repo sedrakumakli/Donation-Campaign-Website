@@ -1,9 +1,9 @@
 .filter-card {
   width: 350px;
-  background: #f5f6f7;
+  background: #EEF2F3;
   padding: 24px;
   direction: rtl;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .filter-title {
@@ -60,7 +60,7 @@
 }
 
 .reset-btn {
-  width: 100%;
+  /* width: 100%; */
   border: none;
   background: #d9d9d9;
   color: var(--main-color);

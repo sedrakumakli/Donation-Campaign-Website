@@ -1,5 +1,6 @@
 .campaigns {
-  background: var(--bg);
+  margin: 0px;
+  padding: 0px;
 }
 
 .campaigns .hero {
@@ -27,8 +28,9 @@
 .campaigns .container-campaign{
   display:flex;
   flex-direction:row-reverse;
+  justify-content: center;
   gap:24px;
-  align-items:flex-start;
+  align-items:center;
 }
 
 .campaigns .filter-wrapper{

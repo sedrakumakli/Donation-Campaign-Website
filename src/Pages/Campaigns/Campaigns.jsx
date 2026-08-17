@@ -186,7 +186,7 @@ const Campaigns = () => {
     c.title.toLowerCase().includes(searchKey.toLowerCase())
   );
   const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = 8;
+  const cardsPerPage = 6;
 
   const totalPages = Math.ceil(
     filteredCampaigns.length / cardsPerPage
@@ -213,12 +213,13 @@ const Campaigns = () => {
 
     <div className="campaigns">
       <BreadCrumb dynamicItems={[{ label: 'الحملات', path: '/campaigns' }]} />
-      <section className="hero">
+      {/* <section className="hero">
         <h1>حملاتنا</h1>
         <p className='desc'>
           في هذه الصفحة تجد حملاتنا الإنسانية التي تهدف إلى إحداث فرق حقيقي في حياة المحتاجين.<br/>
         </p>
-      </section>
+      </section> */}
+      <CustomContainer>
       <section className="header">
         <SearchAndFilterBar onFilterClick={() => setShowFilter(prev => !prev)}
           searchKey={searchKey}
@@ -260,6 +261,7 @@ const Campaigns = () => {
           isBtnDisabled={currentPage === totalPages - 1}
         />
       </div>
+      </CustomContainer>
     </div>
   )
 }

@@ -363,9 +363,8 @@ const CampaignFilter = ({ filters, setFilters }) => {
         variant='outlined'
         sx={{
           borderRadius: '8px',
-          // borderColor:"gray",
           border: '1px solid #E0E0E0',
-          px: 4,
+          px: 2,
           display: { xs: 'none', md: 'flex' },
           bgcolor: '#fff',
           color: 'var(--main-color)',

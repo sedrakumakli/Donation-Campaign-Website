@@ -18,8 +18,8 @@ function ProjectCard({ project }) {
         <h3 className='project-title'>{project.name}</h3>
         <div className='project-desc'>
           <MapPin size={14} />
-          {project.district.city?.governorate?.governorate_name}, {''}
-          {project.district.district_name}
+          {project?.district?.city?.governorate?.governorate_name||''}, {''}
+          {project?.district?.district_name}
         </div>
 
         <div className='project-progress-track'>
@@ -38,7 +38,7 @@ function ProjectCard({ project }) {
           <div className='project-allocated'>
             الكلفة المقدرة
             <br />
-            <b>{project.estimated_cost.toLocaleString('en-US')}</b>
+            <b>{project?.estimated_cost?.toLocaleString('en-US')}</b>
           </div>
           <a href='#' className='project-link'>
             التفاصيل <ChevronLeft size={14} />

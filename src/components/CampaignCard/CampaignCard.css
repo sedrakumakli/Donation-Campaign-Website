@@ -1,16 +1,12 @@
-
 .campaignCard {
-    width: 350px;
+    width: 315px;
     background: #fff;
-    border-radius: 8px;
-    /* overflow: hidden; */
+    border-radius: 10px;
     border: 1px solid #E0E0E0;
-    /* box-shadow: 0 6px 18px rgba(0, 0, 0, .08); */
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
+    justify-content: space-between;
     align-items: center;
-    /* height: fit-content; */
 }
 
 /* Header */
@@ -18,7 +14,6 @@
 .card-header {
     height: 200px;
     width: 100%;
-    /* background: linear-gradient(135deg, #3b7d61, #59c095); */
     position: relative;
     display: flex;
     justify-content: center;
@@ -72,10 +67,8 @@
 
 .title {
     text-align: center;
-    /* margin-bottom: 8px; */
     color: #2a2a2a;
-    font-size: 22px;
-    /* line-height: 1.6; */
+    font-size: 20px;
 }
 
 /* Stats */
@@ -94,11 +87,11 @@
 
 .label {
     color: #8C9EA0;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .value {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: #222;
 }
@@ -118,7 +111,6 @@
     height: 40px;
     margin: auto; */
     margin-bottom: 8px;
-    /* background: #8C9EA0; */
     color: var(--main-color);
     border-radius: 999px;
     display: flex;
@@ -127,17 +119,17 @@
 
     span {
         font-weight: bold;
-        font-size: 20px;
+        font-size: 16px;
     }
 
     p {
         color: #8C9EA0;
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
 .progress-bar {
-    height: 12px;
+    height: 10px;
     background: #E0E0E0;
     border-radius: 24px;
     overflow: hidden;
@@ -168,7 +160,7 @@
 
 .text {
     color: #555;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .number {
@@ -210,5 +202,5 @@
 
 hr {
     margin-bottom: 16px;
-    color: #E0E0E0;
+    color: #EEF2F3;
 }
