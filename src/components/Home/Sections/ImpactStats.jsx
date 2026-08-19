@@ -31,7 +31,6 @@ export default function ImpactStats() {
     <Box
       sx={{
         py: SECTION_GAP,
-        my: 10,
         background: `linear-gradient(135deg, ${C.tealDeep} 0%, ${C.tealMain} 100%)`,
       }}
     >

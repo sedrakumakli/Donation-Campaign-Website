@@ -3,7 +3,7 @@ import CustomContainer from '../common/CustomContainer';
 
 const InfoSection = ({ children, image, order, isFull = false }) => {
   return (
-    <CustomContainer styles={{ my: 8 }}>
+    <CustomContainer styles={{ py: 10 }}>
       <Grid
         container
         spacing={{ xs: 3, md: 5, lg: 8 }}
