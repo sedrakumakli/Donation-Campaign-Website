@@ -26,11 +26,6 @@ import FAQSection from './Pages/FAQSection/FAQSection.jsx';
 function App() {
   return (
     <>
-      {/* <div className="header">
-      <TopBar/>
-      <NavBar/> 
-    </div> */}
-      {/* <Home/> */}
       <ToastContainer position='top left' />
       <Box
         sx={{

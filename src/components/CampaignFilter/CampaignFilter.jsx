@@ -135,18 +135,18 @@ const CampaignFilter = ({ filters, setFilters }) => {
             displayEmpty
             disableUnderline
             sx={{
-              textAlign: "right",
+              textAlign: "left",
               color: filters.governorate
                 ? "#000E0C"
                 : "#6B7280",
 
               "& .MuiSelect-select": {
-                textAlign: "left",
+                textAlign: "right",
               },
 
               "& .MuiSelect-icon": {
-                left: "auto",
-                right: 0,
+                left: 0,
+                right: "auto",
                 color: "#6B7280",
               },
             }}
@@ -180,16 +180,16 @@ const CampaignFilter = ({ filters, setFilters }) => {
             disableUnderline
             disabled={!filters.governorate}
             sx={{
-              textAlign: "right",
+              textAlign: "left",
               color: filters.governorate ? "#000E0C" : "#6B7280",
 
               "& .MuiSelect-select": {
-                textAlign: "left",
+                textAlign: "right",
               },
 
               "& .MuiSelect-icon": {
-                left: "auto",
-                right: 0,
+                left:0,
+                right: "auto",
                 color: "#6B7280",
               },
             }}
@@ -225,16 +225,16 @@ const CampaignFilter = ({ filters, setFilters }) => {
             disableUnderline
             disabled={!filters.city}
             sx={{
-              textAlign: "right",
+              textAlign: "left",
               color: filters.governorate ? "#000E0C" : "#6B7280",
 
               "& .MuiSelect-select": {
-                textAlign: "left",
+                textAlign: "right",
               },
 
               "& .MuiSelect-icon": {
-                left: "auto",
-                right: 0,
+                left: 0,
+                right: "auto",
                 color: "#6B7280",
               },
             }}
@@ -293,7 +293,7 @@ const CampaignFilter = ({ filters, setFilters }) => {
       },
 
       "& input": {
-        textAlign: "left",
+        textAlign: "right",
         padding: "8px 0",
         fontSize: "16px",
       },

@@ -22,8 +22,9 @@ const CampaignCard = ({
     مكتملة: 'completed',
     منتهية: 'ended',
     جديدة: 'new',
+    متوقفة: 'stopped',
   };
-
+console.log(progress);
   return (
     <div className='campaignCard'>
       {/* Header  */}
@@ -39,36 +40,36 @@ const CampaignCard = ({
         <div className='stats'>
           <div className='stat'>
             <span className='label'>المبلغ المجموع</span>
-            <span className='value green'>{collected}$</span>
+            <span className='value green'>{collected}</span>
           </div>
 
           <div className='stat'>
             <span className='label'>الهدف</span>
-            <span className='value'>{target}$</span>
+            <span className='value'>{target}</span>
           </div>
         </div>
 
         {/* Progress  */}
         <div className='progress-wrapper'>
           <div className='progress-bar'>
-            <div className='progress-fill' style={{ width: `${progress}%` }} />
+            <div className='progress-fill' style={{ width: `${parseInt(progress)}%` }} />
           </div>
           <div className='percentage'>
             <p> نسبة الإنجاز :</p>
-            <span>{progress}%</span>
+            <span>{progress}</span>
           </div>
         </div>
 
-        {/* Info Cards  */}
-        {/* <div class="info-grid">
+        {/* Info Cards 
+        <div class="info-grid">
           <div class="info-box">
             <div class="text">المشاريع المرتبطة</div>
-            <div class="number">{completedProjects}</div>
+            <div class="number">{relatedProjects}</div>
           </div>
 
           <div class="info-box">
             <div class="text">المشاريع المنجزة</div>
-            <div class="number">{relatedProjects}</div>
+            <div class="number">{completedProjects}</div>
           </div>
         </div> */}
         <hr />

@@ -54,6 +54,10 @@
     background-color:#DBEAFE ;
     color:#1D4ED8 ;
 }
+.status-badge.stopped{
+    background-color: #fff3e0;
+    color: #ed6c02
+}
 
 /* Body */
 

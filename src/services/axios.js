@@ -9,6 +9,9 @@ const api = axios.create({
 api.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
 
+  // console.log("REQUEST:", req.method, req.url);
+  // console.log("TOKEN:", token);
+
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
   }
@@ -32,6 +35,10 @@ api.interceptors.response.use(
       return Promise.reject(
         new Error("انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً"),
       );
+  // console.log("401 Unauthorized");
+  // console.log("Token:", localStorage.getItem("token"));
+
+  // return Promise.reject(error);
     }
 
     if (error.response) {

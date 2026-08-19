@@ -7,7 +7,9 @@ import axios from "axios";
 import BreadCrumb from "../../components/BreadCrumb";
 import CustomPagination from "../../components/CustomPagination";
 import CustomContainer from "../../components/common/CustomContainer";
-
+import { useGetData } from "../../customHooks/reactQuery/useGetData";
+import {getCampaigns} from "../../services/campaigns"
+import config from "../../constants/enviroment";
 const mockCampaigns = [
   // {
   //   id: 1,
@@ -160,30 +162,22 @@ const Campaigns = () => {
     status: [],
   });
 
-  const [campaigns, setCampaigns] = useState([]);
+  const {
+    data: campaignsData,
+    isFetching: isFetchingCampaigns,
+    error:campaignsErr,
+  } = useGetData({
+    queryKey: ['campaigns'],
+    queryFn: getCampaigns,
+  });
+   const campaigns = campaignsData?.data || [];
+   
 
-  useEffect(() => {
-    getCampaigns();
-  }, [filters]);
+  
 
-  const getCampaigns = async () => {
-    try {
-      const response = await axios.get("/campaigns", {
-        params: {
-          governorateId: filters.governorate,
-          cityId: filters.city,
-          regionId: filters.region,
-          status: filters.status,
-        },
-      });
 
-      setCampaigns(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const filteredCampaigns = mockCampaigns.filter((c) =>
-    c.title.toLowerCase().includes(searchKey.toLowerCase())
+  const filteredCampaigns = campaigns?.filter((campaign) =>
+    campaign?.title?.toLowerCase().includes(searchKey.toLowerCase())
   );
   const [currentPage, setCurrentPage] = useState(0);
   const cardsPerPage = 6;
@@ -209,6 +203,14 @@ const Campaigns = () => {
       setCurrentPage((prev) => prev + 1);
     }
   };
+
+   if (isFetchingCampaigns) {
+  return <div>جاري تحميل الحملات...</div>;
+}
+
+if (campaignsErr) {
+  return <div>حدث خطأ أثناء تحميل الحملات</div>;
+}
   return (
 
     <div className="campaigns">
@@ -227,18 +229,18 @@ const Campaigns = () => {
       </section>
       <section className="container-campaign">
         <div className={`cards-wrapper ${showFilter ? "with-filter" : ""}`}>
-          {currentCampaigns.map(campaign => (
+          {campaigns.map(campaign => (
             <CampaignCard
-              id={campaign.id}
-              key={campaign.id}
-              image={campaign.image}
-              title={campaign.title}
-              target={campaign.target}
-              collected={campaign.collected}
-              progress={campaign.progress}
+              id={campaign.campaing.uuid}
+              key={campaign.campaing.uuid}
+              image={config.baseUrl+campaign.campaing.image}
+              title={campaign.campaing.name}
+              target={campaign.campaing.target_amount}
+              collected={campaign.campaing.collected_amount}
+              progress={campaign.progresspercentage}
               completedProjects={campaign.completedProjects}
-              relatedProjects={campaign.relatedProjects}
-              status={campaign.status}
+              relatedProjects={campaign.projects_count}
+              status={campaign.campaing.status}
             />
           ))}
         </div>

@@ -2,7 +2,6 @@ import { ChevronLeft, MapPin } from 'lucide-react';
 import config from '../../constants/enviroment';
 
 function ProjectCard({ project }) {
-  const pct = parseInt(project.progress_percentage) || 0;
   const isDone = project.status === 'مكتمل';
 
   return (
@@ -23,7 +22,7 @@ function ProjectCard({ project }) {
         </div>
 
         <div className='project-progress-track'>
-          <div className='project-progress-fill' style={{ width: `${pct}%` }} />
+          <div className='project-progress-fill' style={{ width: `${project?.progress_percentage}` }} />
         </div>
         <div className='project-amounts'>
           <span>
@@ -31,7 +30,7 @@ function ProjectCard({ project }) {
             <span className="of">/ {project.target.toLocaleString("en-US")}$</span> */}
             <span>نسبة الإنجاز </span>
           </span>
-          <span>{pct}%</span>
+          <span>{project?.progress_percentage}</span>
         </div>
 
         <div className='project-foot'>
