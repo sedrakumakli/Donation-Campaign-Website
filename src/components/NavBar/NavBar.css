@@ -10,9 +10,9 @@
 .nav-link:hover {
   /* color: var(--primary-color); */
   font-weight: 500;
-  color: var(--gold);
+  color: #003744;
 }
 .nav-link.active {
   font-weight: 600;
-  color: var(--gold);
+  color: #003744;
 }

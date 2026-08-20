@@ -21,81 +21,64 @@ import ProjectCard from '../../components/ProjectCard/ProjectCard';
 import BreadCrumb from '../../components/BreadCrumb';
 import { Button } from '@mui/material';
 import DonateButton from '../../components/DonateButton/DonateButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCampaignDetails } from '../../services/campaigns';
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import config from '../../constants/enviroment';
 
-/**
- * Hope Forward — صفحة تفاصيل الحملة
- * RTL / خط Cairo / لوحة الأخضر الغامق
- */
+// const GOALS = [
+//   { icon: Home, text: 'إعادة تأهيل 120 منزلًا متضررًا بشكل كامل أو جزئي' },
+//   { icon: Users, text: 'توفير مأوى دائم لأكثر من 600 فرد من العائلات النازحة' },
+//   {
+//     icon: Droplet,
+//     text: 'إعادة تأهيل شبكات المياه والصرف الصحي في المنطقة المستهدفة',
+//   },
+//   { icon: Lightbulb, text: 'تركيب أنظمة طاقة شمسية للوحدات السكنية الجديدة' },
+// ];
 
-const GOALS = [
-  { icon: Home, text: 'إعادة تأهيل 120 منزلًا متضررًا بشكل كامل أو جزئي' },
-  { icon: Users, text: 'توفير مأوى دائم لأكثر من 600 فرد من العائلات النازحة' },
-  {
-    icon: Droplet,
-    text: 'إعادة تأهيل شبكات المياه والصرف الصحي في المنطقة المستهدفة',
-  },
-  { icon: Lightbulb, text: 'تركيب أنظمة طاقة شمسية للوحدات السكنية الجديدة' },
-];
+// export const PROJECTS = [
+//   {
+//     id: 1,
+//     title: 'ترميم المنازل المتضررة',
+//     desc: 'إعادة تأهيل الوحدات السكنية المتضررة جزئيًا وتجهيزها للسكن الآمن.',
+//     location: 'حمص , خالدية',
+//     sector: 'التعليم',
+//     image:
+//       'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop',
+//     status: 'active', // active | done
+//     raised: 68000,
+//     target: 100000,
+//     allocated: 100000,
+//   },
+//   {
+//     id: 2,
+//     title: 'تأهيل شبكات المياه',
+//     desc: 'إعادة مد وتأهيل شبكات المياه والصرف الصحي للقرى المستهدفة.',
+//     location: 'ريف دمشق , دوما',
+//     sector: 'بنية تحتية',
+//     image:
+//       'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=800&auto=format&fit=crop',
+//     status: 'active',
+//     raised: 21000,
+//     target: 50000,
+//     allocated: 25000,
+//   },
+//   {
+//     id: 3,
+//     title: 'تركيب أنظمة الطاقة الشمسية',
+//     desc: 'تجهيز 40 وحدة سكنية بأنظمة طاقة شمسية مستقلة عن الشبكة.',
+//     location: 'حمص , جورة الشياح',
+//     sector: 'طاقة',
+//     image:
+//       'https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=800&auto=format&fit=crop',
+//     status: 'done',
+//     raised: 30000,
+//     target: 30000,
+//     allocated: 30000,
+//   },
+// ];
 
-export const PROJECTS = [
-  {
-    id: 1,
-    title: 'ترميم المنازل المتضررة',
-    desc: 'إعادة تأهيل الوحدات السكنية المتضررة جزئيًا وتجهيزها للسكن الآمن.',
-    location: 'حمص , خالدية',
-    sector: 'التعليم',
-    image:
-      'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop',
-    status: 'active', // active | done
-    raised: 68000,
-    target: 100000,
-    allocated: 100000,
-  },
-  {
-    id: 2,
-    title: 'تأهيل شبكات المياه',
-    desc: 'إعادة مد وتأهيل شبكات المياه والصرف الصحي للقرى المستهدفة.',
-    location: 'ريف دمشق , دوما',
-    sector: 'بنية تحتية',
-    image:
-      'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=800&auto=format&fit=crop',
-    status: 'active',
-    raised: 21000,
-    target: 50000,
-    allocated: 25000,
-  },
-  {
-    id: 3,
-    title: 'تركيب أنظمة الطاقة الشمسية',
-    desc: 'تجهيز 40 وحدة سكنية بأنظمة طاقة شمسية مستقلة عن الشبكة.',
-    location: 'حمص , جورة الشياح',
-    sector: 'طاقة',
-    image:
-      'https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=800&auto=format&fit=crop',
-    status: 'done',
-    raised: 30000,
-    target: 30000,
-    allocated: 30000,
-  },
-];
 
-const campaign = {
-  title: 'إعمار بيوت الشمال',
-  location: 'ريف حلب الشمالي، سوريا',
-  startDate: '01 مارس 2026',
-  endDate: '30 سبتمبر 2026',
-  startTime: '9:00 ص',
-  endTime: '6:00 م',
-  heroImage:
-    'https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1600&auto=format&fit=crop',
-  about:
-    'تهدف حملة "إعمار بيوت الشمال" إلى إعادة بناء وتأهيل المنازل المتضررة في القرى والبلدات بريف حلب الشمالي، لتوفير مأوى آمن وكريم للعائلات النازحة قبل دخول فصل الشتاء. تشمل الحملة إعادة تأهيل البنية التحتية الأساسية وتوفير وحدات سكنية جاهزة للعائلات الأكثر حاجة، بالتعاون مع فرق ميدانية محلية متخصصة.',
-  target: 250000,
-  raised: 168500,
-  donors: 1284,
-  daysLeft: 213,
-};
 
 /* ---------- Hook: عداد متحرك للأرقام ---------- */
 function useCountUp(target, duration = 1200, start = false) {
@@ -127,52 +110,58 @@ function useCountUp(target, duration = 1200, start = false) {
 function CampaignDetails() {
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
-  const pct = Math.round((campaign.raised / campaign.target) * 100);
-  const raisedValue = useCountUp(campaign.raised, 1200, animate);
+  const params = useParams();
+const id = params.id;
+
+const {
+    data: CampaignDetailsData,
+    isFetching: isFetchingCampaignDetails,
+    error:campaignDetailsErr,
+  } = useGetData({
+    queryKey: ['campaigns',id],
+    queryFn: ()=>getCampaignDetails(id),
+  });
+   const campaignsDetails = CampaignDetailsData?.data?.campaing || {};
+   const projects = campaignsDetails?.projects || [];
+   const gools = campaignsDetails?.purposes?.trim().split(/,|،/)
+
 
   useEffect(() => {
     const t = setTimeout(() => setAnimate(true), 100);
     return () => clearTimeout(t);
   }, []);
 
+//   console.log("Projects:", campaignsDetails?.projects);
+// console.log("First project:", campaignsDetails?.projects?.[0]);
   return (
     <div className='hf-page' dir='rtl'>
       <BreadCrumb
         dynamicItems={[
           { label: 'الحملات', path: '/campaigns' },
-          { label: campaign.title, path: `/campaign/${campaign.id}` },
+          { label: campaignsDetails.name, path: `/campaign/${campaignsDetails.uuid}` },
         ]}
       />
       <div className='wrap'>
-        {/* Breadcrumb */}
-        {/* <div className="breadcrumb">
-          <a href="#">الرئيسية</a>
-          <ChevronLeft size={14} />
-          <a href="#">الحملات</a>
-          <ChevronLeft size={14} />
-          <span className="current">{CAMPAIGN.title}</span>
-        </div> */}
 
         {/* Hero */}
         <div className='hero'>
-          <img src={campaign.heroImage} alt={campaign.title} />
+          <img src={config.baseUrl+campaignsDetails.image} alt={campaignsDetails.name} />
           <div className='hero-content'>
             <div>
               <span className='status-pill active'>
-                {/* <span className="dot" />  */}
-                نشطة
+               {campaignsDetails.status}
               </span>
-              <h1 className='hero-title'>{campaign.title}</h1>
+              <h1 className='hero-title'>{campaignsDetails.name}</h1>
               <div className='hero-meta'>
                 {/* <span>
                   <MapPin size={16} /> {campaign.location}
                 </span> */}
                 <span>
-                  <Calendar size={16} color='var(--gold)'/> {campaign.startDate} —{' '}
-                  {campaign.endDate}
+                  <Calendar size={16}/> {campaignsDetails?.start_date?.toLocaleString('en-US')} —{' '}
+                  {campaignsDetails?.end_date?.toLocaleString('en-US')}
                 </span>
                 <span>
-                  <Clock size={16} /> {campaign.startTime} — {campaign.endTime}{' '}
+                  <Clock size={16} /> {campaignsDetails?.start_time?.toLocaleString('en-US')} — {campaignsDetails?.end_time?.toLocaleString('en-US')}{' '}
                   يوميًا
                 </span>
               </div>
@@ -217,29 +206,29 @@ function CampaignDetails() {
                   <div className='label'>
                     <Calendar size={14} /> تاريخ البدء
                   </div>
-                  <div className='value'>{campaign.startDate}</div>
-                  <div className='value sub'>الساعة {campaign.startTime}</div>
+                  <div className='value'>{campaignsDetails.start_date}</div>
+                  <div className='value sub'>الساعة {campaignsDetails.start_time}</div>
                 </div>
                 <div className='info-item'>
                   <div className='label'>
                     <Calendar size={14} /> تاريخ الانتهاء
                   </div>
-                  <div className='value'>{campaign.endDate}</div>
-                  <div className='value sub'>الساعة {campaign.endTime}</div>
+                  <div className='value'>{campaignsDetails.end_date}</div>
+                  <div className='value sub'>الساعة {campaignsDetails.end_time}</div>
                 </div>
-                <div className='info-item'>
+                {/* <div className='info-item'>
                   <div className='label'>
                     <MapPin size={14} /> الموقع
                   </div>
                   <div className='value'>ريف حلب الشمالي</div>
                   <div className='value sub'>سوريا</div>
-                </div>
+                </div> */}
                 <div className='info-item'>
                   <div className='label'>
                     <Folders size={14} /> المشاريع المرتبطة
                   </div>
-                  <div className='value'>{PROJECTS.length} مشاريع</div>
-                  <div className='value sub'>قيد التنفيذ</div>
+                  <div className='value'>{CampaignDetailsData?.data?.projects_count} مشاريع</div>
+                  {/* <div className='value sub'>قيد التنفيذ</div> */}
                 </div>
               </div>
             </div>
@@ -258,14 +247,12 @@ function CampaignDetails() {
                 <Target size={19} color='var(--gold)'/> أهداف الحملة
               </h2>
               <div className='goals-list'>
-                {GOALS.map((goal, i) => {
+                {gools&&gools.map((goal, i) => {
                   const Icon = goal.icon;
                   return (
                     <div className='goal-item' key={i}>
-                      {/* <div className="goal-icon">
-                        <Icon size={17} />
-                      </div> */}
-                      <div className='goal-text'>{goal.text}</div>
+
+                      <div className='goal-text'>{goal}</div>
                     </div>
                   );
                 })}
@@ -278,12 +265,12 @@ function CampaignDetails() {
                 <h2>
                   <Folders size={19} color='var(--gold)'/> المشاريع المرتبطة
                 </h2>
-                <span className='count'>{PROJECTS.length} مشاريع</span>
+                <span className='count'>{CampaignDetailsData?.data?.projects_count} مشاريع</span>
               </div>
 
               <div className='projects-grid'>
-                {PROJECTS.map((p) => (
-                  <ProjectCard key={p.id} project={p} />
+                {projects&&projects.map((project) => (
+                  <ProjectCard key={project.uuid} project={project} />
                 ))}
               </div>
             </div>
@@ -294,10 +281,10 @@ function CampaignDetails() {
             <div className='progress-card'>
               <div className='amount-row'>
                 <div className='amount-raised'>
-                  {raisedValue.toLocaleString('en-US')}$ <small>تم جمعه</small>
+                  {campaignsDetails.collected_amount}<small>تم جمعه</small>
                 </div>
                 <div className='amount-target'>
-                  من أصل <b>{campaign.target.toLocaleString('en-US')}$</b>{' '}
+                  من أصل <b>{campaignsDetails.target_amount}</b>{' '}
                   مستهدف
                 </div>
               </div>
@@ -305,20 +292,20 @@ function CampaignDetails() {
               <div className='progress-track'>
                 <div
                   className='progress-fill'
-                  style={{ width: animate ? `${pct}%` : '0%' }}
+                  style={{ width: animate ? `${CampaignDetailsData?.data?.progresspercentage}` : '0%' }}
                 />
               </div>
               <div className='progress-percent-row'>
                 <span>نسبة الإنجاز</span>
-                <span className='pct'>{pct}%</span>
+                <span className='pct'>{CampaignDetailsData?.data?.progresspercentage}</span>
               </div>
 
               <div className='stat-mini-row'>
                 <div className='stat-mini'>
                   <div className='num'>
-                    {campaign.donors.toLocaleString('en-US')}
+                    {CampaignDetailsData?.data?.donations_count}
                   </div>
-                  <div className='lbl'>متبرع</div>
+                  <div className='lbl'>التبرعات</div>
                 </div>
                 {/* <div className="stat-mini">
                   <div className="num">{campaign.daysLeft}</div>

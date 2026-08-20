@@ -1,8 +1,7 @@
-
-import About from "./Pages/About/Aboutuspage.jsx";
+import Aboutuspage from './Pages/About/Aboutuspage.jsx';
 // import { LogIn } from "lucide-react";
-import LogInPage from "./Pages/LogIn/LogInPage";
-import SignUpPage from "./Pages/SignUp/SignUpPage";
+import LogInPage from './Pages/LogIn/LogInPage';
+import SignUpPage from './Pages/SignUp/SignUpPage';
 
 import './App.css';
 import TopBar from './components/TopBar/TopBar';
@@ -20,7 +19,6 @@ import DonatePage from './Pages/Donate/DonatePage';
 import Footer from './components/Footer/Footer';
 import { Box } from '@mui/material';
 import DonorProfilePage from './Pages/DonerProfilePage/DonerProfilePage';
-import Aboutuspage from './Pages/About/Aboutuspage.jsx';
 import FAQSection from './Pages/FAQSection/FAQSection.jsx';
 
 function App() {
@@ -31,7 +29,7 @@ function App() {
       <NavBar/> 
     </div> */}
       {/* <Home/> */}
-      <ToastContainer position='top left' />
+      <ToastContainer position='top-right' />
       <Box
         sx={{
           width: '100%',
@@ -45,7 +43,7 @@ function App() {
       <Box sx={{ pt: '126px', minHeight: '100vh' }}>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/about' element={<Aboutuspage />} />
+          {/* <Route path='/about' element={<Aboutuspage />} /> */}
           <Route path='/campaigns' element={<Campaigns />} />
           <Route path='/news' element={<News />} />
           <Route path='/donate' element={<DonatePage />} />
@@ -54,12 +52,10 @@ function App() {
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/profile' element={<DonorProfilePage />} />
           <Route path='/FAQSection' element={<FAQSection />} />
-          <Route path="/login" element={<LogInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/about" element={<About />} />
+          <Route path='/login' element={<LogInPage />} />
+          <Route path='/signup' element={<SignUpPage />} />
+          <Route path='/about' element={<Aboutuspage />} />
         </Routes>
-
-
       </Box>
       <Footer />
     </>
