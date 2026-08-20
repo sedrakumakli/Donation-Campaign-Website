@@ -16,7 +16,9 @@ const config = {
     filter: `${campaignsBase}/filter`,
     details: 'blogApi/show',
     categories: `${campaignsBase}/categories`,
+    show: `${campaignsBase}/show`,
   },
+
   projects: {
     all: 'projects',
   },

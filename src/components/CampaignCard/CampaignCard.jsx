@@ -16,27 +16,15 @@ const CampaignCard = ({
   status,
 }) => {
   const navigate = useNavigate();
-  // const [anchorElDonate, setAnchorElDonate] = useState(null);
-
-  // const handleOpenDonateMenu = (event) => {
-  //   setAnchorElDonate(event.currentTarget);
-  // };
-
-  // const handleCloseDonateMenu = () => {
-  //   setAnchorElDonate(null);
-  // };
-  // const [openDirectModal, setOpenDirectModal] = useState(false);
-  // const [openPledgeModal, setOpenPledgeModal] = useState(false);
 
   const statusStyles = {
     نشطة: 'active',
     مكتملة: 'completed',
     منتهية: 'ended',
     جديدة: 'new',
+    متوقفة: 'stopped',
   };
-
-  console.log(status);
-  console.log(statusStyles[status]);
+console.log(progress);
   return (
     <div className='campaignCard'>
       {/* Header  */}
@@ -47,41 +35,41 @@ const CampaignCard = ({
 
       {/* Content  */}
       <div className='card-body'>
-        <h2 className='title'>{title}</h2>
+        <h6 className='title'>{title}</h6>
 
         <div className='stats'>
           <div className='stat'>
             <span className='label'>المبلغ المجموع</span>
-            <span className='value green'>{collected}$</span>
+            <span className='value green'>{collected}</span>
           </div>
 
           <div className='stat'>
             <span className='label'>الهدف</span>
-            <span className='value'>{target}$</span>
+            <span className='value'>{target}</span>
           </div>
         </div>
 
         {/* Progress  */}
         <div className='progress-wrapper'>
           <div className='progress-bar'>
-            <div className='progress-fill' style={{ width: `${progress}%` }} />
+            <div className='progress-fill' style={{ width: `${parseInt(progress)}%` }} />
           </div>
           <div className='percentage'>
             <p> نسبة الإنجاز :</p>
-            <span>{progress}%</span>
+            <span>{progress}</span>
           </div>
         </div>
 
-        {/* Info Cards  */}
-        {/* <div class="info-grid">
+        {/* Info Cards 
+        <div class="info-grid">
           <div class="info-box">
             <div class="text">المشاريع المرتبطة</div>
-            <div class="number">{completedProjects}</div>
+            <div class="number">{relatedProjects}</div>
           </div>
 
           <div class="info-box">
             <div class="text">المشاريع المنجزة</div>
-            <div class="number">{relatedProjects}</div>
+            <div class="number">{completedProjects}</div>
           </div>
         </div> */}
         <hr />
