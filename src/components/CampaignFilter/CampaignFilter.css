@@ -4,6 +4,7 @@
   padding: 24px;
   direction: rtl;
   border-radius: 10px;
+  /* position: fixed; */
 }
 
 .filter-title {

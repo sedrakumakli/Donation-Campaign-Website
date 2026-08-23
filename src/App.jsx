@@ -21,6 +21,7 @@ import { Box } from '@mui/material';
 import DonorProfilePage from './Pages/DonerProfilePage/DonerProfilePage';
 import FAQSection from './Pages/FAQSection/FAQSection.jsx';
 import PledgePage from './Pages/Donate/PledgePage.jsx';
+import Project from './Pages/Project/project.jsx';
 
 function App() {
   console.log('object'.to);
@@ -52,6 +53,7 @@ function App() {
           <Route path='/pledge' element={<PledgePage />} />
           <Route path='/contactUs' element={<ContactUs />} />
           <Route path='/campaign/:id' element={<CampaignDetails />} />
+          <Route path='/project' element={<Project />} />
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/profile' element={<DonorProfilePage />} />
           <Route path='/FAQSection' element={<FAQSection />} />

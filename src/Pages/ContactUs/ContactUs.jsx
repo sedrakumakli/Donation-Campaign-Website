@@ -123,7 +123,7 @@ export default function ContactUs() {
       <BreadCrumb
         dynamicItems={[{ label: "تواصل معنا", path: "/contactUs" }]}
       />
-      <Box
+      {/* <Box
         sx={{
           position: "relative",
           minHeight: { xs: 200, md: 605 },
@@ -164,7 +164,7 @@ export default function ContactUs() {
             الرئيسية / تواصل معنا
           </Typography>
         </Box>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           maxWidth: "1200px",
