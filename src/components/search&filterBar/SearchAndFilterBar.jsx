@@ -12,7 +12,7 @@ const SearchAndFilterBar = ({ onFilterClick ,searchKey , setSearchKey}) => {
                 <div className="search-bar">
                     <Box
                         sx={{
-                            borderBottom: "1px solid #6B7280",
+                            borderBottom: "1px solid #EEF2F3",
                             display: "flex",
                             alignItems: "center",
                             gap: 1,
