@@ -20,6 +20,7 @@ import Footer from "./components/Footer/Footer";
 import { Box } from "@mui/material";
 import DonorProfilePage from "./Pages/DonerProfilePage/DonerProfilePage";
 import FAQSection from "./Pages/FAQSection/FAQSection.jsx";
+import Project from "./Pages/Project/project.jsx";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/donate" element={<DonatePage />} />
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/campaign/:id" element={<CampaignDetails />} />
+          <Route path="/project" element={<Project />} />
           <Route path="/news/:id" element={<NewsDetails />} />
           <Route path="/profile" element={<DonorProfilePage />} />
           <Route path="/FAQSection" element={<FAQSection />} />
