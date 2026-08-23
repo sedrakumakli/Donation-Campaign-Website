@@ -12,6 +12,7 @@ import { useRef, useState } from "react";
 import StatCounter from "./StatCounter";
 import { donorData } from "../../mockupData";
 import { DONOR_TYPES } from "./constants";
+import { getProfile } from "../../services/profile";
 const ProfileHeader = () => {
     const [avatar, setAvatar] = useState(donorData.avatar);
     const fileInputRef = useRef(null);
@@ -26,6 +27,16 @@ const ProfileHeader = () => {
             setAvatar(url);
         }
     };
+     const {
+    data: profileData,
+    isFetching:isFetchingProfile,
+    error:profileErr,
+  } = useGetData({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  console.log("PROFILE:", profileData);
     return (
         <>
             <div className="hf-header-card">

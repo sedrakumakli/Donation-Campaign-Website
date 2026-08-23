@@ -48,6 +48,17 @@ const DonorProfilePage = () => {
         toast.success("تم تسجيل الخروج بنجاح");
         navigate("/login");
     };
+
+     const {
+    data: profileData,
+    isFetching:isFetchingProfile,
+    error:profileErr,
+  } = useGetData({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  console.log("PROFILE:", profileData);
     return (
         <div className="profile">
             <BreadCrumb

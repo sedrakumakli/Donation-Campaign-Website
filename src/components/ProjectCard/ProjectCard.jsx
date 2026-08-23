@@ -22,7 +22,7 @@ function ProjectCard({ project }) {
         </div>
 
         <div className='project-progress-track'>
-          <div className='project-progress-fill' style={{ width: `${project?.progress_percentage}` }} />
+          <div className='project-progress-fill' style={{ width: `${parseInt(project?.progress_percentage)}%` }} />
         </div>
         <div className='project-amounts'>
           <span>
