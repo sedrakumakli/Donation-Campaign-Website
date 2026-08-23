@@ -13,6 +13,7 @@ import { donateBtnStyles } from '../../utils/styles';
 import { getCurrency } from '../../utils/methods';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import { getCampaigns } from '../../services/campaigns';
+import { useLocation } from 'react-router-dom';
 
 const currencies = [
   { label: 'ليرة السورية', value: 'SYP' },
@@ -44,11 +45,15 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
   });
   const campaigns = campaignsData?.data;
 
+  const location = useLocation();
+
+  const isPledge = location.pathname.includes('pledge');
+
   return (
     <>
       {/* TITLE */}
       <Typography variant='h5' sx={{ fontWeight: 700, mb: 4 }}>
-        بيانات التبرع
+        {isPledge ? 'إنشاء تعهد' : 'بيانات التبرع'}
       </Typography>
 
       <Box sx={{ height: '417px', overflowY: 'auto' }}>
@@ -133,7 +138,7 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
               }}
               isNestedState={true}
               styles={{ mb: 3 }}
-              isNestedState={true}
+              isRequired={true}
             />
           </Grid>
           <Grid size={{ md: 3 }}>
@@ -178,10 +183,10 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
         <Button
           variant='contained'
           onClick={onNext}
-          disabled={!formData?.contribution_amount}
+          disabled={!formData?.contribution_amount || !formData?.campaign_uuid}
           sx={donateBtnStyles}
         >
-          متابعة الدفع
+          {isPledge ? 'إنشاء' : 'متابعة الدفع'}
         </Button>
       </Box>
     </>

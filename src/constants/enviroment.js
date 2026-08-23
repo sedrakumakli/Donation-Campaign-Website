@@ -22,6 +22,10 @@ const config = {
   projects: {
     all: 'projects',
   },
-  donate: { QRData: 'donation/qr', direct: 'donate/directly' },
+  donate: {
+    QRData: 'donation/qr',
+    direct: 'donate/directly',
+    pledge: 'pledge',
+  },
 };
 export default config;

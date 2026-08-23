@@ -161,6 +161,8 @@ const DonationFlow = () => {
               </Typography>
 
               <Button
+                component={Link}
+                to='/pledge'
                 variant='outlined'
                 sx={{
                   mt: 3,

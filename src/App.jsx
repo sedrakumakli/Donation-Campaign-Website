@@ -20,8 +20,10 @@ import Footer from './components/Footer/Footer';
 import { Box } from '@mui/material';
 import DonorProfilePage from './Pages/DonerProfilePage/DonerProfilePage';
 import FAQSection from './Pages/FAQSection/FAQSection.jsx';
+import PledgePage from './Pages/Donate/PledgePage.jsx';
 
 function App() {
+  console.log('object'.to);
   return (
     <>
       {/* <div className="header">
@@ -47,6 +49,7 @@ function App() {
           <Route path='/campaigns' element={<Campaigns />} />
           <Route path='/news' element={<News />} />
           <Route path='/donate' element={<DonatePage />} />
+          <Route path='/pledge' element={<PledgePage />} />
           <Route path='/contactUs' element={<ContactUs />} />
           <Route path='/campaign/:id' element={<CampaignDetails />} />
           <Route path='/news/:id' element={<NewsDetails />} />

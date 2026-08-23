@@ -24,7 +24,7 @@ const DonatePage = () => {
     currency_type: 'SYP',
     contribution_details: '',
     campaign_uuid: '',
-    image: null,
+    file: null,
   });
 
   const [preview, setPreview] = useState(null);
@@ -61,7 +61,7 @@ const DonatePage = () => {
     data.append('contribution_details', formData.contribution_details);
     data.append('currency_type', formData.currency_type);
     data.append('campaign_uuid', formData.campaign_uuid);
-    data.append('image', formData.image);
+    data.append('file', formData.file);
     donate(data);
   };
 
@@ -73,7 +73,18 @@ const DonatePage = () => {
 
   return (
     <CustomContainer styles={{ py: 6 }}>
-      {donationErr && <ErrorMessage>{donationErr?.message}</ErrorMessage>}
+      {donationErr && (
+        <ErrorMessage
+          styles={{
+            position: 'sticky',
+            top: '126px',
+            width: '100%',
+            zIndex: 9999,
+          }}
+        >
+          {donationErr?.message}
+        </ErrorMessage>
+      )}
       <Grid container spacing={3}>
         <Grid
           size={{

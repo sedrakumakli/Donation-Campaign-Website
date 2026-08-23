@@ -9,7 +9,7 @@ const steps = [
   'امسح رمز QR',
   'تأكد من المبلغ',
   'أكمل عملية الدفع',
-  'احتفظ بصورة الإيصال',
+  'احتفظ بملف الإيصال',
 ];
 
 const PaymentStep = ({ formData, onNext, onBack }) => {
