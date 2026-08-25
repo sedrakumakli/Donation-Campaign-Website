@@ -25,6 +25,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getCampaignDetails } from '../../services/campaigns';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import config from '../../constants/enviroment';
+import { formatArabicDate, formatArabicTime } from '../../utils/methods';
+import { toast } from 'react-toastify';
 
 // const GOALS = [
 //   { icon: Home, text: 'إعادة تأهيل 120 منزلًا متضررًا بشكل كامل أو جزئي' },
@@ -111,7 +113,7 @@ function CampaignDetails() {
   const navigate = useNavigate();
   const [animate, setAnimate] = useState(false);
   const params = useParams();
-const id = params.id;
+  const id = params.id;
 
 const {
     data: CampaignDetailsData,
@@ -131,8 +133,35 @@ const {
     return () => clearTimeout(t);
   }, []);
 
-//   console.log("Projects:", campaignsDetails?.projects);
-// console.log("First project:", campaignsDetails?.projects?.[0]);
+  const handleCopyLink = async () =>{
+    try{
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success("تم نسخ الرابط بنجاح");
+    }
+    catch(error){
+      toast.error("تعذر نسخ الرابط");
+    }
+  };
+
+  const handleShare = async () =>{
+    const url = window.location.href;
+    if(navigator.share){
+      try{
+        await navigator.share({
+          title:campaignsDetails.name,
+          text:"شاهد هذه الحملة وساهم معنا",
+          url: url,
+        });
+      }
+      catch(error){
+
+      }
+    }
+            else {
+          await navigator.clipboard.writeText(url);
+          toast.success("تم نسخ الرابط بنجاح");
+        }
+  };
   return (
     <div className='hf-page' dir='rtl'>
       <BreadCrumb
@@ -157,17 +186,17 @@ const {
                   <MapPin size={16} /> {campaign.location}
                 </span> */}
                 <span>
-                  <Calendar size={16}/> {campaignsDetails?.start_date?.toLocaleString('en-US')} —{' '}
-                  {campaignsDetails?.end_date?.toLocaleString('en-US')}
+                  <Calendar size={16}/> {formatArabicDate(campaignsDetails.start_date)} —{' '}
+                  {formatArabicDate(campaignsDetails.end_date)}
                 </span>
                 <span>
-                  <Clock size={16} /> {campaignsDetails?.start_time?.toLocaleString('en-US')} — {campaignsDetails?.end_time?.toLocaleString('en-US')}{' '}
+                  <Clock size={16} /> {formatArabicTime(campaignsDetails.start_time)} — {formatArabicTime(campaignsDetails.end_time)}{' '}
                   يوميًا
                 </span>
               </div>
             </div>
             <div className='hero-actions'>
-              <button className='btn btn-ghost'>
+              <button className='btn btn-ghost' onClick={handleShare}>
                 <Share2 size={16} /> مشاركة
               </button>
               {/* <button className="btn btn-gold">
@@ -206,15 +235,15 @@ const {
                   <div className='label'>
                     <Calendar size={14} /> تاريخ البدء
                   </div>
-                  <div className='value'>{campaignsDetails.start_date}</div>
-                  <div className='value sub'>الساعة {campaignsDetails.start_time}</div>
+                  <div className='value'>{formatArabicDate(campaignsDetails.start_date)}</div>
+                  <div className='value sub'>الساعة {formatArabicTime(campaignsDetails.start_time)}</div>
                 </div>
                 <div className='info-item'>
                   <div className='label'>
                     <Calendar size={14} /> تاريخ الانتهاء
                   </div>
-                  <div className='value'>{campaignsDetails.end_date}</div>
-                  <div className='value sub'>الساعة {campaignsDetails.end_time}</div>
+                  <div className='value'>{formatArabicDate(campaignsDetails.end_date)}</div>
+                  <div className='value sub'>الساعة {formatArabicTime(campaignsDetails.end_time)}</div>
                 </div>
                 {/* <div className='info-item'>
                   <div className='label'>
@@ -292,7 +321,7 @@ const {
               <div className='progress-track'>
                 <div
                   className='progress-fill'
-                  style={{ width: animate ? `${CampaignDetailsData?.data?.progresspercentage}` : '0%' }}
+                  style={{ width: animate ? `${parseInt(CampaignDetailsData?.data?.progresspercentage)}%`: '0%' }}
                 />
               </div>
               <div className='progress-percent-row'>
@@ -336,7 +365,7 @@ const {
                 {/* <button className="share-btn">
                   <Share2 size={14} /> واتساب
                 </button> */}
-                <button className='share-btn'>
+                <button className='share-btn' onClick={handleCopyLink}>
                   <LinkIcon size={14} /> نسخ الرابط
                 </button>
               </div>

@@ -1,39 +1,75 @@
-import { useEffect, useState } from "react";
 import "./CampaignFilter.css";
 import { MenuItem, Select, FormControl, Button, Autocomplete, TextField } from "@mui/material";
-import axios from "axios";
+import { getProjects } from "../../services/projects";
+import { useGetData } from "../../customHooks/reactQuery/useGetData";
+import { getCities, getDistricts, getGovernorates, getStatuses } from "../../services/campaigns";
 
-const projects = [
-  { id: 1, name: "بئر ماء في ريف حلب" },
-  { id: 2, name: "ترميم مدرسة الأمل" },
-  { id: 3, name: "السلال الغذائية" },
-  { id: 4, name: "كسوة الشتاء" },
-  { id: 5, name: "مخيمات النازحين" },
-  { id: 6, name: "إفطار صائم" },
-];
-console.log(projects);
+
 const CampaignFilter = ({ filters, setFilters }) => {
 
+  const {
+    data: governoratesData,
+    isFetching: isFetchingGovernorates,
+    error: governoratesErr,
+  } = useGetData({
+    queryKey: ['governorates'],
+    queryFn: getGovernorates,
+  });
+  const governorates = governoratesData?.data || [];
+
+  const {
+    data: citiesData,
+    isFetching: isFetchingCities,
+    error: citiesErr,
+  } = useGetData({
+    queryKey: ['cities'],
+    queryFn: getCities,
+  });
+  const allCities = citiesData?.data || [];
+
+  const {
+    data: districtsData,
+    isFetching: isFetchingDistricts,
+    error: districtsErr,
+  } = useGetData({
+    queryKey: ['districts'],
+    queryFn: getDistricts,
+  });
+  const allDistricts = districtsData?.data || [];
+
+  const {
+    data: projectData,
+    isFetching: isFetchingProjects,
+    error: projectsErr,
+  } = useGetData({
+    queryKey: ['project'],
+    queryFn: getProjects,
+  });
+
+  const projects = projectData?.data || [];
+
+  const {
+    data: statusesData,
+    isFetching: isFetchingStatuses,
+    error: statusesErr,
+  } = useGetData({
+    queryKey: ['status'],
+    queryFn: getStatuses,
+  });
+
+  const statuses = statusesData?.data || [];
 
 
-  const [governorates, setGovernorates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [regions, setRegions] = useState([]);
 
-  useEffect(() => {
-    getGovernorates();
-  }, []);
+  const cities = allCities.filter(
+    (city) =>
+      city.governorate?.uuid === filters.governorate
+  );
 
-  const getGovernorates = async () => {
-    try {
-      const response = await axios.get("/governorates");
-      console.log("API Response:", response.data);
-      setGovernorates(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  const regions = allDistricts.filter(
+    (district) =>
+      district.city?.uuid === filters.city
+  );
 
   const handleGovernorateChange = async (e) => {
     const governorateId = e.target.value;
@@ -47,16 +83,6 @@ const CampaignFilter = ({ filters, setFilters }) => {
 
     setCities([]);
     setRegions([]);
-
-    try {
-      const response = await axios.get(
-        `/cities?governorateId=${governorateId}`
-      );
-
-      setCities(response.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const handleCityChange = async (e) => {
@@ -70,32 +96,11 @@ const CampaignFilter = ({ filters, setFilters }) => {
 
     setRegions([]);
 
-    try {
-      const response = await axios.get(
-        `/regions?cityId=${cityId}`
-      );
-
-      setRegions(response.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
   const handleRegionChange = (e) => {
     setFilters((prev) => ({
       ...prev,
       region: e.target.value,
-    }));
-  };
-  const handleStatusChange = (e) => {
-    const { name, checked } = e.target;
-
-    setFilters((prev) => ({
-      ...prev,
-      status: checked
-        ? [...prev.status, name]
-        : prev.status.filter(
-          (item) => item !== name
-        ),
     }));
   };
 
@@ -104,12 +109,10 @@ const CampaignFilter = ({ filters, setFilters }) => {
       governorate: "",
       city: "",
       region: "",
-      project : null,
+      project: null,
       status: [],
     });
 
-    setCities([]);
-    setRegions([]);
   };
   console.log("governorates =", governorates);
   return (
@@ -139,6 +142,9 @@ const CampaignFilter = ({ filters, setFilters }) => {
               color: filters.governorate
                 ? "#000E0C"
                 : "#6B7280",
+              "& .MuiInputBase-root":{
+              padding: "0 !important"
+              },
 
               "& .MuiSelect-select": {
                 textAlign: "right",
@@ -157,10 +163,10 @@ const CampaignFilter = ({ filters, setFilters }) => {
 
             {governorates?.map((gov) => (
               <MenuItem
-                key={gov.id}
-                value={gov.id}
+                key={gov.uuid}
+                value={gov.uuid}
               >
-                {gov.name}
+                {gov.governorate_name}
               </MenuItem>
             ))}
           </Select>
@@ -182,13 +188,16 @@ const CampaignFilter = ({ filters, setFilters }) => {
             sx={{
               textAlign: "left",
               color: filters.governorate ? "#000E0C" : "#6B7280",
+              "& .MuiInputBase-root":{
+              padding: "0 !important"
+              },
 
               "& .MuiSelect-select": {
                 textAlign: "right",
               },
 
               "& .MuiSelect-icon": {
-                left:0,
+                left: 0,
                 right: "auto",
                 color: "#6B7280",
               },
@@ -200,10 +209,10 @@ const CampaignFilter = ({ filters, setFilters }) => {
 
             {cities.map((city) => (
               <MenuItem
-                key={city.id}
-                value={city.id}
+                key={city.uuid}
+                value={city.uuid}
               >
-                {city.name}
+                {city.city_name}
               </MenuItem>
             ))}
           </Select>
@@ -227,7 +236,9 @@ const CampaignFilter = ({ filters, setFilters }) => {
             sx={{
               textAlign: "left",
               color: filters.governorate ? "#000E0C" : "#6B7280",
-
+              "& .MuiInputBase-root":{
+              padding: "0 !important"
+              },
               "& .MuiSelect-select": {
                 textAlign: "right",
               },
@@ -245,117 +256,101 @@ const CampaignFilter = ({ filters, setFilters }) => {
 
             {regions.map((region) => (
               <MenuItem
-                key={region.id}
-                value={region.id}
+                key={region.uuid}
+                value={region.uuid}
               >
-                {region.name}
+                {region.district_name}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       </div>
+      {/* المشروع */}
+      <div className="filter-section">
+        <h3>المشروع</h3>
+        <FormControl
+          variant="standard"
+          fullWidth
+          sx={{
+            borderBottom: "1px solid #E0E0E0",
+            pb: 1,
+          }}
+        >
+          <Autocomplete
+            options={projects}
+            getOptionLabel={(option) => option.name}
+            value={
+              projects.find((project) => project.uuid === filters.project) || null
+            }
+            onChange={(event, value) => {
+              setFilters((prev) => ({
+                ...prev,
+                project: value?.uuid || null,
+              }));
+            }}
+            sx={{
+              direction: "rtl",
+              "& .MuiInputBase-root": {
+                padding: "0 !important",
+                minHeight: "40px",
+                direction: "rtl",
+              },
 
-<div className="filter-section">
-  <h3>المشروع</h3>
-<FormControl
-  variant="standard"
-  fullWidth
-  sx={{
-    borderBottom: "1px solid #E0E0E0",
-    pb: 1,
-  }}
->
-  <Autocomplete
-    options={projects}
-    getOptionLabel={(option) => option.name}
-    value={
-      projects.find((project) => project.id === filters.project) || null
-    }
-    onChange={(event, value) => {
-      setFilters((prev) => ({
-        ...prev,
-        project: value?.id || null,
-      }));
-    }}
-    sx={{
-      "& .MuiInputBase-root": {
-        padding: 0,
-        minHeight: "40px",
-        
-      },
+              "& fieldset": {
+                border: "none",
+              },
 
-      "& fieldset": {
-        border: "none",
-      },
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
 
-      "& .MuiOutlinedInput-notchedOutline": {
-        border: "none",
-      },
+              "& input": {
+                textAlign: "right",
+                direction: "rtl",
+                // padding: "8px 0  !important",
+                fontSize: "16px !important",
+              },
 
-      "& input": {
-        textAlign: "right",
-        padding: "8px 0",
-        fontSize: "16px",
-      },
-
-      "& .MuiAutocomplete-endAdornment": {
-        left:"auto",
-        right: 0,
-      },
-    }}
-    renderInput={(params) => (
-      <TextField
-        {...params}
-        variant="outlined"
-        placeholder="ابحث عن مشروع"
-      />
-    )}
-  />
-</FormControl>
-</div>
+              "& .MuiAutocomplete-endAdornment": {
+                left: " 0 !important",
+                right: "auto !important",
+              },
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                placeholder="ابحث عن مشروع"
+              />
+            )}
+          />
+        </FormControl>
+      </div>
       {/* حالة الحملة */}
       <div className="filter-section">
         <h3>حالة الحملة</h3>
 
-        <label className="checkbox-row">
-          <input
-            type="checkbox"
-            name="completed"
-            checked={filters.status.includes("completed")}
-            onChange={handleStatusChange}
-          />
-          مكتملة
-        </label>
+        {statuses.map((status) => (
+          <label className="checkbox-row" key={status}>
+            <input
+              type="checkbox"
+              value={status}
+              checked={filters.status.includes(status)}
+              onChange={(e) => {
+                const { value, checked } = e.target;
 
-        <label className="checkbox-row">
-          <input
-            type="checkbox"
-            name="new"
-            checked={filters.status.includes("new")}
-            onChange={handleStatusChange}
-          />
-          جديدة
-        </label>
+                setFilters((prev) => ({
+                  ...prev,
+                  status: checked
+                    ? [...prev.status, value]
+                    : prev.status.filter((item) => item !== value),
+                }));
+              }}
+            />
 
-        <label className="checkbox-row">
-          <input
-            type="checkbox"
-            name="active"
-            checked={filters.status.includes("active")}
-            onChange={handleStatusChange}
-          />
-          نشطة
-        </label>
-
-        <label className="checkbox-row">
-          <input
-            type="checkbox"
-            name="ended"
-            checked={filters.status.includes("ended")}
-            onChange={handleStatusChange}
-          />
-          منتهية
-        </label>
+            {status}
+          </label>
+        ))}
       </div>
       <hr />
 
