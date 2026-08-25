@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -9,17 +9,17 @@ import {
   Divider,
   Grid,
   IconButton,
-  InputBase,
   Paper,
   Stack,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 
 import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
 import VolunteerActivismRoundedIcon from "@mui/icons-material/VolunteerActivismRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import CampaignRoundedIcon from "@mui/icons-material/CampaignRounded";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 
 import {
   LocationOn,
@@ -34,49 +34,10 @@ import {
   Facebook,
 } from "@mui/icons-material";
 
-import DonateButton from "../../components/DonateButton/DonateButton";
+import { useGetData } from "../../customHooks/reactQuery/useGetData";
+import { getProjectDetail } from "../../services/projects";
 
-/* =========================
-   DATA
-========================= */
-
-const requirements = [
-  {
-    title: "ترميم الفصول الدراسية",
-    desc: "إصلاح الجدران والأرضيات وطلاء الصفوف لبيئة تعليمية آمنة",
-  },
-  {
-    title: "تأهيل دورات المياه",
-    desc: "إعادة تجهيز المرافق الصحية بالكامل لتلبية احتياجات الطلاب",
-  },
-  {
-    title: "تجهيز مختبر الحاسوب",
-    desc: "توفير أجهزة حاسوب حديثة لتعليم المهارات الرقمية",
-  },
-  {
-    title: "إصلاح الأسقف",
-    desc: "معالجة التسريبات وتقوية البنية العلوية لضمان السلامة",
-  },
-];
-
-const costItems = [
-  { label: "ترميم الفصول الدراسية", amount: 3000 },
-  { label: "إصلاح الأسقف", amount: 2000 },
-  { label: "تأهيل دورات المياه", amount: 1000 },
-  { label: "تجهيز مختبر الحاسوب", amount: 1700 },
-  { label: "أعمال الطلاء", amount: 3000 },
-  { label: "شراء المقاعد المدرسية", amount: 1800 },
-];
-
-/* =========================
-   HERO IMAGES
-========================= */
-
-const heroImages = ["/school.jpeg", "/image 5.png"];
-
-/* =========================
-   SECTION TITLE
-========================= */
+const BASE_URL = "http://127.0.0.1:8000";
 
 const SECTION_TITLE_SX = {
   fontFamily: "'Cairo', sans-serif",
@@ -84,10 +45,17 @@ const SECTION_TITLE_SX = {
   fontWeight: 800,
   color: "var(--teal-900)",
 };
+function parseNumber(value) {
+  if (value === null || value === undefined) return 0;
+  const num = parseFloat(String(value).replace(/[^\d.-]/g, ""));
+  return isNaN(num) ? 0 : num;
+}
 
-/* =========================
-   ANIMATION HELPERS
-========================= */
+function buildImageUrl(path) {
+  if (!path) return null;
+  if (path.startsWith("http")) return path;
+  return `${BASE_URL}${path}`;
+}
 
 function useInView(threshold = 0.2) {
   const ref = useRef(null);
@@ -148,7 +116,6 @@ function Counter({ end, suffix = "", prefix = "", duration = 1200 }) {
 
     const step = (now) => {
       const progress = Math.min((now - start) / duration, 1);
-
       const eased = 1 - Math.pow(1 - progress, 3);
 
       setValue(Math.floor(eased * end));
@@ -181,39 +148,85 @@ export default function Project() {
   const { id } = useParams();
 
   const [showBreakdown, setShowBreakdown] = useState(false);
-
   const [amount, setAmount] = useState(50);
   const [customAmount, setCustomAmount] = useState("");
-
   const [shareOpen, setShareOpen] = useState(false);
-
   const [copied, setCopied] = useState(false);
-
   const [activeImg, setActiveImg] = useState(0);
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useGetData({
+    queryKey: ["project-detail", id],
+    queryFn: () => getProjectDetail(id),
+    enabled: !!id,
+  });
 
-  /* =========================
-     CALCULATIONS
-  ========================= */
+  const project = response?.data;
+  console.log("PROJECT CARD DATA:", project);
+  const totalCost = parseNumber(project?.estimated_cost);
+  const completion = parseNumber(project?.progress_percentage);
+  const costItems = (project?.details || []).map((d) => ({
+    label: d.detail,
+    amount: parseNumber(d.detail_cost),
+    paid: parseNumber(d.total_paid),
+  }));
+  const raised = costItems.reduce((sum, item) => sum + item.paid, 0);
 
-  const totalCost = costItems.reduce((sum, item) => sum + item.amount, 0);
+  const heroImages = [
+    buildImageUrl(project?.cover_image),
+    ...(project?.images || []).map((img) => buildImageUrl(img.url)),
+  ].filter(Boolean);
 
-  const completion = 21;
-
-  const raised = Math.round((totalCost * completion) / 100);
-
-  const supportersCount = 34;
+  const locationText = project?.district
+    ? `${project.district.city?.governorate?.governorate_name || ""}، ${
+        project.district.city?.city_name || ""
+      } — حي ${project.district.district_name}`
+    : "";
 
   const quickAmounts = [25, 50, 100, 250];
-
   const finalAmount = customAmount ? Number(customAmount) : amount;
-
   const circumference = 2 * Math.PI * 42;
-
   const dashOffset = circumference - (circumference * completion) / 100;
 
-  /* =========================
-     HERO CAROUSEL
-  ========================= */
+  const stats = project
+    ? [
+        {
+          icon: VerifiedRoundedIcon,
+          isNumber: true,
+          num: completion,
+          suffix: "%",
+          label: "نسبة الإنجاز",
+        },
+        {
+          icon: VolunteerActivismRoundedIcon,
+          isNumber: true,
+          num: raised,
+          prefix: "$",
+          label: "تم جمعه",
+        },
+        {
+          icon: AttachMoneyRoundedIcon,
+          isNumber: true,
+          num: totalCost,
+          prefix: "$",
+          label: "التكلفة الإجمالية",
+        },
+        {
+          icon: CampaignRoundedIcon,
+          isNumber: false,
+          value: project.funding_source,
+          label: "الجهة الممولة",
+        },
+        {
+          icon: GroupsRoundedIcon,
+          isNumber: false,
+          value: project.Implementing_party,
+          label: "الجهة المنفذة",
+        },
+      ]
+    : [];
 
   const nextImg = () => {
     setActiveImg((current) => (current + 1) % heroImages.length);
@@ -224,11 +237,6 @@ export default function Project() {
       (current) => (current - 1 + heroImages.length) % heroImages.length,
     );
   };
-
-  /* =========================
-     COPY LINK
-  ========================= */
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -237,63 +245,40 @@ export default function Project() {
     }
 
     setCopied(true);
-
     setTimeout(() => setCopied(false), 1800);
   };
 
-  /* =========================
-     DONATION OPTIONS
-  ========================= */
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          minHeight: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress sx={{ color: "var(--gold)" }} />
+      </Box>
+    );
+  }
 
-  const donateOptions = [
-    {
-      label: "تبرع مباشر",
-      onClick: () => navigate("/donate"),
-    },
-    {
-      label: "تعهد",
-      onClick: () => navigate(`/campaign/${id}/pledge`),
-    },
-  ];
-
-  /* =========================
-     STATS
-  ========================= */
-
-  const stats = [
-    {
-      icon: VerifiedRoundedIcon,
-      isNumber: true,
-      num: completion,
-      suffix: "%",
-      label: "نسبة الإنجاز",
-    },
-    {
-      icon: VolunteerActivismRoundedIcon,
-      isNumber: true,
-      num: raised,
-      prefix: "$",
-      label: "تم جمعه",
-    },
-    {
-      icon: GroupsRoundedIcon,
-      isNumber: true,
-      num: supportersCount,
-      label: "داعم ساهم بالمشروع",
-    },
-    {
-      icon: CampaignRoundedIcon,
-      isNumber: false,
-      value: "مؤسسة التعليم والتنمية",
-      label: "الجهة الممولة",
-    },
-    {
-      icon: GroupsRoundedIcon,
-      isNumber: false,
-      value: "منظمات محلية شريكة",
-      label: "الجهة المنفذة",
-    },
-  ];
+  if (isError || !project) {
+    return (
+      <Box
+        sx={{
+          minHeight: "60vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography sx={{ color: "var(--muted)", fontSize: 16 }}>
+          تعذر تحميل بيانات المشروع، حاول مرة أخرى
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -317,7 +302,6 @@ export default function Project() {
           0% {
             box-shadow: 0 0 0 0 rgba(201,162,75,0.35);
           }
-
           100% {
             box-shadow: 0 0 0 18px rgba(201,162,75,0);
           }
@@ -328,7 +312,6 @@ export default function Project() {
             opacity: 0;
             transform: scale(1.03);
           }
-
           to {
             opacity: 1;
             transform: scale(1);
@@ -336,38 +319,32 @@ export default function Project() {
         }
       `}</style>
 
-      {/* =========================
-          HERO
-      ========================= */}
-
       <Box
         sx={{
           position: "relative",
-          minHeight: {
-            xs: 480,
-            md: 600,
-          },
+          minHeight: { xs: 480, md: 600 },
           display: "flex",
           alignItems: "center",
           overflow: "hidden",
         }}
       >
-        <Box
-          key={activeImg}
-          component="img"
-          src={heroImages[activeImg]}
-          alt="صورة المشروع"
-          sx={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            animation: "fadeInImage .5s ease",
-          }}
-        />
+        {heroImages.length > 0 && (
+          <Box
+            key={activeImg}
+            component="img"
+            src={heroImages[activeImg]}
+            alt="صورة المشروع"
+            sx={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              animation: "fadeInImage .5s ease",
+            }}
+          />
+        )}
 
-        {/* الطبقة الخفيفة فوق الصورة */}
         <Box
           sx={{
             position: "absolute",
@@ -377,16 +354,11 @@ export default function Project() {
           }}
         />
 
-        {/* حالة المشروع */}
         <Chip
           icon={
-            <CampaignRoundedIcon
-              sx={{
-                color: "var(--gold) !important",
-              }}
-            />
+            <CampaignRoundedIcon sx={{ color: "var(--gold) !important" }} />
           }
-          label="قيد التنفيذ"
+          label={project.status}
           sx={{
             position: "absolute",
             top: 28,
@@ -401,15 +373,7 @@ export default function Project() {
           }}
         />
 
-        {/* المشاركة */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 28,
-            left: 24,
-            zIndex: 3,
-          }}
-        >
+        <Box sx={{ position: "absolute", top: 28, left: 24, zIndex: 3 }}>
           <IconButton
             onClick={() => setShareOpen((current) => !current)}
             aria-label="مشاركة المشروع"
@@ -419,9 +383,7 @@ export default function Project() {
               color: "var(--white)",
               backgroundColor: "rgba(255,255,255,0.14)",
               backdropFilter: "blur(6px)",
-              "&:hover": {
-                backgroundColor: "rgba(255,255,255,0.25)",
-              },
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.25)" },
             }}
           >
             <Share sx={{ fontSize: 18 }} />
@@ -453,9 +415,7 @@ export default function Project() {
                   fontFamily: "'IBM Plex Sans Arabic', sans-serif",
                   fontSize: "14.5px",
                   textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.05)",
-                  },
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
                 }}
               >
                 واتساب
@@ -463,13 +423,7 @@ export default function Project() {
 
               <Button
                 fullWidth
-                startIcon={
-                  <Facebook
-                    sx={{
-                      color: "#3b5998",
-                    }}
-                  />
-                }
+                startIcon={<Facebook sx={{ color: "#3b5998" }} />}
                 sx={{
                   justifyContent: "flex-start",
                   gap: 1,
@@ -480,9 +434,7 @@ export default function Project() {
                   fontFamily: "'IBM Plex Sans Arabic', sans-serif",
                   fontSize: "14.5px",
                   textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.05)",
-                  },
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
                 }}
               >
                 فيسبوك
@@ -493,17 +445,9 @@ export default function Project() {
                 onClick={handleCopy}
                 startIcon={
                   copied ? (
-                    <Check
-                      sx={{
-                        color: "var(--teal-700)",
-                      }}
-                    />
+                    <Check sx={{ color: "var(--teal-700)" }} />
                   ) : (
-                    <LinkIcon
-                      sx={{
-                        color: "var(--muted)",
-                      }}
-                    />
+                    <LinkIcon sx={{ color: "var(--muted)" }} />
                   )
                 }
                 sx={{
@@ -516,9 +460,7 @@ export default function Project() {
                   fontFamily: "'IBM Plex Sans Arabic', sans-serif",
                   fontSize: "14.5px",
                   textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.05)",
-                  },
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
                 }}
               >
                 {copied ? "تم نسخ الرابط" : "نسخ الرابط"}
@@ -527,7 +469,6 @@ export default function Project() {
           )}
         </Box>
 
-        {/* أسهم الصور */}
         {heroImages.length > 1 && (
           <>
             <IconButton
@@ -544,9 +485,7 @@ export default function Project() {
                 color: "var(--white)",
                 backgroundColor: "rgba(255,255,255,0.14)",
                 backdropFilter: "blur(6px)",
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.28)",
-                },
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.28)" },
               }}
             >
               <ChevronRight sx={{ fontSize: 20 }} />
@@ -566,9 +505,7 @@ export default function Project() {
                 color: "var(--white)",
                 backgroundColor: "rgba(255,255,255,0.14)",
                 backdropFilter: "blur(6px)",
-                "&:hover": {
-                  backgroundColor: "rgba(255,255,255,0.28)",
-                },
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.28)" },
               }}
             >
               <ChevronLeft sx={{ fontSize: 20 }} />
@@ -576,33 +513,18 @@ export default function Project() {
           </>
         )}
 
-        {/* محتوى Hero */}
-        <Container
-          maxWidth="lg"
-          sx={{
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          <Stack
-            spacing={2.5}
-            sx={{
-              width: "100%",
-            }}
-          >
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
+          <Stack spacing={2.5} sx={{ width: "100%" }}>
             <Typography
               component="h1"
               sx={{
-                fontSize: {
-                  xs: 32,
-                  md: 54,
-                },
+                fontSize: { xs: 32, md: 54 },
                 fontWeight: 900,
                 lineHeight: 1.3,
                 color: "var(--white)",
               }}
             >
-              إعادة تأهيل مدرسة الوعر الابتدائية
+              {project.name}
             </Typography>
 
             <Stack
@@ -611,83 +533,44 @@ export default function Project() {
               justifyContent="center"
               gap={2.5}
             >
-              <Stack direction="row" spacing={0.75} alignItems="center">
-                <LocationOn
-                  sx={{
-                    fontSize: 20,
-                    color: "var(--gold)",
-                  }}
-                />
+              {locationText && (
+                <Stack direction="row" spacing={0.75} alignItems="center">
+                  <LocationOn sx={{ fontSize: 20, color: "var(--gold)" }} />
+                  <Typography
+                    sx={{ color: "rgba(247,249,249,0.9)", fontSize: 15.5 }}
+                  >
+                    {locationText}
+                  </Typography>
+                </Stack>
+              )}
 
-                <Typography
-                  sx={{
-                    color: "rgba(247,249,249,0.9)",
-                    fontSize: 15.5,
-                  }}
-                >
-                  حمص، مدينة حمص — حي الوعر
-                </Typography>
-              </Stack>
-
-              <Stack direction="row" spacing={0.75} alignItems="center">
-                <School
-                  sx={{
-                    fontSize: 20,
-                    color: "var(--gold)",
-                  }}
-                />
-
-                <Typography
-                  sx={{
-                    color: "rgba(247,249,249,0.9)",
-                    fontSize: 15.5,
-                  }}
-                >
-                  القطاع التعليمي
-                </Typography>
-              </Stack>
+              {project.sector && (
+                <Stack direction="row" spacing={0.75} alignItems="center">
+                  <School sx={{ fontSize: 20, color: "var(--gold)" }} />
+                  <Typography
+                    sx={{ color: "rgba(247,249,249,0.9)", fontSize: 15.5 }}
+                  >
+                    {project.sector}
+                  </Typography>
+                </Stack>
+              )}
             </Stack>
           </Stack>
         </Container>
       </Box>
-
-      {/* =========================
-          STATS
-      ========================= */}
-
-      <FadeSection
-        sx={{
-          px: {
-            xs: 2.5,
-            sm: 5,
-          },
-          py: {
-            xs: 6,
-            md: 8,
-          },
-        }}
-      >
+      <FadeSection sx={{ px: { xs: 2.5, sm: 5 }, py: { xs: 6, md: 8 } }}>
         <Box
           sx={{
             display: "flex",
-            flexWrap: {
-              xs: "wrap",
-              md: "nowrap",
-            },
-            gap: {
-              xs: 4,
-              md: 5,
-            },
+            flexWrap: { xs: "wrap", md: "nowrap" },
+            gap: { xs: 4, md: 5 },
           }}
         >
           {stats.map((s, i) => (
             <Box
               key={i}
               sx={{
-                flex: {
-                  xs: "0 0 calc(50% - 16px)",
-                  md: "1 1 0",
-                },
+                flex: { xs: "0 0 calc(50% - 16px)", md: "1 1 0" },
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -711,11 +594,7 @@ export default function Project() {
                     justifyContent: "center",
                   }}
                 >
-                  <s.icon
-                    sx={{
-                      fontSize: 34,
-                    }}
-                  />
+                  <s.icon sx={{ fontSize: 34 }} />
                 </Box>
 
                 <Typography
@@ -758,34 +637,20 @@ export default function Project() {
         </Box>
       </FadeSection>
 
-      {/* =========================
-          BODY
-      ========================= */}
-
       <Box
         sx={{
-          px: {
-            xs: 2.5,
-            sm: 5,
-          },
+          px: { xs: 2.5, sm: 5 },
           display: "flex",
           flexDirection: "column",
           gap: 3,
         }}
       >
-        {/* =========================
-            ABOUT PROJECT
-        ========================= */}
-
         <FadeSection>
           <Card
             elevation={0}
             sx={{
               borderRadius: "24px",
-              p: {
-                xs: 3,
-                md: 5,
-              },
+              p: { xs: 3, md: 5 },
               backgroundColor: "var(--white)",
               border: "1px solid var(--border-grey)",
               boxShadow: "var(--shadow-1)",
@@ -793,7 +658,6 @@ export default function Project() {
               position: "relative",
             }}
           >
-            {/* الخط الذهبي الجانبي */}
             <Box
               sx={{
                 position: "absolute",
@@ -805,119 +669,53 @@ export default function Project() {
               }}
             />
 
-            <Grid
-              container
-              spacing={{
-                xs: 3,
-                md: 6,
-              }}
-              alignItems="center"
-            >
-              {/* النص */}
+            <Grid container spacing={{ xs: 3, md: 6 }} alignItems="center">
               <Grid item xs={12} md={8}>
                 <Stack spacing={2}>
-                  <Stack direction="row" spacing={1.2} alignItems="center">
-                    {/* <InfoRoundedIcon
-                      sx={{
-                        color: "var(--gold)",
-                        fontSize: 28,
-                      }}
-                    /> */}
+                  <Typography
+                    sx={{ ...SECTION_TITLE_SX, fontSize: { xs: 22, md: 26 } }}
+                  >
+                    عن المشروع
+                  </Typography>
 
-                    <Typography
+                  <Box sx={{ display: "flex" }}>
+                    <Box
                       sx={{
-                        ...SECTION_TITLE_SX,
-                        fontSize: {
-                          xs: 22,
-                          md: 26,
-                        },
+                        width: 32,
+                        height: 32,
+                        flexShrink: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      عن المشروع
+                      <VolunteerActivismRoundedIcon
+                        sx={{ fontSize: 24, color: "var(--gold)" }}
+                      />
+                    </Box>
+                    <Typography
+                      sx={{
+                        color: "var(--desc-color)",
+                        fontSize: { xs: "14.5px", md: 15 },
+                        lineHeight: 2.2,
+                        maxWidth: 1400,
+                      }}
+                    >
+                      {project.requirements}
                     </Typography>
-                  </Stack>
-
-                  <Typography
-                    sx={{
-                      color: "var(--desc-color)",
-                      fontSize: {
-                        xs: "14.5px",
-                        md: 15,
-                      },
-                      lineHeight: 2.2,
-                      maxWidth: 1400,
-                    }}
-                  >
-                    تعرضت مدرسة الوعر الابتدائية لأضرار جسيمة أثرت على قدرتها
-                    على استقبال الطلاب في بيئة آمنة. يهدف هذا المشروع إلى إعادة
-                    تأهيل المدرسة بالكامل، بدءاً من ترميم الفصول الدراسية وصولاً
-                    إلى تجهيز مختبر حاسوب حديث، ليعود أكثر من ٣٠٠ طالب وطالبة
-                    إلى مقاعد الدراسة في مطلع العام الدراسي القادم.
-                  </Typography>
+                  </Box>
                 </Stack>
               </Grid>
-
-              {/* عدد المستفيدين */}
-              {/* <Grid item xs={12} md={4}>
-                <Box
-                  sx={{
-                    backgroundColor: "var(--bg)",
-                    borderRadius: "18px",
-                    p: 3,
-                    textAlign: "center",
-                    border: "1px solid var(--border-grey)",
-                  }}
-                >
-                  <School
-                    sx={{
-                      fontSize: 38,
-                      color: "var(--gold)",
-                      mb: 1,
-                    }}
-                  />
-
-                  <Typography
-                    sx={{
-                      fontSize: 24,
-                      fontWeight: 800,
-                      color: "var(--teal-900)",
-                      fontFamily: "'Cairo', sans-serif",
-                    }}
-                  >
-                    +300
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      mt: 0.5,
-                      color: "var(--muted)",
-                      fontSize: 13.5,
-                      lineHeight: 1.8,
-                    }}
-                  >
-                    طالب وطالبة
-                    <br />
-                    مستفيدون من المشروع
-                  </Typography>
-                </Box>
-              </Grid> */}
             </Grid>
           </Card>
         </FadeSection>
 
-        {/* =========================
-            REQUIREMENTS
-        ========================= */}
-
-        <FadeSection delay={0.05}>
+        {/* <FadeSection delay={0.05}>
           <Card
             elevation={0}
             sx={{
               borderRadius: "24px",
-              p: {
-                xs: 3,
-                md: 5,
-              },
+              p: { xs: 3, md: 5 },
               backgroundColor: "var(--white)",
               border: "1px solid var(--border-grey)",
               boxShadow: "var(--shadow-1)",
@@ -925,8 +723,6 @@ export default function Project() {
               position: "relative",
             }}
           >
-            {" "}
-            {/* الخط الذهبي الجانبي */}
             <Box
               sx={{
                 position: "absolute",
@@ -937,6 +733,7 @@ export default function Project() {
                 backgroundColor: "var(--gold)",
               }}
             />
+
             <Typography
               component="h2"
               sx={{
@@ -949,32 +746,27 @@ export default function Project() {
             >
               ماذا سيشمل تبرعك
             </Typography>
+
             <Box
               sx={{
                 display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "repeat(2, 1fr)",
-                },
+                gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" },
                 gap: 1.5,
               }}
             >
-              {requirements.map((requirement) => (
+              {requirementsList.map((title) => (
                 <Box
-                  key={requirement.title}
+                  key={title}
                   sx={{
                     display: "flex",
-                    alignItems: "flex-start",
+                    alignItems: "center",
                     gap: 1.5,
                     p: 1.75,
                     borderRadius: "var(--radius-md)",
                     backgroundColor: "var(--bg)",
                     border: "1px solid var(--border-grey)",
-
                     transition: "transform .25s ease",
-                    "&:hover": {
-                      transform: "translateY(-3px)",
-                    },
+                    "&:hover": { transform: "translateY(-3px)" },
                   }}
                 >
                   <Box
@@ -988,41 +780,24 @@ export default function Project() {
                     }}
                   >
                     <VolunteerActivismRoundedIcon
-                      sx={{
-                        fontSize: 24,
-                        color: "var(--gold)",
-                      }}
+                      sx={{ fontSize: 24, color: "var(--gold)" }}
                     />
                   </Box>
 
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "var(--ink)",
-                        fontSize: "14.5px",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {requirement.title}
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        mt: 0.25,
-                        color: "var(--desc-color)",
-                        fontSize: "14.5px",
-                        lineHeight: 2,
-                        fontWeight: 400,
-                      }}
-                    >
-                      {requirement.desc}
-                    </Typography>
-                  </Box>
+                  <Typography
+                    sx={{
+                      color: "var(--ink)",
+                      fontSize: "14.5px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {title}
+                  </Typography>
                 </Box>
               ))}
             </Box>
           </Card>
-        </FadeSection>
+        </FadeSection> */}
 
         {/* =========================
             COST TRANSPARENCY
@@ -1033,10 +808,7 @@ export default function Project() {
             elevation={0}
             sx={{
               borderRadius: "24px",
-              p: {
-                xs: 3,
-                md: 5,
-              },
+              p: { xs: 3, md: 5 },
               backgroundColor: "var(--white)",
               border: "1px solid var(--border-grey)",
               boxShadow: "var(--shadow-1)",
@@ -1044,8 +816,6 @@ export default function Project() {
               position: "relative",
             }}
           >
-            {" "}
-            {/* الخط الذهبي الجانبي */}
             <Box
               sx={{
                 position: "absolute",
@@ -1056,6 +826,7 @@ export default function Project() {
                 backgroundColor: "var(--gold)",
               }}
             />
+
             <Button
               onClick={() => setShowBreakdown((current) => !current)}
               fullWidth
@@ -1066,19 +837,11 @@ export default function Project() {
                 p: 0,
                 color: "var(--ink)",
                 textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
+                "&:hover": { backgroundColor: "transparent" },
               }}
             >
               <Stack direction="row" spacing={1} alignItems="center">
-                <AutoAwesome
-                  sx={{
-                    fontSize: 18,
-                    color: "var(--gold)",
-                  }}
-                />
-
+                <AutoAwesome sx={{ fontSize: 18, color: "var(--gold)" }} />
                 <Typography
                   sx={{
                     color: "var(--ink)",
@@ -1108,7 +871,6 @@ export default function Project() {
                 }}
               >
                 {showBreakdown ? "إخفاء التفاصيل" : "عرض تفاصيل التكلفة"}
-
                 <KeyboardArrowDown
                   sx={{
                     fontSize: "14.5px",
@@ -1120,6 +882,7 @@ export default function Project() {
                 />
               </Box>
             </Button>
+
             {!showBreakdown && (
               <Typography
                 sx={{
@@ -1130,23 +893,19 @@ export default function Project() {
                 }}
               >
                 التكلفة الإجمالية للمشروع{" "}
-                <Box
-                  component="strong"
-                  sx={{
-                    color: "var(--ink)",
-                  }}
-                >
+                <Box component="strong" sx={{ color: "var(--ink)" }}>
                   ${totalCost.toLocaleString()}
                 </Box>
                 . اضغط لعرض توزيع المبلغ على كل بند.
               </Typography>
             )}
+
             {showBreakdown && (
               <Stack spacing={1.5} sx={{ mt: 2 }}>
                 {costItems.map((item) => {
-                  const percentage = Math.round(
-                    (item.amount / totalCost) * 100,
-                  );
+                  const percentage = totalCost
+                    ? Math.round((item.amount / totalCost) * 100)
+                    : 0;
 
                   return (
                     <Box key={item.label}>
@@ -1159,19 +918,12 @@ export default function Project() {
                         }}
                       >
                         <Typography
-                          sx={{
-                            color: "var(--ink)",
-                            fontSize: "14.5px",
-                          }}
+                          sx={{ color: "var(--ink)", fontSize: "14.5px" }}
                         >
                           {item.label}
                         </Typography>
-
                         <Typography
-                          sx={{
-                            color: "var(--muted)",
-                            fontSize: "14.5px",
-                          }}
+                          sx={{ color: "var(--muted)", fontSize: "14.5px" }}
                         >
                           ${item.amount.toLocaleString()}
                         </Typography>
@@ -1199,12 +951,7 @@ export default function Project() {
                   );
                 })}
 
-                <Divider
-                  sx={{
-                    borderColor: "var(--border-grey)",
-                    mt: 0.5,
-                  }}
-                />
+                <Divider sx={{ borderColor: "var(--border-grey)", mt: 0.5 }} />
 
                 <Box
                   sx={{
@@ -1223,7 +970,6 @@ export default function Project() {
                   >
                     الإجمالي
                   </Typography>
-
                   <Typography
                     sx={{
                       color: "var(--teal-800)",
@@ -1239,257 +985,6 @@ export default function Project() {
           </Card>
         </FadeSection>
       </Box>
-
-      {/* =========================
-          DONATE CTA
-      ========================= */}
-
-      {/* <FadeSection
-        sx={{
-          px: {
-            xs: 2.5,
-            sm: 5,
-          },
-          py: {
-            xs: 8,
-            md: 10,
-          },
-        }}
-      >
-        <Box
-          sx={{
-            textAlign: "center",
-            maxWidth: 640,
-            mx: "auto",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: 24,
-                md: 30,
-              },
-              fontWeight: 800,
-              color: "var(--teal-900)",
-              mb: 2,
-              fontFamily: "'Cairo', sans-serif",
-            }}
-          >
-            كن جزءاً من إعادة إعمار هذه المدرسة
-          </Typography>
-
-          <Typography
-            sx={{
-              fontSize: 16,
-              color: "var(--muted)",
-              lineHeight: 2,
-              mb: 4,
-            }}
-          >
-            تبرعك، مهما كان حجمه، يقرّب أكثر من ٣٠٠ طالب وطالبة خطوة من العودة
-            إلى صفوف آمنة ومجهزة بالكامل.
-          </Typography>
-
-
-          <Stack
-            direction="row"
-            spacing={3}
-            sx={{ mb: 4, justifyContent: "center", alignItems: "center" }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                width: 92,
-                height: 92,
-                flexShrink: 0,
-              }}
-            >
-              <Box
-                component="svg"
-                viewBox="0 0 100 100"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  transform: "rotate(-90deg)",
-                }}
-              >
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  fill="none"
-                  stroke="var(--border-grey)"
-                  strokeWidth="8"
-                />
-
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  fill="none"
-                  stroke="var(--gold)"
-                  strokeWidth="8"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={dashOffset}
-                  strokeLinecap="round"
-                  style={{
-                    transition: "stroke-dashoffset 1s ease",
-                  }}
-                />
-              </Box>
-
-              <Box
-                sx={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "var(--teal-900)",
-                    fontFamily: "'Cairo', sans-serif",
-                    fontSize: 18,
-                    fontWeight: 800,
-                  }}
-                >
-                  {completion}%
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                textAlign: "right",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "var(--muted)",
-                  fontSize: "14.5px",
-                  mb: 0.5,
-                }}
-              >
-                تم جمعه من أصل ${totalCost.toLocaleString()}
-              </Typography>
-
-              <Typography
-                sx={{
-                  color: "var(--teal-900)",
-                  fontFamily: "'Cairo', sans-serif",
-                  fontSize: 28,
-                  fontWeight: 800,
-                }}
-              >
-                ${raised.toLocaleString()}
-              </Typography>
-            </Box>
-          </Stack>
-
-
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 1.25,
-              maxWidth: 420,
-              mx: "auto",
-              mb: 2,
-            }}
-          >
-            {quickAmounts.map((quickAmount) => {
-              const selected = amount === quickAmount && !customAmount;
-
-              return (
-                <Button
-                  key={quickAmount}
-                  onClick={() => {
-                    setAmount(quickAmount);
-                    setCustomAmount("");
-                  }}
-                  sx={{
-                    py: 1.2,
-                    borderRadius: "var(--radius-sm)",
-                    backgroundColor: selected ? "var(--gold)" : "var(--tint)",
-                    color: selected ? "var(--ink)" : "var(--teal-800)",
-                    fontWeight: 700,
-                    fontSize: 13,
-                    textTransform: "none",
-                    transition: "all .2s ease",
-                    "&:hover": {
-                      backgroundColor: selected
-                        ? "var(--gold)"
-                        : "var(--tint-deep)",
-                    },
-                  }}
-                >
-                  ${quickAmount}
-                </Button>
-              );
-            })}
-          </Box>
-
-          <Paper
-            elevation={0}
-            sx={{
-              maxWidth: 420,
-              mx: "auto",
-              mb: 3.5,
-              px: 2,
-              borderRadius: "var(--radius-sm)",
-              backgroundColor: "var(--bg)",
-              border: "1px solid var(--border-grey)",
-            }}
-          >
-            <InputBase
-              value={customAmount}
-              onChange={(event) =>
-                setCustomAmount(event.target.value.replace(/\D/g, ""))
-              }
-              placeholder="مبلغ آخر بالدولار"
-              fullWidth
-              sx={{
-                textAlign: "center",
-                color: "var(--ink)",
-                fontSize: "14.5px",
-                "& input": {
-                  py: 1.2,
-                  textAlign: "center",
-                },
-                "& input::placeholder": {
-                  color: "var(--muted)",
-                  opacity: 1,
-                  fontSize: 13,
-                },
-              }}
-            />
-          </Paper>
-
-          <DonateButton
-            buttonText={`تبرع الآن بـ $${finalAmount || 0}`}
-            options={donateOptions}
-            sx={{
-              height: 60,
-              width: 300,
-              maxWidth: "100%",
-              mx: "auto",
-              borderRadius: "var(--radius-md)",
-              background: "var(--gold)",
-              color: "var(--ink)",
-              fontFamily: "'Cairo', sans-serif",
-              fontSize: "18px",
-              fontWeight: 700,
-              animation: "pulseRing 2.4s infinite",
-              "&:hover": {
-                background: "var(--gold)",
-                opacity: 0.9,
-              },
-            }}
-          />
-        </Box>
-      </FadeSection> */}
     </Box>
   );
 }

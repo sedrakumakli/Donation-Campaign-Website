@@ -7,17 +7,17 @@ import {
   Button,
   Chip,
   Stack,
-} from '@mui/material';
+} from "@mui/material";
 
-import { useNavigate } from 'react-router-dom';
-import DonateButton from '../DonateButton/DonateButton';
-import config from '../../constants/enviroment';
+import { useNavigate } from "react-router-dom";
+import DonateButton from "../DonateButton/DonateButton";
+import config from "../../constants/enviroment";
 
 const statusColors = {
-  نشطة: 'success',
-  مكتملة: 'primary',
-  منتهية: 'warning',
-  جديدة: 'default',
+  نشطة: "success",
+  مكتملة: "primary",
+  منتهية: "warning",
+  جديدة: "default",
 };
 
 const CampaignCard = ({ campaign }) => {
@@ -28,38 +28,38 @@ const CampaignCard = ({ campaign }) => {
   return (
     <Card
       sx={{
-        width: '100%',
+        width: "100%",
         borderRadius: 3,
-        border: '1px solid #E0E0E0',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        transition: '0.3s',
-        boxShadow: 'none',
-        '&:hover': {
-          transform: 'translateY(-6px)',
+        border: "1px solid #E0E0E0",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        transition: "0.3s",
+        boxShadow: "none",
+        "&:hover": {
+          transform: "translateY(-6px)",
           boxShadow: 6,
         },
       }}
     >
       {/* IMAGE */}
-      <Box sx={{ position: 'relative' }}>
+      <Box sx={{ position: "relative" }}>
         <CardMedia
-          component='img'
-          height='200'
+          component="img"
+          height="200"
           image={config.baseUrl + campaignInfo?.image}
           alt={campaignInfo.name}
         />
 
         <Chip
           label={campaignInfo.status}
-          color={statusColors[campaignInfo.status] || 'default'}
-          size='small'
+          color={statusColors[campaignInfo.status] || "default"}
+          size="small"
           sx={{
-            position: 'absolute',
+            position: "absolute",
             top: 12,
             right: 12,
-            fontWeight: 'bold',
+            fontWeight: "bold",
           }}
         />
       </Box>
@@ -68,9 +68,9 @@ const CampaignCard = ({ campaign }) => {
       <CardContent sx={{ px: 2 }}>
         {/* TITLE */}
         <Typography
-          variant='h6'
-          sx={{ fontWeight: '600', height: '64px' }}
-          textAlign='center'
+          variant="h6"
+          sx={{ fontWeight: "600", height: "64px" }}
+          textAlign="center"
         >
           {campaignInfo.name}
         </Typography>
@@ -78,29 +78,29 @@ const CampaignCard = ({ campaign }) => {
         {/* AMOUNTS */}
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
+            display: "flex",
+            justifyContent: "space-between",
             mt: 2,
           }}
         >
           <Box>
-            <Typography sx={{ color: 'var(--desc-color)' }} variant='caption'>
+            <Typography sx={{ color: "var(--desc-color)" }} variant="caption">
               المبلغ المجموع
             </Typography>
             <Typography
-              sx={{ fontWeight: '600' }}
-              fontWeight='bold'
-              color='var(--main-color)'
+              sx={{ fontWeight: "600" }}
+              fontWeight="bold"
+              color="var(--main-color)"
             >
               {campaignInfo.collected_amount}
             </Typography>
           </Box>
 
-          <Box textAlign='right'>
-            <Typography variant='caption' sx={{ color: 'var(--desc-color)' }}>
+          <Box textAlign="right">
+            <Typography variant="caption" sx={{ color: "var(--desc-color)" }}>
               الهدف
             </Typography>
-            <Typography sx={{ fontWeight: '600' }}>
+            <Typography sx={{ fontWeight: "600" }}>
               {campaignInfo.target_amount}
             </Typography>
           </Box>
@@ -111,16 +111,16 @@ const CampaignCard = ({ campaign }) => {
           <Box
             sx={{
               height: 10,
-              background: '#E0E0E0',
+              background: "#E0E0E0",
               borderRadius: 5,
-              overflow: 'hidden',
+              overflow: "hidden",
             }}
           >
             <Box
               sx={{
                 width: `${campaignInfo.progress || 0}%`,
-                height: '100%',
-                background: 'var(--main-color)',
+                height: "100%",
+                background: "var(--main-color)",
               }}
             />
           </Box>
@@ -129,50 +129,50 @@ const CampaignCard = ({ campaign }) => {
             mt={1}
             sx={{
               mt: 1,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
-            fontWeight='bold'
+            fontWeight="bold"
           >
             <Typography
-              variant='caption'
-              sx={{ color: 'var(--secondary-color)' }}
+              variant="caption"
+              sx={{ color: "var(--secondary-color)" }}
             >
               نسبة الإنجاز:
             </Typography>
-            <Typography variant='caption'>
+            <Typography variant="caption">
               {campaignInfo.progress || 0}%
             </Typography>
           </Typography>
         </Box>
 
         {/* BUTTONS */}
-        <Stack direction='row' spacing={2} sx={{ mt: 3 }}>
+        <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
           <DonateButton
             options={[
               {
-                label: 'تبرع مباشر',
+                label: "تبرع مباشر",
                 onClick: () => navigate(`/donate?id=${campaignInfo.uuid}`),
               },
               {
-                label: 'تعهد',
+                label: "تعهد",
                 onClick: () => navigate(`/pledge?id=${campaignInfo.uuid}`),
               },
             ]}
-            sx={{ flex: 1, fontSize: '14px' }}
-            buttonText='تبرع'
+            sx={{ flex: 1, fontSize: "14px" }}
+            buttonText="تبرع"
           />
 
           <Button
-            variant='outlined'
+            variant="outlined"
             sx={{
               width: 120,
-              fontWeight: 'bold',
-              color: 'var(--main-color)',
-              border: '1px solid #E0E0E0',
+              fontWeight: "bold",
+              color: "var(--main-color)",
+              border: "1px solid #E0E0E0",
               borderRadius: 2,
-              display: 'flex',
+              display: "flex",
             }}
             onClick={() => navigate(`/campaign/${campaignInfo.uuid}`)}
           >
