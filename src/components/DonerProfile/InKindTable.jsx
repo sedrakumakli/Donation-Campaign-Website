@@ -4,6 +4,7 @@ import {
   ITEM_CONDITION,
   DELIVERY_STATUS,
 } from "./constants";
+import config from "../../constants/enviroment";
 const InKindTable = ({ rows }) => {
   return (
     <div className="hf-table-wrap">
@@ -21,37 +22,38 @@ const InKindTable = ({ rows }) => {
         </thead>
         <tbody>
           {rows?.map((row) => {
+
             const condition =
-              ITEM_CONDITION[row.condition] || {
+              ITEM_CONDITION[row.status_of_materail] || {
                 tone: "gray",
-                label: row.condition,
+                label: row.status_of_materail,
               };
 
             const delivery =
-              DELIVERY_STATUS[row.delivery] || {
+              DELIVERY_STATUS[row.status] || {
                 tone: "gray",
-                label: row.delivery,
+                label: row.status,
               };
             return (
-              <tr key={row.id}>
+              <tr key={row.uuid}>
                 <td>
                   <div className="hf-table__thumb">
-                    {row.image ? (
-                      <img src={row.image} alt={row.name} />
+                    {row.images?.[0]?.url? (
+                      <img src={config.baseUrl + row.images[0].url} alt={row.name_of_material} />
                     ) : (
                       <ImageIcon size={16} strokeWidth={1.75} />
                     )}
                   </div>
                 </td>
-                <td className="hf-table__name">{row.name}</td>
-                <td className="hf-table__muted">{row.category}</td>
+                <td className="hf-table__name">{row.name_of_material}</td>
+                <td className="hf-table__muted">{row.type === "غير ذلك" ? row.on_the_other_hand : row.type}</td>
                 <td>
                   <span className="hf-table__location">
                     <MapPin size={14} strokeWidth={2} />
-                    {row.location}
+                    {row?.governorate?.governorate_name}
                   </span>
                 </td>
-                <td className="hf-table__amount">{row.quantity}</td>
+                <td className="hf-table__amount">{row.amount}</td>
                 <td>
                   <StatusPill tone={condition.tone} label={condition.label} />
                 </td>
