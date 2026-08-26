@@ -22,6 +22,8 @@ import DonorProfilePage from './Pages/DonerProfilePage/DonerProfilePage';
 import FAQSection from './Pages/FAQSection/FAQSection.jsx';
 import PledgePage from './Pages/Donate/PledgePage.jsx';
 import Project from './Pages/Project/project.jsx';
+import CompletePledge from './Pages/Donate/CompletePledge.jsx';
+import CompleteDateErrPayment from './Pages/Donate/CompleteDateErrPayment.jsx';
 
 function App() {
   console.log('object'.to);
@@ -51,6 +53,11 @@ function App() {
           <Route path='/news' element={<News />} />
           <Route path='/donate' element={<DonatePage />} />
           <Route path='/pledge' element={<PledgePage />} />
+          <Route path='/pledge/:id' element={<CompletePledge />} />
+          <Route
+            path='/complete-date/:id'
+            element={<CompleteDateErrPayment />}
+          />
           <Route path='/contactUs' element={<ContactUs />} />
           <Route path='/campaign/:id' element={<CampaignDetails />} />
           <Route path='/project' element={<Project />} />

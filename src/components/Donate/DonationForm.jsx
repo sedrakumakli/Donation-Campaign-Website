@@ -12,8 +12,8 @@ import CustomInput from '../common/CustomInput';
 import { donateBtnStyles } from '../../utils/styles';
 import { getCurrency } from '../../utils/methods';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-import { getCampaigns } from '../../services/campaigns';
 import { useLocation } from 'react-router-dom';
+import { getActiveCampaigns } from '../../services/campaigns';
 
 const currencies = [
   { label: 'ليرة السورية', value: 'SYP' },
@@ -40,8 +40,8 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
     formData?.currency_type || 'SYP',
   );
   const { data: campaignsData } = useGetData({
-    queryKey: ['campaigns'],
-    queryFn: getCampaigns,
+    queryKey: ['active-campaigns'],
+    queryFn: getActiveCampaigns,
   });
   const campaigns = campaignsData?.data;
 
@@ -68,14 +68,11 @@ const DonationForm = ({ formData, setFormData, onNext }) => {
           styles={{ mb: 3 }}
           isNestedState={true}
         >
-          {campaigns?.map((info) => {
-            const campaign = info.campaing;
-            return (
-              <MenuItem key={campaign?.uuid} value={campaign?.uuid}>
-                {campaign.name}
-              </MenuItem>
-            );
-          })}
+          {campaigns?.map((campaign) => (
+            <MenuItem key={campaign?.uuid} value={campaign?.uuid}>
+              {campaign?.name}
+            </MenuItem>
+          ))}
         </CustomInput>
 
         {/* SUB TITLE */}

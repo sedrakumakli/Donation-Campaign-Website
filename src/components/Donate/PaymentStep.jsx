@@ -2,7 +2,8 @@ import { Box, Button, Grid, Typography, Card } from '@mui/material';
 import QRCodeCard from './QRCodeCard';
 import { backBtnStyles, donateBtnStyles } from '../../utils/styles';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-import { getQRData } from '../../services/donate';
+import { getPledgeData, getQRData } from '../../services/donate';
+import { useParams } from 'react-router-dom';
 
 const steps = [
   'افتح تطبيق شام كاش',
@@ -13,10 +14,25 @@ const steps = [
 ];
 
 const PaymentStep = ({ formData, onNext, onBack }) => {
+  const params = useParams();
+  const donationID = params?.id;
+
   const { isFetching: isFetchingQr, error: QrErr } = useGetData({
     queryKey: ['QrCode'],
     queryFn: getQRData,
   });
+  const {
+    data: pledgeData,
+    isFetching: isFetchingPledgeData,
+    error: pledgeErr,
+  } = useGetData({
+    queryKey: ['pledge-data'],
+    queryFn: () => getPledgeData(donationID),
+    enabled: !!donationID,
+  });
+  const pledgeInfo = pledgeData?.data || null;
+  const isPledge = donationID;
+
   return (
     <>
       <Typography variant='h5' sx={{ fontWeight: 700, mb: 4 }}>
@@ -27,8 +43,9 @@ const PaymentStep = ({ formData, onNext, onBack }) => {
         {/* QR */}
         <Grid size={{ xs: 12, md: 6 }}>
           <QRCodeCard
-            amount={formData.contribution_amount}
-            currency={formData.currency_type}
+            amount={formData?.contribution_amount}
+            currency={formData?.currency_type}
+            pledgeInfo={pledgeInfo}
           />
         </Grid>
 
@@ -95,7 +112,7 @@ const PaymentStep = ({ formData, onNext, onBack }) => {
           variant='contained'
           sx={donateBtnStyles}
           onClick={onNext}
-          disabled={isFetchingQr}
+          disabled={isPledge ? isFetchingPledgeData : isFetchingQr}
         >
           لقد أتممت الدفع
         </Button>

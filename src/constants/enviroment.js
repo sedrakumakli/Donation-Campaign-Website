@@ -14,6 +14,7 @@ const config = {
   },
   campaigns: {
     all: `${campaignsBase}/all`,
+    active: `getActiveCampaign`,
     filter: `${campaignsBase}/filter`,
     details: 'blogApi/show',
     categories: `${campaignsBase}/categories`,
@@ -31,6 +32,9 @@ const config = {
     QRData: 'donation/qr',
     direct: 'donate/directly',
     pledge: 'pledge',
+    completePledge: 'donate/pledge',
+    pledgeData: 'getPledge',
+    dateErrComplete: 'update/file',
   },
   profile: {
     user: 'user',

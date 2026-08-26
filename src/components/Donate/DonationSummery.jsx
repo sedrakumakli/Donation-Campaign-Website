@@ -1,5 +1,8 @@
 import { Box, Card, Chip, Divider, Typography } from '@mui/material';
 import { getCurrency } from '../../utils/methods';
+import { getPledgeData } from '../../services/donate';
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import { useParams } from 'react-router-dom';
 
 const DonationSummary = ({ formData, activeStep }) => {
   const getStatus = () => {
@@ -33,6 +36,20 @@ const DonationSummary = ({ formData, activeStep }) => {
 
   const status = getStatus();
 
+  const params = useParams();
+  const donationID = params?.id;
+
+  const {
+    data: pledgeData,
+    isFetching: isFetchingPledgeData,
+    error: pledgeErr,
+  } = useGetData({
+    queryKey: ['pledge-data'],
+    queryFn: () => getPledgeData(donationID),
+    enabled: !!donationID,
+  });
+  const pledgeInfo = pledgeData?.data || null;
+
   return (
     <Card
       sx={{
@@ -62,10 +79,14 @@ const DonationSummary = ({ formData, activeStep }) => {
         </Typography>
 
         <Typography sx={{ fontWeight: 700, pr: 1.5 }}>
-          {formData?.contribution_amount
-            ? Number(formData?.contribution_amount).toLocaleString()
-            : 0}{' '}
-          {getCurrency(formData?.currency_type)}
+          {pledgeInfo
+            ? Number(pledgeInfo?.contribution_amount).toLocaleString()
+            : formData?.contribution_amount
+              ? Number(formData?.contribution_amount).toLocaleString()
+              : 0}
+          {getCurrency(
+            pledgeInfo ? pledgeInfo?.currency_type : formData?.currency_type,
+          )}
         </Typography>
       </Box>
       <Box

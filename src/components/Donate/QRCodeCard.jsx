@@ -6,7 +6,7 @@ import { getCurrency } from '../../utils/methods';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import { getQRData } from '../../services/donate';
 
-const QRCodeCard = ({ amount, currency }) => {
+const QRCodeCard = ({ amount, currency, pledgeInfo }) => {
   const downloadQR = async () => {
     const qrElement = document.getElementById('qr-card');
     qrElement.style.paddingTop = '24px';
@@ -72,7 +72,10 @@ const QRCodeCard = ({ amount, currency }) => {
               }}
             />
           ) : (
-            <QRCode value={paymentUrl} size={220} />
+            <QRCode
+              value={pledgeInfo ? pledgeInfo?.qrdata : paymentUrl}
+              size={220}
+            />
           )}
         </Box>
 
@@ -84,7 +87,8 @@ const QRCodeCard = ({ amount, currency }) => {
           </Typography>
 
           <Typography variant='h5' sx={{ fontWeight: 700 }}>
-            {amount} {getCurrency(currency)}
+            {pledgeInfo ? pledgeInfo?.contribution_amount : amount}
+            {getCurrency(pledgeInfo ? pledgeInfo?.currency_type : currency)}
           </Typography>
         </Box>
       </Box>
