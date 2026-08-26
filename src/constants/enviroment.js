@@ -41,6 +41,8 @@ const config = {
     donations: `${userBase}/donations`,
     inkinds: `${userBase}/inkinds`,
     statistics: `${userBase}/statistics`,
+    changeProfile: `${userBase}/changeProfile`,
+    updatepass: `${userBase}/updatepass`,
   },
 };
 export default config;

@@ -25,18 +25,15 @@ import FinancialTable from '../../components/DonerProfile/FinancialTable';
 import ProfileHeader from '../../components/DonerProfile/ProfileHeader';
 import PasswordCard from '../../components/DonerProfile/PasswordCard';
 import InKindTable from '../../components/DonerProfile/InKindTable';
-import {
-  donorData,
-  financialDonationsData,
-  inKindDonationsData,
-} from '../../mockupData';
+import { financialDonationsData, inKindDonationsData } from '../../mockupData';
 import ProfileTabs from '../../components/DonerProfile/ProfileTabs';
 import LogOut from '../../components/DonerProfile/LogOut';
 import { toast } from 'react-toastify';
 import LogOutConfrimModal from '../../components/DonerProfile/LogOutConfrimModal';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { getDonations, getInkinds, getProfile } from '../../services/profile';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-import { getProfile } from '../../services/profile';
+
 /* -------------------------------------------------------------------------
    Hope Forward — صفحة الملف الشخصي للمتبرع
    لوحة الألوان موروثة من صفحة تفاصيل الحملة (تركواز #004A5B)
@@ -44,7 +41,6 @@ import { getProfile } from '../../services/profile';
 
 const DonorProfilePage = () => {
   const [activeTab, setActiveTab] = useState('financial');
-  const [donor, setDonor] = useState(donorData);
   const [financialDonations, setFinancialDonations] = useState(
     financialDonationsData,
   );
@@ -66,7 +62,41 @@ const DonorProfilePage = () => {
     queryFn: getProfile,
   });
 
-  console.log('PROFILE:', profileData);
+  const profiles = profileData?.data || null;
+
+  const {
+    data: donationsData,
+    isFetching: isFetchingDonations,
+    error: donationsErr,
+  } = useGetData({
+    queryKey: ['donations'],
+    queryFn: getDonations,
+  });
+
+  const donations = donationsData?.data || [];
+
+  const {
+    data: inkindsData,
+    isFetching: isFetchingInkinds,
+    error: inkindsErr,
+  } = useGetData({
+    queryKey: ['inkinds'],
+    queryFn: getInkinds,
+  });
+
+  const inkinds = inkindsData?.data || [];
+
+  if (isFetchingProfile || isFetchingDonations || isFetchingInkinds) {
+    return <div>جاري تحميل الملف الشخصي...</div>;
+  }
+
+  if (profileErr || donationsErr || inkindsErr) {
+    return <div>حدث خطأ أثناء تحميل الملف الشخصي</div>;
+  }
+
+  if (!profiles || !donations || !inkinds) {
+    return <div>لا توجد بيانات للملف الشخصي</div>;
+  }
   return (
     <div className='profile'>
       <BreadCrumb
@@ -85,21 +115,22 @@ const DonorProfilePage = () => {
           onCancel={() => setShowLogoutModal(false)}
           onConfirm={handleConfirmLogout}
         />
-        <ProfileHeader donor={donor} />
+
+        <ProfileHeader donor={profiles} />
 
         <PasswordCard />
 
         <ProfileTabs
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          financialCount={financialDonations.length}
-          inKindCount={inKindDonations.length}
+          financialCount={donations.length}
+          inKindCount={inkinds.length}
         />
 
         {activeTab === 'financial' ? (
-          <FinancialTable rows={financialDonations} />
+          <FinancialTable rows={donations} />
         ) : (
-          <InKindTable rows={inKindDonations} />
+          <InKindTable rows={inkinds} />
         )}
       </div>
     </div>

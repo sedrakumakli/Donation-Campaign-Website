@@ -1,0 +1,123 @@
+/* =========================
+   Complete Payment Modal
+   ========================= */
+
+.payment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 55, 68, 0.35);
+  backdrop-filter: blur(3px);
+
+  padding: 20px;
+}
+
+.payment-modal {
+  width: min(460px, 100%);
+  background: var(--white);
+
+  border-radius: var(--radius-lg);
+  padding: 28px;
+
+  box-shadow: var(--shadow-2);
+
+  direction: rtl;
+  text-align: right;
+
+  animation: paymentModalShow 0.2s ease-out;
+}
+
+.payment-modal h3 {
+  margin: 0 0 16px;
+
+  color: var(--teal-900);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.payment-modal p {
+  margin: 0 0 28px;
+
+  color: var(--desc-color);
+  font-size: var(--body-text);
+  line-height: 1.8;
+
+  background: #fff8e8;
+  border: 1px solid #f0d99a;
+  border-radius: var(--radius-sm);
+
+  padding: 14px 16px;
+}
+
+.payment-modal-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.payment-modal-actions button {
+  min-width: 110px;
+  height: 44px;
+
+  border-radius: var(--radius-sm);
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* إلغاء */
+.payment-modal-actions button:first-child {
+  background: var(--white);
+  color: var(--teal-800);
+
+  border: 1px solid var(--slate);
+}
+
+.payment-modal-actions button:first-child:hover {
+  background: var(--bg);
+  border-color: var(--teal-600);
+}
+
+/* متابعة */
+.payment-modal-actions button:last-child {
+  background: var(--teal-800);
+  color: var(--white);
+
+  border: 1px solid var(--teal-800);
+}
+
+.payment-modal-actions button:last-child:hover {
+  background: var(--teal-700);
+  border-color: var(--teal-700);
+}
+
+.payment-modal-actions button:active {
+  transform: scale(0.98);
+}
+
+/* Animation */
+
+@keyframes paymentModalShow {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

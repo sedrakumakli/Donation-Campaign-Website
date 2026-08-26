@@ -239,7 +239,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
-    align-items: flex-end;
+    /* justify-content: space-between; */
+    align-items: center;
 }
 
 .hf-field {
@@ -468,6 +469,21 @@
     object-fit: cover;
 }
 
+.hf-table-wrap .continue-payment-btn{
+  background-color: var(--hf-teal-50);
+  color: var(--hf-teal-900);
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+ .hf-table-wrap .continue-payment-btn:hover {
+  background-color:var(--hf-teal-900) ;
+  color: var(--hf-teal-50);
+}
 /* ---------- شرائط الحالة ---------- */
 .hf-pill {
     display: inline-flex;

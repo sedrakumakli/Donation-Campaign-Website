@@ -7,47 +7,86 @@ import {
   Gift,
   Building2,
   UserRound,
+  Briefcase,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import StatCounter from './StatCounter';
 import { donorData } from '../../mockupData';
 import { DONOR_TYPES } from './constants';
-import { getProfile } from '../../services/profile';
+import { getStatistics, postChangeProfile } from '../../services/profile';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-const ProfileHeader = () => {
-  const [avatar, setAvatar] = useState(donorData.avatar);
+import config from '../../constants/enviroment';
+const donorTypeIcons = {
+  فردي: User,
+  'رجال أعمال': Briefcase,
+  'منظمات داعمة': Building2,
+};
+const ProfileHeader = ({ donor }) => {
+  const DonorIcon = donorTypeIcons[donor.type] || User;
+  const [avatar, setAvatar] = useState(donor?.profile || null);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const donorType = DONOR_TYPES[donorData.type];
-  const DonorTypeIcon = donorType.icon;
-
-  const handleAvatarChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setAvatar(url);
+
+    if (!file) return;
+
+    const formData = new FormData();
+
+    formData.append('profile', file);
+
+    try {
+      setIsUploading(true);
+
+      const response = await postChangeProfile(formData);
+
+      console.log('تم تغيير الصورة:', response);
+
+      const newProfile = response?.data?.profile;
+
+      if (newProfile) {
+        setAvatar(newProfile);
+      }
+    } catch (error) {
+      console.error('خطأ أثناء تغيير الصورة:', error);
+    } finally {
+      setIsUploading(false);
     }
   };
   const {
-    data: profileData,
-    isFetching: isFetchingProfile,
-    error: profileErr,
+    data: statisticsData,
+    isFetching: isFetchingStatistics,
+    error: statisticsErr,
   } = useGetData({
-    queryKey: ['profile'],
-    queryFn: getProfile,
+    queryKey: ['statistics'],
+    queryFn: getStatistics,
   });
 
-  console.log('PROFILE:', profileData);
+  const statistics = statisticsData?.data || null;
+
+  if (isFetchingStatistics) {
+    return <div>جاري تحميل ...</div>;
+  }
+
+  if (statisticsErr) {
+    return <div>حدث خطأ أثناء تحميل </div>;
+  }
+
+  if (!statistics) {
+    return <div>لا توجد بيانات </div>;
+  }
   return (
     <>
       <div className='hf-header-card'>
         <div className='hf-avatar'>
           <div className='hf-avatar__circle'>
-            {avatar ? (
-              <img src={avatar} alt={donorData.name} />
-            ) : (
-              <User size={40} strokeWidth={1.5} color='#fff' />
-            )}
+            <img
+              src={
+                avatar ? `${config.baseUrl}${avatar}` : '/default-profile.png'
+              }
+              alt={donor.name || 'profile'}
+            />
           </div>
           <button
             type='button'
@@ -62,37 +101,37 @@ const ProfileHeader = () => {
             type='file'
             accept='image/*'
             hidden
-            onChange={handleAvatarChange}
+            onChange={handleImageChange}
           />
         </div>
 
         <div className='hf-identity'>
-          <span className='hf-identity__name'>{donorData.name}</span>
+          <span className='hf-identity__name'>{donor.name}</span>
           <div className='hf-identity__meta'>
             <span className='hf-identity__row'>
               <Phone size={14} strokeWidth={2} />
-              {donorData.phone}
+              {donor.phone}
             </span>
             <span className='hf-identity__row'>
               <Mail size={14} strokeWidth={2} />
-              {donorData.email}
+              {donor.email}
             </span>
           </div>
           <span className='hf-type-badge'>
-            <DonorTypeIcon size={14} strokeWidth={2} />
-            {donorType.label}
+            <DonorIcon size={14} strokeWidth={2} />
+            {donor.type}
           </span>
         </div>
 
         <div className='hf-header-stats'>
           <StatCounter
             icon={HandHeart}
-            value={donorData.totalCampaigns}
+            value={statistics.campaigns_count}
             label='إجمالي الحملات المتبرع لها'
           />
           <StatCounter
             icon={Gift}
-            value={donorData.totalInKind}
+            value={statistics.inkind_donations_count}
             label='إجمالي التبرعات العينية'
           />
         </div>

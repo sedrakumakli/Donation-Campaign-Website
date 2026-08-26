@@ -60,7 +60,7 @@ function App() {
           />
           <Route path='/contactUs' element={<ContactUs />} />
           <Route path='/campaign/:id' element={<CampaignDetails />} />
-          <Route path='/project' element={<Project />} />
+          <Route path='/project/detail/:id' element={<Project />} />
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/profile' element={<DonorProfilePage />} />
           <Route path='/FAQSection' element={<FAQSection />} />

@@ -1,34 +1,34 @@
 import { Briefcase, Building2, User } from "lucide-react";
 
 const DONOR_TYPES = {
-  individual: { label: "فرد", icon: User, color: "#00718A" },
-  business: { label: "رجال أعمال", icon: Briefcase, color: "#B8860B" },
-  organization: { label: "منظمة داعمة", icon: Building2, color: "#5B4B8A" },
+  "فرد": { label: "فرد", icon: User, color: "#00718A" },
+  "رجال أعمال": { label: "رجال أعمال", icon: Briefcase, color: "#B8860B" },
+  "منظمة": { label: "منظمة ", icon: Building2, color: "#5B4B8A" },
 };
 
 const PAYMENT_STATUS = {
-  paid: { label: "مدفوع", tone: "success" },
-  unpaid: { label: "غير مدفوع", tone: "danger" },
+  "مدفوع": { label: "مدفوع", tone: "success" },
+  "غير مدفوع": { label: "غير مدفوع", tone: "danger" },
 };
 
 const DONATION_COMPLIANCE = {
-  compliant: { label: "متوافق", tone: "success" },
-  non_compliant: { label: "غير متوافق", tone: "danger" },
+  "متوافق": { label: "مقبول", tone: "success" },
+  "غير متوافق": { label: "غير مقبول", tone: "danger" },
 };
 
 const DONATION_TYPE = {
-  pledge: { label: "تعهد", tone: "warning" },
-  direct: { label: "تبرع مباشر", tone: "info" },
+  "تعهد": { label: "تعهد", tone: "warning" },
+  "تبرع": { label: "تبرع مباشر", tone: "info" },
 };
 
 const ITEM_CONDITION = {
-  new: { label: "جديدة", tone: "success" },
-  used: { label: "مستعملة", tone: "warning" },
+  "جديدة": { label: "جديدة", tone: "success" },
+  "مستعملة": { label: "مستعملة", tone: "warning" },
 };
 
 const DELIVERY_STATUS = {
-  delivered: { label: "تم التسليم", tone: "success" },
-  pending: { label: "لم يتم التسليم", tone: "danger" },
+  "تم استلامه": { label: "تم التسليم", tone: "success" },
+  "لم يتم استلامه بعد": { label: "لم يتم التسليم", tone: "danger" },
 };
 const CURRENCY_TYPE = {
   dollar: { label: "دولار" },
