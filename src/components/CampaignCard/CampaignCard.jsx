@@ -24,7 +24,7 @@ const CampaignCard = ({
     جديدة: 'new',
     متوقفة: 'stopped',
   };
-console.log(progress);
+  console.log(progress);
   return (
     <div className='campaignCard'>
       {/* Header  */}
@@ -52,7 +52,10 @@ console.log(progress);
         {/* Progress  */}
         <div className='progress-wrapper'>
           <div className='progress-bar'>
-            <div className='progress-fill' style={{ width: `${parseInt(progress)}%` }} />
+            <div
+              className='progress-fill'
+              style={{ width: `${parseInt(progress)}%` }}
+            />
           </div>
           <div className='percentage'>
             <p> نسبة الإنجاز :</p>
@@ -79,11 +82,11 @@ console.log(progress);
             options={[
               {
                 label: 'تبرع مباشر',
-                onClick: () => navigate(`/donate`),
+                onClick: () => navigate(`/donate?id=${id}`),
               },
               {
                 label: 'تعهد',
-                onClick: () => navigate(`/campaign/${id}/pledge`),
+                onClick: () => navigate(`/pledge?id=${id}`),
               },
             ]}
             sx={{

@@ -334,12 +334,12 @@ const ProofUploadStep = ({
 
           {/* Hidden File Input */}
           <input
-            hidden
             id='payment-proof'
             ref={fileInputRef}
             type='file'
-            accept='.pdf'
+            accept='application/pdf,.pdf'
             onChange={handleUpload}
+            style={{ display: 'none' }}
           />
 
           {/* Upload Status */}

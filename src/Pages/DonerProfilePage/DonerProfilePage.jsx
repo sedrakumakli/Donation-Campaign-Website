@@ -1,26 +1,6 @@
-import React, { useState } from 'react';
-import {
-  Camera,
-  User,
-  Phone,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  Briefcase,
-  Building2,
-  HandHeart,
-  Gift,
-  CheckCircle2,
-  XCircle,
-  Clock,
-  Package,
-  MapPin,
-  Image as ImageIcon,
-} from 'lucide-react';
+import { useState } from 'react';
 import './DonerProfilePage.css';
 import BreadCrumb from '../../components/BreadCrumb';
-import { Tabs } from '@mui/material';
 import FinancialTable from '../../components/DonerProfile/FinancialTable';
 import ProfileHeader from '../../components/DonerProfile/ProfileHeader';
 import PasswordCard from '../../components/DonerProfile/PasswordCard';
@@ -30,9 +10,10 @@ import ProfileTabs from '../../components/DonerProfile/ProfileTabs';
 import LogOut from '../../components/DonerProfile/LogOut';
 import { toast } from 'react-toastify';
 import LogOutConfrimModal from '../../components/DonerProfile/LogOutConfrimModal';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getDonations, getInkinds, getProfile } from '../../services/profile';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import DonorProfileSkeleton from '../../Skeleton/DonorProfileSkeleton';
 
 /* -------------------------------------------------------------------------
    Hope Forward — صفحة الملف الشخصي للمتبرع
@@ -87,7 +68,19 @@ const DonorProfilePage = () => {
   const inkinds = inkindsData?.data || [];
 
   if (isFetchingProfile || isFetchingDonations || isFetchingInkinds) {
-    return <div>جاري تحميل الملف الشخصي...</div>;
+    return (
+      <>
+        <BreadCrumb
+          dynamicItems={[
+            {
+              label: 'الملف الشخصي',
+              path: '/profile',
+            },
+          ]}
+        />
+        <DonorProfileSkeleton />
+      </>
+    );
   }
 
   if (profileErr || donationsErr || inkindsErr) {

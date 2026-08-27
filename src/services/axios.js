@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../constants/enviroment';
+import { toast } from 'react-toastify';
 
 const api = axios.create({
   baseURL: config.baseUrl + '/api',
@@ -28,17 +29,17 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
 
-      if (window.location.pathname !== '/') {
-        window.location.href = '/';
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
       }
-
+      toast.error('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً');
       return Promise.reject(
         new Error('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً'),
       );
-  // console.log("401 Unauthorized");
-  // console.log("Token:", localStorage.getItem("token"));
+      // console.log("401 Unauthorized");
+      // console.log("Token:", localStorage.getItem("token"));
 
-  // return Promise.reject(error);
+      // return Promise.reject(error);
     }
 
     if (error.response) {

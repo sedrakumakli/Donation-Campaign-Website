@@ -80,8 +80,6 @@ import { toast } from 'react-toastify';
 //   },
 // ];
 
-
-
 /* ---------- Hook: عداد متحرك للأرقام ---------- */
 function useCountUp(target, duration = 1200, start = false) {
   const [value, setValue] = useState(0);
@@ -115,70 +113,69 @@ function CampaignDetails() {
   const params = useParams();
   const id = params.id;
 
-const {
+  const {
     data: CampaignDetailsData,
     isFetching: isFetchingCampaignDetails,
-    error:campaignDetailsErr,
+    error: campaignDetailsErr,
   } = useGetData({
-    queryKey: ['campaigns',id],
-    queryFn: ()=>getCampaignDetails(id),
+    queryKey: ['campaigns', id],
+    queryFn: () => getCampaignDetails(id),
   });
-   const campaignsDetails = CampaignDetailsData?.data?.campaing || {};
-   const projects = campaignsDetails?.projects || [];
-   const gools = campaignsDetails?.purposes?.trim().split(/,|،/)
-
+  const campaignsDetails = CampaignDetailsData?.data?.campaing || {};
+  const projects = campaignsDetails?.projects || [];
+  const gools = campaignsDetails?.purposes?.trim().split(/,|،/);
 
   useEffect(() => {
     const t = setTimeout(() => setAnimate(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const handleCopyLink = async () =>{
-    try{
+  const handleCopyLink = async () => {
+    try {
       await navigator.clipboard.writeText(window.location.href);
-      toast.success("تم نسخ الرابط بنجاح");
-    }
-    catch(error){
-      toast.error("تعذر نسخ الرابط");
+      toast.success('تم نسخ الرابط بنجاح');
+    } catch (error) {
+      toast.error('تعذر نسخ الرابط');
     }
   };
 
-  const handleShare = async () =>{
+  const handleShare = async () => {
     const url = window.location.href;
-    if(navigator.share){
-      try{
+    if (navigator.share) {
+      try {
         await navigator.share({
-          title:campaignsDetails.name,
-          text:"شاهد هذه الحملة وساهم معنا",
+          title: campaignsDetails.name,
+          text: 'شاهد هذه الحملة وساهم معنا',
           url: url,
         });
-      }
-      catch(error){
-
-      }
+      } catch (error) {}
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success('تم نسخ الرابط بنجاح');
     }
-            else {
-          await navigator.clipboard.writeText(url);
-          toast.success("تم نسخ الرابط بنجاح");
-        }
   };
   return (
     <div className='hf-page' dir='rtl'>
       <BreadCrumb
         dynamicItems={[
           { label: 'الحملات', path: '/campaigns' },
-          { label: campaignsDetails.name, path: `/campaign/${campaignsDetails.uuid}` },
+          {
+            label: campaignsDetails.name,
+            path: `/campaign/${campaignsDetails.uuid}`,
+          },
         ]}
       />
       <div className='wrap'>
-
         {/* Hero */}
         <div className='hero'>
-          <img src={config.baseUrl+campaignsDetails.image} alt={campaignsDetails.name} />
+          <img
+            src={config.baseUrl + campaignsDetails.image}
+            alt={campaignsDetails.name}
+          />
           <div className='hero-content'>
             <div>
               <span className='status-pill active'>
-               {campaignsDetails.status}
+                {campaignsDetails.status}
               </span>
               <h1 className='hero-title'>{campaignsDetails.name}</h1>
               <div className='hero-meta'>
@@ -186,12 +183,14 @@ const {
                   <MapPin size={16} /> {campaign.location}
                 </span> */}
                 <span>
-                  <Calendar size={16}/> {formatArabicDate(campaignsDetails.start_date)} —{' '}
+                  <Calendar size={16} />{' '}
+                  {formatArabicDate(campaignsDetails.start_date)} —{' '}
                   {formatArabicDate(campaignsDetails.end_date)}
                 </span>
                 <span>
-                  <Clock size={16} /> {formatArabicTime(campaignsDetails.start_time)} — {formatArabicTime(campaignsDetails.end_time)}{' '}
-                  يوميًا
+                  <Clock size={16} />{' '}
+                  {formatArabicTime(campaignsDetails.start_time)} —{' '}
+                  {formatArabicTime(campaignsDetails.end_time)} يوميًا
                 </span>
               </div>
             </div>
@@ -213,7 +212,8 @@ const {
                   },
                   {
                     label: 'تعهد',
-                    onClick: () => navigate(`/campaign/${id}/pledge`),
+                    onClick: () =>
+                      navigate(`/pledge?id=${campaignsDetails.uuid}`),
                   },
                 ]}
               />
@@ -228,22 +228,30 @@ const {
             {/* Quick info */}
             <div className='panel'>
               <h2 className='panel-title'>
-                <Info size={19} color='var(--gold)'/> معلومات الحملة
+                <Info size={19} color='var(--gold)' /> معلومات الحملة
               </h2>
               <div className='info-grid'>
                 <div className='info-item'>
                   <div className='label'>
                     <Calendar size={14} /> تاريخ البدء
                   </div>
-                  <div className='value'>{formatArabicDate(campaignsDetails.start_date)}</div>
-                  <div className='value sub'>الساعة {formatArabicTime(campaignsDetails.start_time)}</div>
+                  <div className='value'>
+                    {formatArabicDate(campaignsDetails.start_date)}
+                  </div>
+                  <div className='value sub'>
+                    الساعة {formatArabicTime(campaignsDetails.start_time)}
+                  </div>
                 </div>
                 <div className='info-item'>
                   <div className='label'>
                     <Calendar size={14} /> تاريخ الانتهاء
                   </div>
-                  <div className='value'>{formatArabicDate(campaignsDetails.end_date)}</div>
-                  <div className='value sub'>الساعة {formatArabicTime(campaignsDetails.end_time)}</div>
+                  <div className='value'>
+                    {formatArabicDate(campaignsDetails.end_date)}
+                  </div>
+                  <div className='value sub'>
+                    الساعة {formatArabicTime(campaignsDetails.end_time)}
+                  </div>
                 </div>
                 {/* <div className='info-item'>
                   <div className='label'>
@@ -256,7 +264,9 @@ const {
                   <div className='label'>
                     <Folders size={14} /> المشاريع المرتبطة
                   </div>
-                  <div className='value'>{CampaignDetailsData?.data?.projects_count} مشاريع</div>
+                  <div className='value'>
+                    {CampaignDetailsData?.data?.projects_count} مشاريع
+                  </div>
                   {/* <div className='value sub'>قيد التنفيذ</div> */}
                 </div>
               </div>
@@ -273,18 +283,18 @@ const {
             {/* Goals */}
             <div className='panel'>
               <h2 className='panel-title'>
-                <Target size={19} color='var(--gold)'/> أهداف الحملة
+                <Target size={19} color='var(--gold)' /> أهداف الحملة
               </h2>
               <div className='goals-list'>
-                {gools&&gools.map((goal, i) => {
-                  const Icon = goal.icon;
-                  return (
-                    <div className='goal-item' key={i}>
-
-                      <div className='goal-text'>{goal}</div>
-                    </div>
-                  );
-                })}
+                {gools &&
+                  gools.map((goal, i) => {
+                    const Icon = goal.icon;
+                    return (
+                      <div className='goal-item' key={i}>
+                        <div className='goal-text'>{goal}</div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
 
@@ -292,15 +302,18 @@ const {
             <div className='projects-section'>
               <div className='section-head'>
                 <h2>
-                  <Folders size={19} color='var(--gold)'/> المشاريع المرتبطة
+                  <Folders size={19} color='var(--gold)' /> المشاريع المرتبطة
                 </h2>
-                <span className='count'>{CampaignDetailsData?.data?.projects_count} مشاريع</span>
+                <span className='count'>
+                  {CampaignDetailsData?.data?.projects_count} مشاريع
+                </span>
               </div>
 
               <div className='projects-grid'>
-                {projects&&projects.map((project) => (
-                  <ProjectCard key={project.uuid} project={project} />
-                ))}
+                {projects &&
+                  projects.map((project) => (
+                    <ProjectCard key={project.uuid} project={project} />
+                  ))}
               </div>
             </div>
           </div>
@@ -310,23 +323,29 @@ const {
             <div className='progress-card'>
               <div className='amount-row'>
                 <div className='amount-raised'>
-                  {campaignsDetails.collected_amount}<small>تم جمعه</small>
+                  {campaignsDetails.collected_amount}
+                  <small>تم جمعه</small>
                 </div>
                 <div className='amount-target'>
-                  من أصل <b>{campaignsDetails.target_amount}</b>{' '}
-                  مستهدف
+                  من أصل <b>{campaignsDetails.target_amount}</b> مستهدف
                 </div>
               </div>
 
               <div className='progress-track'>
                 <div
                   className='progress-fill'
-                  style={{ width: animate ? `${parseInt(CampaignDetailsData?.data?.progresspercentage)}%`: '0%' }}
+                  style={{
+                    width: animate
+                      ? `${parseInt(CampaignDetailsData?.data?.progresspercentage)}%`
+                      : '0%',
+                  }}
                 />
               </div>
               <div className='progress-percent-row'>
                 <span>نسبة الإنجاز</span>
-                <span className='pct'>{CampaignDetailsData?.data?.progresspercentage}</span>
+                <span className='pct'>
+                  {CampaignDetailsData?.data?.progresspercentage}
+                </span>
               </div>
 
               <div className='stat-mini-row'>
