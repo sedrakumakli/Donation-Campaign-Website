@@ -18,7 +18,14 @@ function FinancialTable({ rows }) {
     if (!selectedDonation) return;
 
     if (selectedDonation.method === 'تبرع') {
-      navigate(`/complete-date/${selectedDonation.uuid}`);
+      navigate(
+        `/complete-${
+          selectedDonation.reason ===
+          'عدم التطابق بين المبلغ المدفوع والمبلغ الموجود داخل الملف'
+            ? 'amount'
+            : 'date'
+        }/${selectedDonation.uuid}`,
+      );
     }
 
     if (selectedDonation.method === 'تعهد') {

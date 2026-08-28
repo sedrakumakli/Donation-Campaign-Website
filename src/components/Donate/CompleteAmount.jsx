@@ -7,20 +7,30 @@ import PaymentStep from '../../components/Donate/PaymentStep';
 import DonationSummary from '../../components/Donate/DonationSummery';
 import CustomContainer from '../../components/common/CustomContainer';
 import { useMutationHandler } from '../../customHooks/reactQuery/useMutationHandler';
-import { useNavigate, useParams } from 'react-router-dom';
-import { payDateErr } from '../../services/donate';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getRemainingAmountData, payAmountErr } from '../../services/donate';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../components/Messages/ErrorMessage';
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
 
-const CompleteDateErrPayment = () => {
+const CompleteAmount = () => {
   const [activeStep, setActiveStep] = useState(1);
 
   const params = useParams();
   const id = params?.id;
 
+  const location = useLocation();
+  const isMisingAmount = location.pathname.includes('amount');
+
   const [formData, setFormData] = useState({
     file: null,
   });
+  const { data: remainingAmountData } = useGetData({
+    queryKey: ['mising-amount-data'],
+    queryFn: () => getRemainingAmountData(id),
+    enabled: !!id && isMisingAmount,
+  });
+  const remainingAmount = remainingAmountData?.data || null;
 
   const [preview, setPreview] = useState(null);
 
@@ -37,12 +47,12 @@ const CompleteDateErrPayment = () => {
     isPending: isDonating,
     error: donationErr,
   } = useMutationHandler({
-    mutationFn: (body) => payDateErr(id, body),
+    mutationFn: (body) => payAmountErr(body),
 
     onSuccess: () => {
       setSuccess(true); // أو فتح modal النجاح
       toast.success(
-        'تم رفع الوصل الجديد. سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.',
+        'تم إكمال المبلغ. سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.',
       );
       navigate('/');
     },
@@ -54,6 +64,9 @@ const CompleteDateErrPayment = () => {
   const handleSubmit = () => {
     const data = new FormData();
     data.append('file', formData.file);
+    data.append('contribution_amount', remainingAmount?.remaining_amount);
+    data.append('currency_type', remainingAmount?.currency_type);
+    data.append('campaign_uuid', remainingAmount?.campaign?.uuid);
     donate(data);
   };
 
@@ -121,7 +134,11 @@ const CompleteDateErrPayment = () => {
               top: { md: '140px' }, // تحت الناف مباشرة
             }}
           >
-            <DonationSummary formData={formData} activeStep={activeStep} />
+            <DonationSummary
+              formData={formData}
+              activeStep={activeStep}
+              remainingAmount={remainingAmount}
+            />
           </Box>
         </Grid>
       </Grid>
@@ -129,4 +146,4 @@ const CompleteDateErrPayment = () => {
   );
 };
 
-export default CompleteDateErrPayment;
+export default CompleteAmount;

@@ -24,6 +24,7 @@ import PledgePage from './Pages/Donate/PledgePage.jsx';
 import Project from './Pages/Project/project.jsx';
 import CompletePledge from './Pages/Donate/CompletePledge.jsx';
 import CompleteDateErrPayment from './Pages/Donate/CompleteDateErrPayment.jsx';
+import CompleteAmount from './components/Donate/CompleteAmount.jsx';
 
 function App() {
   console.log('object'.to);
@@ -58,6 +59,7 @@ function App() {
             path='/complete-date/:id'
             element={<CompleteDateErrPayment />}
           />
+          <Route path='/complete-amount/:id' element={<CompleteAmount />} />
           <Route path='/contactUs' element={<ContactUs />} />
           <Route path='/campaign/:id' element={<CampaignDetails />} />
           <Route path='/project/detail/:id' element={<Project />} />

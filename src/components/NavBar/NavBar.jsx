@@ -46,6 +46,7 @@ function NavBar() {
   // const handleCloseDonateMenu = () => {
   //   setAnchorElDonate(null);
   // };
+  const isLogedIn = localStorage.getItem('token');
 
   return (
     <AppBar
@@ -154,7 +155,9 @@ function NavBar() {
           {/* Donate Button */}
           <Stack spacing={1} direction='row'>
             {/* زر الأيقونة */}
-            <IconButton onClick={() => navigate('/profile')}>
+            <IconButton
+              onClick={() => navigate(isLogedIn ? '/profile' : '/login')}
+            >
               <LuUserRound style={iconStyles} />
             </IconButton>
             <IconButton onClick={() => navigate('/cart')}>

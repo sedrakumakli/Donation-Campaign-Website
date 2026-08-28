@@ -8,7 +8,7 @@ import PaymentStep from '../../components/Donate/PaymentStep';
 import DonationSummary from '../../components/Donate/DonationSummery';
 import CustomContainer from '../../components/common/CustomContainer';
 import { useMutationHandler } from '../../customHooks/reactQuery/useMutationHandler';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { donateDirectly } from '../../services/donate';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../components/Messages/ErrorMessage';

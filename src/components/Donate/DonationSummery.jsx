@@ -2,9 +2,12 @@ import { Box, Card, Chip, Divider, Typography } from '@mui/material';
 import { getCurrency } from '../../utils/methods';
 import { getPledgeData } from '../../services/donate';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
-const DonationSummary = ({ formData, activeStep }) => {
+const DonationSummary = ({ formData, activeStep, remainingAmount }) => {
+  const location = useLocation();
+  const isMisingAmount = location.pathname.includes('amount');
+
   const getStatus = () => {
     if (activeStep === 0)
       return {
@@ -41,8 +44,8 @@ const DonationSummary = ({ formData, activeStep }) => {
 
   const {
     data: pledgeData,
-    isFetching: isFetchingPledgeData,
-    error: pledgeErr,
+    /*   isFetching: isFetchingPledgeData,
+    error: pledgeErr, */
   } = useGetData({
     queryKey: ['pledge-data'],
     queryFn: () => getPledgeData(donationID),
@@ -79,13 +82,19 @@ const DonationSummary = ({ formData, activeStep }) => {
         </Typography>
 
         <Typography sx={{ fontWeight: 700, pr: 1.5 }}>
-          {pledgeInfo
-            ? Number(pledgeInfo?.contribution_amount).toLocaleString()
-            : formData?.contribution_amount
-              ? Number(formData?.contribution_amount).toLocaleString()
-              : 0}
+          {isMisingAmount
+            ? Number(remainingAmount?.remaining_amount).toLocaleString()
+            : pledgeInfo
+              ? Number(pledgeInfo?.contribution_amount).toLocaleString()
+              : formData?.contribution_amount
+                ? Number(formData?.contribution_amount).toLocaleString()
+                : 0}
           {getCurrency(
-            pledgeInfo ? pledgeInfo?.currency_type : formData?.currency_type,
+            isMisingAmount
+              ? remainingAmount?.currency_type
+              : pledgeInfo
+                ? pledgeInfo?.currency_type
+                : formData?.currency_type,
           )}
         </Typography>
       </Box>

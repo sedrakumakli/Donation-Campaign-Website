@@ -35,6 +35,8 @@ const config = {
     completePledge: 'donate/pledge',
     pledgeData: 'getPledge',
     dateErrComplete: 'update/file',
+    amountErrComplete: 'donate/complete',
+    misingAmount: 'getamount',
   },
   profile: {
     user: 'user',

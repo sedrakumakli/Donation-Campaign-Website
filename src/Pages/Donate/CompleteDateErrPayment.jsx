@@ -8,7 +8,7 @@ import DonationSummary from '../../components/Donate/DonationSummery';
 import CustomContainer from '../../components/common/CustomContainer';
 import { useMutationHandler } from '../../customHooks/reactQuery/useMutationHandler';
 import { useNavigate, useParams } from 'react-router-dom';
-import { payDateErr, payPledge } from '../../services/donate';
+import { payDateErr } from '../../services/donate';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../components/Messages/ErrorMessage';
 
@@ -24,7 +24,7 @@ const CompleteDateErrPayment = () => {
 
   const [preview, setPreview] = useState(null);
 
-  const [success, setSuccess] = useState(false);
+  const [setSuccess] = useState(false);
 
   const nextStep = () => setActiveStep((prev) => prev + 1);
 
