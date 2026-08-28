@@ -31,7 +31,7 @@ const DELIVERY_STATUS = {
   "لم يتم استلامه بعد": { label: "لم يتم التسليم", tone: "danger" },
 };
 const CURRENCY_TYPE = {
-  dollar: { label: "دولار" },
+ "USD": { label: "دولار" },
   euro: { label: "يورو" },
   syrian_pound: { label: "ليرة سورية" },
 }
