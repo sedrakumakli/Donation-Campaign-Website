@@ -1,52 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Box, Grid, Paper } from '@mui/material';
 import DonateStepper from '../../components/Donate/DonateStepper';
-import DonationForm from '../../components/Donate/DonationForm';
 import ProofUploadStep from '../../components/Donate/ProofUploadStep';
 import PaymentStep from '../../components/Donate/PaymentStep';
 import DonationSummary from '../../components/Donate/DonationSummery';
 import CustomContainer from '../../components/common/CustomContainer';
 import { useMutationHandler } from '../../customHooks/reactQuery/useMutationHandler';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { donateDirectly } from '../../services/donate';
+import { useNavigate, useParams } from 'react-router-dom';
+import { payDateErr } from '../../services/donate';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../components/Messages/ErrorMessage';
 
-const DonatePage = () => {
-  const [activeStep, setActiveStep] = useState(0);
+const CompleteDateErrPayment = () => {
+  const [activeStep, setActiveStep] = useState(1);
 
-  const [searchParams] = useSearchParams();
-  const id = searchParams?.get('id');
+  const params = useParams();
+  const id = params?.id;
 
   const [formData, setFormData] = useState({
-    contribution_amount: '',
-    currency_type: 'SYP',
-    contribution_details: '',
-    campaign_uuid: '',
     file: null,
   });
 
   const [preview, setPreview] = useState(null);
 
-  const [success, setSuccess] = useState(false);
+  const [setSuccess] = useState(false);
 
   const nextStep = () => setActiveStep((prev) => prev + 1);
 
   const previousStep = () => setActiveStep((prev) => prev - 1);
 
   const navigate = useNavigate();
+
   const {
     mutate: donate,
     isPending: isDonating,
     error: donationErr,
   } = useMutationHandler({
-    mutationFn: (body) => donateDirectly(body),
+    mutationFn: (body) => payDateErr(id, body),
 
     onSuccess: () => {
       setSuccess(true); // أو فتح modal النجاح
       toast.success(
-        'تم إرسال طلب التبرع. سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.',
+        'تم رفع الوصل الجديد. سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.',
       );
       navigate('/');
     },
@@ -57,19 +53,9 @@ const DonatePage = () => {
   });
   const handleSubmit = () => {
     const data = new FormData();
-    data.append('contribution_amount', formData.contribution_amount);
-    data.append('contribution_details', formData.contribution_details);
-    data.append('currency_type', formData.currency_type);
-    data.append('campaign_uuid', formData.campaign_uuid);
     data.append('file', formData.file);
     donate(data);
   };
-
-  useEffect(() => {
-    if (id) {
-      setFormData((prev) => ({ ...prev, campaign_uuid: id }));
-    }
-  }, [id]);
 
   return (
     <CustomContainer styles={{ py: 6 }}>
@@ -100,14 +86,6 @@ const DonatePage = () => {
             }}
           >
             <DonateStepper activeStep={activeStep} />
-
-            {activeStep === 0 && (
-              <DonationForm
-                formData={formData}
-                setFormData={setFormData}
-                onNext={nextStep}
-              />
-            )}
 
             {activeStep === 1 && (
               <PaymentStep
@@ -159,4 +137,4 @@ const DonatePage = () => {
   );
 };
 
-export default DonatePage;
+export default CompleteDateErrPayment;

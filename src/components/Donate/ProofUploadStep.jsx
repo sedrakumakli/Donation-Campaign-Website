@@ -1,9 +1,19 @@
 import { useRef } from 'react';
 
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
-import { FaUpload } from 'react-icons/fa';
-import { backBtnStyles, donateBtnStyles } from '../../utils/styles';
+import {
+  Alert,
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
+
+import { FaFileUpload, FaCheck, FaClock } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
+import { MdWarning } from 'react-icons/md';
+
+import { backBtnStyles, donateBtnStyles } from '../../utils/styles';
 
 const ProofUploadStep = ({
   formData,
@@ -21,192 +31,413 @@ const ProofUploadStep = ({
 
     if (!file) return;
 
-    setFormData((prev) => ({ ...prev, image: file }));
-    setPreview(URL.createObjectURL(file));
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    const fileUrl = URL.createObjectURL(file);
+
+    setFormData((prev) => ({
+      ...prev,
+      file: file,
+    }));
+
+    setPreview(fileUrl);
   };
 
-  const removeImage = () => {
-    setFormData((prev) => ({ ...prev, image: null }));
+  const removeFile = () => {
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      file: null,
+    }));
+
     setPreview(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleChangeFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const uploadedFile = formData?.file;
+
+  const isPdf = uploadedFile?.type === 'application/pdf';
+
+  const formatFileSize = (bytes) => {
+    if (!bytes) return '0 KB';
+
+    const kb = bytes / 1024;
+
+    if (kb < 1024) {
+      return `${kb.toFixed(1)} KB`;
+    }
+
+    return `${(kb / 1024).toFixed(2)} MB`;
   };
 
   return (
     <>
-      <Typography variant='h5' sx={{ fontWeight: 700, mb: 1 }}>
-        إثبات الدفع
-      </Typography>
       <Typography
+        variant='h5'
         sx={{
-          color: 'var(--desc-color)',
-          mb: 4,
-          lineHeight: 1.8,
+          fontWeight: 700,
+          mb: 1,
         }}
       >
-        ارفع صورة واضحة لوصل الدفع بعد إتمام العملية. يجب أن تكون المعلومات
-        الأساسية ظاهرة داخل الصورة، وسيتم التحقق من أن الملف المرفوع هو وصل دفع
-        أو إثبات عملية قبل متابعة الطلب.
+        إثبات الدفع
       </Typography>
 
-      <Box>
-        <Box
+      <Box sx={{ height: '440px', overflowY: 'auto' }}>
+        <Typography
           sx={{
-            height: '350px',
-            overflowY: 'auto',
-            border: '2px dashed',
-            borderColor: preview ? '#d1d5db' : 'var(--main-color)',
-            borderRadius: 4,
-            overflow: 'hidden',
-            cursor: 'pointer',
-            transition: '.3s',
+            color: 'var(--desc-color)',
+            mb: 3,
+            lineHeight: 1.9,
+          }}
+        >
+          بعد إتمام عملية التبرع، قم برفع ملف الوصل أو إثبات الدفع. سيتم مراجعة
+          الملف من قبل الإدارة للتأكد من صحة عملية التبرع قبل اعتمادها.
+        </Typography>
 
-            '&:hover': {
-              backgroundColor: '#f3f3f3',
-              borderColor: 'var(--main-color)',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
-              transform: 'translateY(-2px)',
+        {/* Important Warning */}
+        <Alert
+          icon={<MdWarning size={24} />}
+          severity='warning'
+          sx={{
+            mb: 3,
+            borderRadius: 3,
+            alignItems: 'flex-start',
+
+            '& .MuiAlert-message': {
+              width: '100%',
             },
           }}
-          onClick={() => !preview && fileInputRef.current?.click()}
         >
-          {preview ? (
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 0.7,
+            }}
+          >
+            تنبيه مهم قبل رفع الوصل
+          </Typography>
+
+          <Typography
+            sx={{
+              lineHeight: 1.8,
+              fontSize: '0.95rem',
+            }}
+          >
+            يجب أن يكون الوصل المرفوع خاصاً بعملية التبرع الحالية وأن يكون
+            صادراً في <strong>نفس يوم التبرع</strong>. كما يجب التأكد من أن
+            <strong> المبلغ الموجود في الوصل يطابق المبلغ الذي أدخلته</strong>.
+            في حال كان الوصل قديماً، أو لا يخص هذه العملية، أو كان المبلغ
+            مختلفاً، سيتم رفض الوصل من قبل الإدارة ولن يتم اعتماد التبرع.
+          </Typography>
+        </Alert>
+
+        <Box>
+          {!uploadedFile ? (
+            /* Upload Button */
             <Box
               sx={{
-                width: '100%',
-                height: '100%',
-                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                mb: 2,
               }}
             >
-              <Box
-                component='img'
-                src={preview}
-                alt='proof'
+              <Button
+                variant='outlined'
+                startIcon={<FaFileUpload />}
+                onClick={handleChangeFile}
                 sx={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-
-              <IconButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  removeImage();
-                }}
-                sx={{
-                  position: 'absolute',
-                  top: 12,
-                  right: 12,
-                  bgcolor: 'rgba(0,0,0,.4)',
-                  color: '#fff',
+                  minHeight: 52,
+                  px: 4,
+                  borderRadius: 3,
+                  borderWidth: 1.5,
+                  borderColor: 'var(--main-color)',
+                  color: 'var(--main-color)',
+                  fontWeight: 700,
+                  fontSize: '1rem',
+                  textTransform: 'none',
 
                   '&:hover': {
-                    bgcolor: 'rgba(0,0,0,.6)',
+                    borderWidth: 1.5,
+                    borderColor: 'var(--main-color)',
+                    backgroundColor: 'rgba(0,0,0,0.03)',
                   },
                 }}
               >
-                <IoMdClose />
-              </IconButton>
+                رفع ملف الوصل
+              </Button>
             </Box>
           ) : (
-            <Box
+            /* Uploaded File Preview */
+            <Box>
+              <Box
+                sx={{
+                  border: '1px solid #e0e0e0',
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  backgroundColor: '#fafafa',
+                }}
+              >
+                {/* File Header */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 2,
+                    px: 2,
+                    py: 1.5,
+                    borderBottom: '1px solid #e5e5e5',
+                    backgroundColor: '#fff',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      minWidth: 0,
+                      flex: 1,
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {uploadedFile.name}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        color: 'var(--desc-color)',
+                        fontSize: '0.85rem',
+                        mt: 0.3,
+                      }}
+                    >
+                      {formatFileSize(uploadedFile.size)}
+                    </Typography>
+                  </Box>
+
+                  <IconButton
+                    onClick={removeFile}
+                    aria-label='حذف الملف'
+                    sx={{
+                      flexShrink: 0,
+                      backgroundColor: '#f3f3f3',
+
+                      '&:hover': {
+                        backgroundColor: '#e9e9e9',
+                      },
+                    }}
+                  >
+                    <IoMdClose />
+                  </IconButton>
+                </Box>
+
+                {/* File Content */}
+                <Box
+                  sx={{
+                    width: '100%',
+                    minHeight: 400,
+                    maxHeight: 650,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#f5f5f5',
+                    overflow: 'auto',
+                  }}
+                >
+                  {isPdf ? (
+                    <Box
+                      component='iframe'
+                      src={preview}
+                      title='ملف إثبات الدفع'
+                      sx={{
+                        width: '100%',
+                        height: 600,
+                        border: 'none',
+                        backgroundColor: '#fff',
+                      }}
+                    />
+                  ) : (
+                    <Box
+                      sx={{
+                        textAlign: 'center',
+                        px: 3,
+                        py: 8,
+                      }}
+                    >
+                      <FaFileUpload
+                        size={45}
+                        style={{
+                          marginBottom: 16,
+                        }}
+                      />
+
+                      <Typography
+                        sx={{
+                          fontWeight: 700,
+                          mb: 1,
+                        }}
+                      >
+                        تم رفع الملف بنجاح
+                      </Typography>
+
+                      <Typography
+                        sx={{
+                          color: 'var(--desc-color)',
+                        }}
+                      >
+                        سيتم إرسال الملف إلى الإدارة لمراجعته والتحقق من صحة
+                        عملية التبرع.
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              {/* Change File Button */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  mt: 2,
+                }}
+              >
+                <Button
+                  variant='text'
+                  startIcon={<FaFileUpload />}
+                  onClick={handleChangeFile}
+                  sx={{
+                    color: 'var(--main-color)',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                  }}
+                >
+                  استبدال الملف
+                </Button>
+              </Box>
+            </Box>
+          )}
+
+          {/* Hidden File Input */}
+          <input
+            id='payment-proof'
+            ref={fileInputRef}
+            type='file'
+            accept='application/pdf,.pdf'
+            onChange={handleUpload}
+            style={{ display: 'none' }}
+          />
+
+          {/* Upload Status */}
+          {uploadedFile && (
+            <Stack
+              spacing={1.5}
               sx={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                textAlign: 'center',
-                px: 3,
+                mt: 3,
+                p: 2,
+                borderRadius: 3,
+                backgroundColor: '#fafafa',
               }}
             >
-              <FaUpload size={30} />
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.2,
+                }}
+              >
+                <FaCheck
+                  size={16}
+                  style={{
+                    color: '#2e7d32',
+                  }}
+                />
 
-              <Box>
                 <Typography
                   sx={{
                     fontWeight: 600,
                   }}
                 >
-                  اضغط لرفع صورة إثبات الدفع
+                  تم رفع ملف الوصل بنجاح
                 </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.2,
+                }}
+              >
+                <FaClock
+                  size={16}
+                  style={{
+                    color: '#ed6c02',
+                  }}
+                />
 
                 <Typography
                   sx={{
-                    color: 'var(--secondary-color)',
+                    color: 'var(--desc-color)',
                   }}
                 >
-                  JPG - PNG - WEBP
+                  سيتم التحقق من صحة الوصل ومطابقة بياناته مع عملية التبرع.
                 </Typography>
               </Box>
-            </Box>
+
+              <Typography
+                sx={{
+                  color: 'var(--desc-color)',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.7,
+                }}
+              >
+                بعد إرسال التبرع، سيقوم فريق الإدارة بمراجعة الوصل واعتماده أو
+                رفضه بناءً على صحة العملية والمبلغ وتاريخ الوصل.
+              </Typography>
+            </Stack>
           )}
-
-          <input
-            hidden
-            id='payment-proof'
-            ref={fileInputRef}
-            type='file'
-            accept='image/*'
-            onChange={handleUpload}
-          />
         </Box>
-
-        {preview && (
-          <Stack spacing={1.5} sx={{ mt: 3 }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-              }}
-            >
-              <Typography color='success.main'>✓</Typography>
-
-              <Typography>تم رفع صورة الوصل</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-              }}
-            >
-              <Typography color='warning.main'>⏳</Typography>
-
-              <Typography>جاري التحقق من الصورة</Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-              }}
-            >
-              <Typography color='text.secondary'>⌛</Typography>
-
-              <Typography>بانتظار مراجعة الإدارة</Typography>
-            </Box>
-          </Stack>
-        )}
       </Box>
 
-      <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
-        <Button variant='outlined' onClick={onBack} sx={backBtnStyles}>
+      {/* Navigation Buttons */}
+      <Box
+        sx={{
+          mt: 4,
+          display: 'flex',
+          gap: 2,
+        }}
+      >
+        <Button
+          variant='outlined'
+          onClick={onBack}
+          disabled={isSubmitting}
+          sx={backBtnStyles}
+        >
           رجوع
         </Button>
 
         <Button
           variant='contained'
-          disabled={!formData?.image}
+          disabled={!formData?.file || isSubmitting}
           onClick={onSubmit}
           sx={donateBtnStyles}
         >
-          {isSubmitting ? <div className='btn-loader'></div> : ' إرسال التبرع'}
+          {isSubmitting ? <div className='btn-loader'></div> : 'إرسال التبرع'}
         </Button>
       </Box>
     </>

@@ -6,7 +6,7 @@ import { getCurrency } from '../../utils/methods';
 import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import { getQRData } from '../../services/donate';
 
-const QRCodeCard = ({ amount, currency }) => {
+const QRCodeCard = ({ amount, currency, pledgeInfo, misingAmountInfo }) => {
   const downloadQR = async () => {
     const qrElement = document.getElementById('qr-card');
     qrElement.style.paddingTop = '24px';
@@ -26,9 +26,15 @@ const QRCodeCard = ({ amount, currency }) => {
   const {
     data: paymentUrlData,
     isFetching: isFetchingQr,
-    error: QrErr,
+    /*  error: QrErr, */
   } = useGetData({ queryKey: ['QrCode'], queryFn: getQRData });
   const paymentUrl = paymentUrlData?.data || '';
+
+  const data = misingAmountInfo
+    ? misingAmountInfo
+    : pledgeInfo
+      ? pledgeInfo
+      : paymentUrl;
 
   return (
     <Card
@@ -72,7 +78,7 @@ const QRCodeCard = ({ amount, currency }) => {
               }}
             />
           ) : (
-            <QRCode value={paymentUrl} size={220} />
+            <QRCode value={data?.qrData} size={220} />
           )}
         </Box>
 
@@ -84,7 +90,14 @@ const QRCodeCard = ({ amount, currency }) => {
           </Typography>
 
           <Typography variant='h5' sx={{ fontWeight: 700 }}>
-            {amount} {getCurrency(currency)}
+            {misingAmountInfo
+              ? misingAmountInfo?.remaining_amount
+              : pledgeInfo
+                ? pledgeInfo?.contribution_amount
+                : amount}
+            {getCurrency(
+              pledgeInfo || misingAmountInfo ? data?.currency_type : currency,
+            )}
           </Typography>
         </Box>
       </Box>

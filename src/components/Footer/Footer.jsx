@@ -131,7 +131,6 @@ const Footer = () => {
 
             <Stack
               direction='row'
-              spacing={1}
               sx={{
                 mt: 3,
 
@@ -139,6 +138,7 @@ const Footer = () => {
                   xs: 'center',
                   md: 'flex-start',
                 },
+                gap: 1,
               }}
             >
               {[Instagram, Facebook, Twitter].map((Icon, index) => (

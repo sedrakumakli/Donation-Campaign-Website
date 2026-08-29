@@ -1,13 +1,14 @@
-import axios from "axios";
-import config from "../constants/enviroment";
+import axios from 'axios';
+import config from '../constants/enviroment';
+import { toast } from 'react-toastify';
 
 const api = axios.create({
-  baseURL: config.baseUrl + "/api",
+  baseURL: config.baseUrl + '/api',
 });
 
 // Request interceptor
 api.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   // console.log("REQUEST:", req.method, req.url);
   // console.log("TOKEN:", token);
@@ -26,19 +27,19 @@ api.interceptors.response.use(
   (error) => {
     // Unauthorized
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
 
-      if (window.location.pathname !== "/") {
-        window.location.href = "/";
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
       }
-
+      toast.error('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً');
       return Promise.reject(
-        new Error("انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً"),
+        new Error('انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً'),
       );
-  // console.log("401 Unauthorized");
-  // console.log("Token:", localStorage.getItem("token"));
+      // console.log("401 Unauthorized");
+      // console.log("Token:", localStorage.getItem("token"));
 
-  // return Promise.reject(error);
+      // return Promise.reject(error);
     }
 
     if (error.response) {
@@ -49,11 +50,11 @@ api.interceptors.response.use(
         const rawError = responseData?.error;
 
         const isFieldErrors =
-          rawError && typeof rawError === "object" && !Array.isArray(rawError);
+          rawError && typeof rawError === 'object' && !Array.isArray(rawError);
 
         const message = isFieldErrors
-          ? "البيانات المدخلة غير صحيحة"
-          : rawError || responseData?.message || "البيانات المدخلة غير صحيحة";
+          ? 'البيانات المدخلة غير صحيحة'
+          : rawError || responseData?.message || 'البيانات المدخلة غير صحيحة';
 
         const err = new Error(message);
         err.statusCode = status;
@@ -64,18 +65,18 @@ api.interceptors.response.use(
 
       if (status >= 500) {
         return Promise.reject(
-          new Error("حدث خطأ في الخادم. يرجى المحاولة لاحقاً"),
+          new Error('حدث خطأ في الخادم. يرجى المحاولة لاحقاً'),
         );
       }
     }
 
     if (error.request) {
       return Promise.reject(
-        new Error("تعذر الاتصال بالخادم. تحقق من الإنترنت"),
+        new Error('تعذر الاتصال بالخادم. تحقق من الإنترنت'),
       );
     }
 
-    return Promise.reject(new Error("حدث خطأ غير متوقع"));
+    return Promise.reject(new Error('حدث خطأ غير متوقع'));
   },
 );
 
