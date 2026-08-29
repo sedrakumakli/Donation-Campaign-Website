@@ -21,7 +21,6 @@ const pages = [
   { name: 'الحملات', path: '/campaigns' },
   { name: 'آخر الأخبار', path: '/news' },
   { name: 'تواصل معنا', path: '/contactUs' },
-  { name: 'الأسئلة الشائعة', path: '/FAQSection' },
 ];
 
 const iconStyles = { color: 'black', fontSize: '22px' };
@@ -64,7 +63,10 @@ function NavBar() {
           py: 1,
         }}
       >
-        <Toolbar disableGutters sx={{ width: '100%' }}>
+        <Toolbar
+          disableGutters
+          sx={{ width: '100%', justifyContent: 'center' }}
+        >
           {/* LOGO - Desktop */}
           {/*  <Typography
             variant='h5'
@@ -118,7 +120,7 @@ function NavBar() {
           </Box>
 
           {/* LOGO - Mobile */}
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, display: { lg: 'none' } }}>
             <Box
               component='img'
               src='/logo.png'

@@ -19,7 +19,7 @@ import {
 import './CampaignDetails.css';
 import ProjectCard from '../../components/ProjectCard/ProjectCard';
 import BreadCrumb from '../../components/BreadCrumb';
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import DonateButton from '../../components/DonateButton/DonateButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCampaignDetails } from '../../services/campaigns';
@@ -27,58 +27,7 @@ import { useGetData } from '../../customHooks/reactQuery/useGetData';
 import config from '../../constants/enviroment';
 import { formatArabicDate, formatArabicTime } from '../../utils/methods';
 import { toast } from 'react-toastify';
-
-// const GOALS = [
-//   { icon: Home, text: 'إعادة تأهيل 120 منزلًا متضررًا بشكل كامل أو جزئي' },
-//   { icon: Users, text: 'توفير مأوى دائم لأكثر من 600 فرد من العائلات النازحة' },
-//   {
-//     icon: Droplet,
-//     text: 'إعادة تأهيل شبكات المياه والصرف الصحي في المنطقة المستهدفة',
-//   },
-//   { icon: Lightbulb, text: 'تركيب أنظمة طاقة شمسية للوحدات السكنية الجديدة' },
-// ];
-
-// export const PROJECTS = [
-//   {
-//     id: 1,
-//     title: 'ترميم المنازل المتضررة',
-//     desc: 'إعادة تأهيل الوحدات السكنية المتضررة جزئيًا وتجهيزها للسكن الآمن.',
-//     location: 'حمص , خالدية',
-//     sector: 'التعليم',
-//     image:
-//       'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop',
-//     status: 'active', // active | done
-//     raised: 68000,
-//     target: 100000,
-//     allocated: 100000,
-//   },
-//   {
-//     id: 2,
-//     title: 'تأهيل شبكات المياه',
-//     desc: 'إعادة مد وتأهيل شبكات المياه والصرف الصحي للقرى المستهدفة.',
-//     location: 'ريف دمشق , دوما',
-//     sector: 'بنية تحتية',
-//     image:
-//       'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=800&auto=format&fit=crop',
-//     status: 'active',
-//     raised: 21000,
-//     target: 50000,
-//     allocated: 25000,
-//   },
-//   {
-//     id: 3,
-//     title: 'تركيب أنظمة الطاقة الشمسية',
-//     desc: 'تجهيز 40 وحدة سكنية بأنظمة طاقة شمسية مستقلة عن الشبكة.',
-//     location: 'حمص , جورة الشياح',
-//     sector: 'طاقة',
-//     image:
-//       'https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=800&auto=format&fit=crop',
-//     status: 'done',
-//     raised: 30000,
-//     target: 30000,
-//     allocated: 30000,
-//   },
-// ];
+import { getDonations } from '../../services/profile';
 
 /* ---------- Hook: عداد متحرك للأرقام ---------- */
 function useCountUp(target, duration = 1200, start = false) {
@@ -205,10 +154,7 @@ function CampaignDetails() {
                 options={[
                   {
                     label: 'تبرع مباشر',
-                    onClick: () =>
-                      navigate(
-                        `/donate?id=f7069989-0b5e-453f-8abf-6560da32534a`,
-                      ),
+                    onClick: () => navigate(`/donate?id=${id}`),
                   },
                   {
                     label: 'تعهد',
@@ -365,12 +311,11 @@ function CampaignDetails() {
                 options={[
                   {
                     label: 'تبرع مباشر',
-                    onClick: () =>
-                      navigate(`/donate/f7069989-0b5e-453f-8abf-6560da32534a`),
+                    onClick: () => navigate(`/donate?id=${id}`),
                   },
                   {
                     label: 'تعهد',
-                    onClick: () => navigate(`/campaign/${id}/pledge`),
+                    onClick: () => navigate(`/pledge/?id=${id}`),
                   },
                 ]}
                 sx={{

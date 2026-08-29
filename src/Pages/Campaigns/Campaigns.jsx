@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CampaignCard from '../../components/CampaignCard/CampaignCard';
 import CampaignFilter from '../../components/CampaignFilter/CampaignFilter';
 import SearchAndFilterBar from '../../components/search&filterBar/searchAndfilterBar';
 import './Campaigns.css';
-import axios from 'axios';
 import BreadCrumb from '../../components/BreadCrumb';
 import CustomPagination from '../../components/CustomPagination';
 import CustomContainer from '../../components/common/CustomContainer';
@@ -128,7 +127,7 @@ const Campaigns = () => {
         </p>
       </section> */}
       <CustomContainer>
-        <section className='header' style={{ padding: '40px 0px 0px' }}>
+        <section className='header' style={{ padding: '40px 0px ' }}>
           <SearchAndFilterBar
             onFilterClick={() => setShowFilter((prev) => !prev)}
             searchKey={searchKey}
@@ -139,9 +138,7 @@ const Campaigns = () => {
           className={`container-campaign ${showFilter ? 'filter-open' : ''}`}
         >
           <div className={`cards-wrapper ${showFilter ? 'with-filter' : ''}`}>
-            {isFetchingSearch ? (
-              <div className='filter-message'>جاري البحث ...</div>
-            ) : searchErr ? (
+            {searchErr ? (
               <div className='filter-message error'>
                 حدث خطأ أثناء تطبيق البحث
               </div>
@@ -151,7 +148,9 @@ const Campaigns = () => {
               <div className='filter-message error'>
                 حدث خطأ أثناء تطبيق الفلتر
               </div>
-            ) : currentCampaigns.length === 0 ? (
+            ) : currentCampaigns.length === 0 &&
+              searchKey !== '' &&
+              !isFetchingSearch ? (
               <div className='filter-message'>
                 لم يتم العثور على نتائج مطابقة
               </div>
@@ -159,7 +158,7 @@ const Campaigns = () => {
               currentCampaigns.map((campaign) => {
                 const data = campaign?.campaing || campaign;
 
-                return isFetchingCampaigns && searchKey.trim() === '' ? (
+                return isFetchingCampaigns || isFetchingSearch ? (
                   <CampaignCardSkeleton />
                 ) : (
                   <CampaignCard
@@ -186,15 +185,17 @@ const Campaigns = () => {
           )}
         </section>
 
-        <div className='pagination-container'>
-          <CustomPagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            goToPage={goToPage}
-            nextPage={nextPage}
-            isBtnDisabled={currentPage === totalPages - 1}
-          />
-        </div>
+        {!isFetchingCampaigns && (
+          <div className='pagination-container'>
+            <CustomPagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              goToPage={goToPage}
+              nextPage={nextPage}
+              isBtnDisabled={currentPage === totalPages - 1}
+            />
+          </div>
+        )}
       </CustomContainer>
     </div>
   );

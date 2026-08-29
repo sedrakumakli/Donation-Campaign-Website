@@ -1,6 +1,5 @@
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button } from '@mui/material';
 import './CampaignCard.css';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DonateButton from '../DonateButton/DonateButton';
 
@@ -11,8 +10,6 @@ const CampaignCard = ({
   target,
   collected,
   progress,
-  completedProjects,
-  relatedProjects,
   status,
 }) => {
   const navigate = useNavigate();
@@ -78,22 +75,24 @@ const CampaignCard = ({
         <hr />
         {/* Buttons  */}
         <div className='actions'>
-          <DonateButton
-            options={[
-              {
-                label: 'تبرع مباشر',
-                onClick: () => navigate(`/donate?id=${id}`),
-              },
-              {
-                label: 'تعهد',
-                onClick: () => navigate(`/pledge?id=${id}`),
-              },
-            ]}
-            sx={{
-              fontSize: '16px',
-              flex: '1',
-            }}
-          />
+          {status === 'نشطة' && (
+            <DonateButton
+              options={[
+                {
+                  label: 'تبرع مباشر',
+                  onClick: () => navigate(`/donate?id=${id}`),
+                },
+                {
+                  label: 'تعهد',
+                  onClick: () => navigate(`/pledge?id=${id}`),
+                },
+              ]}
+              sx={{
+                fontSize: '16px',
+                flex: '1',
+              }}
+            />
+          )}
           <Button
             variant='outlined'
             sx={{
@@ -103,7 +102,7 @@ const CampaignCard = ({
               display: { xs: 'none', md: 'flex' },
               bgcolor: '#fff',
               color: 'var(--main-color)',
-              width: '120px',
+              width: status === 'نشطة' ? '120px' : '100%',
               fontSize: '16px',
               fontWeight: 'bold',
             }}

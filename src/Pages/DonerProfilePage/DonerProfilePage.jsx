@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './DonerProfilePage.css';
 import BreadCrumb from '../../components/BreadCrumb';
 import FinancialTable from '../../components/DonerProfile/FinancialTable';
