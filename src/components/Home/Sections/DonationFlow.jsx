@@ -3,9 +3,11 @@ import VolunteerActivismOutlinedIcon from '@mui/icons-material/VolunteerActivism
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import InfoSection from '../InfoSection';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const DonationFlow = () => {
   const navigate = useNavigate();
+  const isBanned=JSON.parse(localStorage.getItem('isBanned'))
 
   return (
     <InfoSection image='/DonateFlowSection.jpg' isFull={true}>
@@ -92,7 +94,7 @@ const DonationFlow = () => {
 
               <Button
                 component={Link}
-                to='/donate'
+                to={isBanned?'/profile':'/donate'}
                 variant='contained'
                 sx={{
                   mt: 3,
@@ -162,7 +164,7 @@ const DonationFlow = () => {
 
               <Button
                 component={Link}
-                to='/pledge'
+                to={isBanned?'/profile':'/pledge'}
                 variant='outlined'
                 sx={{
                   mt: 3,

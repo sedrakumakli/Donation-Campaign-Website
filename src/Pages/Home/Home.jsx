@@ -17,6 +17,9 @@ import VolunteerActivismRoundedIcon from "@mui/icons-material/VolunteerActivismR
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
+import { useEffect } from "react";
+import { useGetData } from "../../customHooks/reactQuery/useGetData";
+import { getDonations } from "../../services/profile";
 
 const stats = [
   {
@@ -57,6 +60,20 @@ const stats = [
   },
 ];
 function Home() {
+  const {
+      data: donationsData,
+      isFetching: isFetchingDonations,
+      error: donationsErr,
+    } = useGetData({
+      queryKey: ['donations'],
+      queryFn: getDonations,
+    });
+  
+    const donations = donationsData?.data || [];
+    const isBanned=donations?.find(donation=>donation.status==='غير متوافق')
+    useEffect(()=>{
+      if(isBanned)localStorage.setItem('isBanned','true')
+    },[donationsData])
   return (
     <div className="home">
       <HomeHero />
