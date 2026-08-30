@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,13 +13,13 @@ import {
   Stack,
   Typography,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 
-import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
-import VolunteerActivismRoundedIcon from "@mui/icons-material/VolunteerActivismRounded";
-import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
-import CampaignRoundedIcon from "@mui/icons-material/CampaignRounded";
-import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
+import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
+import VolunteerActivismRoundedIcon from '@mui/icons-material/VolunteerActivismRounded';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import CampaignRoundedIcon from '@mui/icons-material/CampaignRounded';
+import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 
 import {
   LocationOn,
@@ -32,28 +32,28 @@ import {
   AutoAwesome,
   Link as LinkIcon,
   Facebook,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 
-import { useGetData } from "../../customHooks/reactQuery/useGetData";
-import { getProjectDetail } from "../../services/projects";
+import { useGetData } from '../../customHooks/reactQuery/useGetData';
+import { getProjectDetail } from '../../services/projects';
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = 'http://127.0.0.1:8000';
 
 const SECTION_TITLE_SX = {
   fontFamily: "'Cairo', sans-serif",
   fontSize: { xs: 22, md: 24 },
   fontWeight: 800,
-  color: "var(--teal-900)",
+  color: 'var(--teal-900)',
 };
 function parseNumber(value) {
   if (value === null || value === undefined) return 0;
-  const num = parseFloat(String(value).replace(/[^\d.-]/g, ""));
+  const num = parseFloat(String(value).replace(/[^\d.-]/g, ''));
   return isNaN(num) ? 0 : num;
 }
 
 function buildImageUrl(path) {
   if (!path) return null;
-  if (path.startsWith("http")) return path;
+  if (path.startsWith('http')) return path;
   return `${BASE_URL}${path}`;
 }
 
@@ -92,7 +92,7 @@ function FadeSection({ children, sx, delay = 0 }) {
       ref={ref}
       sx={{
         opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(28px)",
+        transform: inView ? 'translateY(0)' : 'translateY(28px)',
         transition: `opacity .7s ease ${delay}s, transform .7s ease ${delay}s`,
         ...sx,
       }}
@@ -102,7 +102,7 @@ function FadeSection({ children, sx, delay = 0 }) {
   );
 }
 
-function Counter({ end, suffix = "", prefix = "", duration = 1200 }) {
+function Counter({ end, suffix = '', prefix = '', duration = 1200 }) {
   const [ref, inView] = useInView(0.5);
   const [value, setValue] = useState(0);
   const started = useRef(false);
@@ -149,7 +149,7 @@ export default function Project() {
 
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [amount, setAmount] = useState(50);
-  const [customAmount, setCustomAmount] = useState("");
+  const [customAmount, setCustomAmount] = useState('');
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [activeImg, setActiveImg] = useState(0);
@@ -158,13 +158,13 @@ export default function Project() {
     isLoading,
     isError,
   } = useGetData({
-    queryKey: ["project-detail", id],
+    queryKey: ['project-detail', id],
     queryFn: () => getProjectDetail(id),
     enabled: !!id,
   });
 
   const project = response?.data;
-  console.log("PROJECT CARD DATA:", project);
+  console.log('PROJECT CARD DATA:', project);
   const totalCost = parseNumber(project?.estimated_cost);
   const completion = parseNumber(project?.progress_percentage);
   const costItems = (project?.details || []).map((d) => ({
@@ -180,10 +180,10 @@ export default function Project() {
   ].filter(Boolean);
 
   const locationText = project?.district
-    ? `${project.district.city?.governorate?.governorate_name || ""}، ${
-        project.district.city?.city_name || ""
+    ? `${project.district.city?.governorate?.governorate_name || ''}، ${
+        project.district.city?.city_name || ''
       } — حي ${project.district.district_name}`
-    : "";
+    : '';
 
   const quickAmounts = [25, 50, 100, 250];
   const finalAmount = customAmount ? Number(customAmount) : amount;
@@ -196,34 +196,34 @@ export default function Project() {
           icon: VerifiedRoundedIcon,
           isNumber: true,
           num: completion,
-          suffix: "%",
-          label: "نسبة الإنجاز",
+          suffix: '%',
+          label: 'نسبة الإنجاز',
         },
         {
           icon: VolunteerActivismRoundedIcon,
           isNumber: true,
           num: raised,
-          prefix: "$",
-          label: "تم جمعه",
+          prefix: '$',
+          label: 'تم جمعه',
         },
         {
           icon: AttachMoneyRoundedIcon,
           isNumber: true,
           num: totalCost,
-          prefix: "$",
-          label: "التكلفة الإجمالية",
+          prefix: '$',
+          label: 'التكلفة الإجمالية',
         },
         {
           icon: CampaignRoundedIcon,
           isNumber: false,
           value: project.funding_source,
-          label: "الجهة الممولة",
+          label: 'الجهة الممولة',
         },
         {
           icon: GroupsRoundedIcon,
           isNumber: false,
           value: project.Implementing_party,
-          label: "الجهة المنفذة",
+          label: 'الجهة المنفذة',
         },
       ]
     : [];
@@ -252,13 +252,13 @@ export default function Project() {
     return (
       <Box
         sx={{
-          minHeight: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          minHeight: '60vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <CircularProgress sx={{ color: "var(--gold)" }} />
+        <CircularProgress sx={{ color: 'var(--gold)' }} />
       </Box>
     );
   }
@@ -267,13 +267,13 @@ export default function Project() {
     return (
       <Box
         sx={{
-          minHeight: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          minHeight: '60vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <Typography sx={{ color: "var(--muted)", fontSize: 16 }}>
+        <Typography sx={{ color: 'var(--muted)', fontSize: 16 }}>
           تعذر تحميل بيانات المشروع، حاول مرة أخرى
         </Typography>
       </Box>
@@ -282,12 +282,12 @@ export default function Project() {
 
   return (
     <Box
-      dir="rtl"
+      dir='rtl'
       sx={{
         fontFamily: "'Cairo', sans-serif",
-        backgroundColor: "var(--bg)",
-        color: "var(--ink)",
-        overflowX: "hidden",
+        backgroundColor: 'var(--bg)',
+        color: 'var(--ink)',
+        overflowX: 'hidden',
         pb: 4,
       }}
     >
@@ -321,69 +321,69 @@ export default function Project() {
 
       <Box
         sx={{
-          position: "relative",
+          position: 'relative',
           minHeight: { xs: 480, md: 600 },
-          display: "flex",
-          alignItems: "center",
-          overflow: "hidden",
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
         }}
       >
         {heroImages.length > 0 && (
           <Box
             key={activeImg}
-            component="img"
+            component='img'
             src={heroImages[activeImg]}
-            alt="صورة المشروع"
+            alt='صورة المشروع'
             sx={{
-              position: "absolute",
+              position: 'absolute',
               inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              animation: "fadeInImage .5s ease",
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              animation: 'fadeInImage .5s ease',
             }}
           />
         )}
 
         <Box
           sx={{
-            position: "absolute",
+            position: 'absolute',
             inset: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.25)",
+            backgroundColor: 'rgba(0, 0, 0, 0.25)',
             zIndex: 1,
           }}
         />
 
         <Chip
           icon={
-            <CampaignRoundedIcon sx={{ color: "var(--gold) !important" }} />
+            <CampaignRoundedIcon sx={{ color: 'var(--gold) !important' }} />
           }
           label={project.status}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             top: 28,
             right: 24,
             zIndex: 3,
-            bgcolor: "rgba(255,255,255,0.12)",
-            color: "var(--white)",
+            bgcolor: 'rgba(255,255,255,0.12)',
+            color: 'var(--white)',
             fontWeight: 700,
             px: 1.5,
-            border: "1px solid rgba(255,255,255,0.2)",
-            backdropFilter: "blur(6px)",
+            border: '1px solid rgba(255,255,255,0.2)',
+            backdropFilter: 'blur(6px)',
           }}
         />
 
-        <Box sx={{ position: "absolute", top: 28, left: 24, zIndex: 3 }}>
+        <Box sx={{ position: 'absolute', top: 28, left: 24, zIndex: 3 }}>
           <IconButton
             onClick={() => setShareOpen((current) => !current)}
-            aria-label="مشاركة المشروع"
+            aria-label='مشاركة المشروع'
             sx={{
               width: 42,
               height: 42,
-              color: "var(--white)",
-              backgroundColor: "rgba(255,255,255,0.14)",
-              backdropFilter: "blur(6px)",
-              "&:hover": { backgroundColor: "rgba(255,255,255,0.25)" },
+              color: 'var(--white)',
+              backgroundColor: 'rgba(255,255,255,0.14)',
+              backdropFilter: 'blur(6px)',
+              '&:hover': { backgroundColor: 'rgba(255,255,255,0.25)' },
             }}
           >
             <Share sx={{ fontSize: 18 }} />
@@ -393,29 +393,29 @@ export default function Project() {
             <Paper
               elevation={0}
               sx={{
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 mt: 1,
                 width: 208,
                 p: 1,
-                borderRadius: "var(--radius-md)",
-                backgroundColor: "var(--white)",
-                boxShadow: "var(--shadow-2)",
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--white)',
+                boxShadow: 'var(--shadow-2)',
               }}
             >
               <Button
                 fullWidth
                 sx={{
-                  justifyContent: "flex-start",
+                  justifyContent: 'flex-start',
                   gap: 1,
                   px: 1.5,
                   py: 1.2,
-                  borderRadius: "var(--radius-sm)",
-                  color: "var(--ink)",
+                  borderRadius: 'var(--radius-sm)',
+                  color: 'var(--ink)',
                   fontFamily: "'IBM Plex Sans Arabic', sans-serif",
-                  fontSize: "14.5px",
-                  textTransform: "none",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                  fontSize: '14.5px',
+                  textTransform: 'none',
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)' },
                 }}
               >
                 واتساب
@@ -423,18 +423,18 @@ export default function Project() {
 
               <Button
                 fullWidth
-                startIcon={<Facebook sx={{ color: "#3b5998" }} />}
+                startIcon={<Facebook sx={{ color: '#3b5998' }} />}
                 sx={{
-                  justifyContent: "flex-start",
+                  justifyContent: 'flex-start',
                   gap: 1,
                   px: 1.5,
                   py: 1.2,
-                  borderRadius: "var(--radius-sm)",
-                  color: "var(--ink)",
+                  borderRadius: 'var(--radius-sm)',
+                  color: 'var(--ink)',
                   fontFamily: "'IBM Plex Sans Arabic', sans-serif",
-                  fontSize: "14.5px",
-                  textTransform: "none",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                  fontSize: '14.5px',
+                  textTransform: 'none',
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)' },
                 }}
               >
                 فيسبوك
@@ -445,25 +445,25 @@ export default function Project() {
                 onClick={handleCopy}
                 startIcon={
                   copied ? (
-                    <Check sx={{ color: "var(--teal-700)" }} />
+                    <Check sx={{ color: 'var(--teal-700)' }} />
                   ) : (
-                    <LinkIcon sx={{ color: "var(--muted)" }} />
+                    <LinkIcon sx={{ color: 'var(--muted)' }} />
                   )
                 }
                 sx={{
-                  justifyContent: "flex-start",
+                  justifyContent: 'flex-start',
                   gap: 1,
                   px: 1.5,
                   py: 1.2,
-                  borderRadius: "var(--radius-sm)",
-                  color: "var(--ink)",
+                  borderRadius: 'var(--radius-sm)',
+                  color: 'var(--ink)',
                   fontFamily: "'IBM Plex Sans Arabic', sans-serif",
-                  fontSize: "14.5px",
-                  textTransform: "none",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                  fontSize: '14.5px',
+                  textTransform: 'none',
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.05)' },
                 }}
               >
-                {copied ? "تم نسخ الرابط" : "نسخ الرابط"}
+                {copied ? 'تم نسخ الرابط' : 'نسخ الرابط'}
               </Button>
             </Paper>
           )}
@@ -473,71 +473,71 @@ export default function Project() {
           <>
             <IconButton
               onClick={prevImg}
-              aria-label="الصورة السابقة"
+              aria-label='الصورة السابقة'
               sx={{
-                position: "absolute",
-                top: "50%",
+                position: 'absolute',
+                top: '50%',
                 right: 20,
-                transform: "translateY(-50%)",
+                transform: 'translateY(-50%)',
                 zIndex: 3,
                 width: 40,
                 height: 40,
-                color: "var(--white)",
-                backgroundColor: "rgba(255,255,255,0.14)",
-                backdropFilter: "blur(6px)",
-                "&:hover": { backgroundColor: "rgba(255,255,255,0.28)" },
-              }}
-            >
-              <ChevronRight sx={{ fontSize: 20 }} />
-            </IconButton>
-
-            <IconButton
-              onClick={nextImg}
-              aria-label="الصورة التالية"
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: 20,
-                transform: "translateY(-50%)",
-                zIndex: 3,
-                width: 40,
-                height: 40,
-                color: "var(--white)",
-                backgroundColor: "rgba(255,255,255,0.14)",
-                backdropFilter: "blur(6px)",
-                "&:hover": { backgroundColor: "rgba(255,255,255,0.28)" },
+                color: 'var(--white)',
+                backgroundColor: 'rgba(255,255,255,0.14)',
+                backdropFilter: 'blur(6px)',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.28)' },
               }}
             >
               <ChevronLeft sx={{ fontSize: 20 }} />
             </IconButton>
+
+            <IconButton
+              onClick={nextImg}
+              aria-label='الصورة التالية'
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: 20,
+                transform: 'translateY(-50%)',
+                zIndex: 3,
+                width: 40,
+                height: 40,
+                color: 'var(--white)',
+                backgroundColor: 'rgba(255,255,255,0.14)',
+                backdropFilter: 'blur(6px)',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.28)' },
+              }}
+            >
+              <ChevronRight sx={{ fontSize: 20 }} />
+            </IconButton>
           </>
         )}
 
-        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
-          <Stack spacing={2.5} sx={{ width: "100%" }}>
+        <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 2 }}>
+          <Stack spacing={2.5} sx={{ width: '100%' }}>
             <Typography
-              component="h1"
+              component='h1'
               sx={{
                 fontSize: { xs: 32, md: 54 },
                 fontWeight: 900,
                 lineHeight: 1.3,
-                color: "var(--white)",
+                color: 'var(--white)',
               }}
             >
               {project.name}
             </Typography>
 
             <Stack
-              direction="row"
-              flexWrap="wrap"
-              justifyContent="center"
+              direction='row'
+              flexWrap='wrap'
+              justifyContent='center'
               gap={2.5}
             >
               {locationText && (
-                <Stack direction="row" spacing={0.75} alignItems="center">
-                  <LocationOn sx={{ fontSize: 20, color: "var(--gold)" }} />
+                <Stack direction='row' spacing={0.75} alignItems='center'>
+                  <LocationOn sx={{ fontSize: 20, color: 'var(--gold)' }} />
                   <Typography
-                    sx={{ color: "rgba(247,249,249,0.9)", fontSize: 15.5 }}
+                    sx={{ color: 'rgba(247,249,249,0.9)', fontSize: 15.5 }}
                   >
                     {locationText}
                   </Typography>
@@ -545,10 +545,10 @@ export default function Project() {
               )}
 
               {project.sector && (
-                <Stack direction="row" spacing={0.75} alignItems="center">
-                  <School sx={{ fontSize: 20, color: "var(--gold)" }} />
+                <Stack direction='row' spacing={0.75} alignItems='center'>
+                  <School sx={{ fontSize: 20, color: 'var(--gold)' }} />
                   <Typography
-                    sx={{ color: "rgba(247,249,249,0.9)", fontSize: 15.5 }}
+                    sx={{ color: 'rgba(247,249,249,0.9)', fontSize: 15.5 }}
                   >
                     {project.sector}
                   </Typography>
@@ -561,8 +561,8 @@ export default function Project() {
       <FadeSection sx={{ px: { xs: 2.5, sm: 5 }, py: { xs: 6, md: 8 } }}>
         <Box
           sx={{
-            display: "flex",
-            flexWrap: { xs: "wrap", md: "nowrap" },
+            display: 'flex',
+            flexWrap: { xs: 'wrap', md: 'nowrap' },
             gap: { xs: 4, md: 5 },
           }}
         >
@@ -570,28 +570,28 @@ export default function Project() {
             <Box
               key={i}
               sx={{
-                flex: { xs: "0 0 calc(50% - 16px)", md: "1 1 0" },
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                flex: { xs: '0 0 calc(50% - 16px)', md: '1 1 0' },
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 minWidth: 0,
               }}
             >
               <Stack
                 spacing={1}
                 sx={{
-                  textAlign: "center",
-                  alignItems: "center",
-                  width: "100%",
+                  textAlign: 'center',
+                  alignItems: 'center',
+                  width: '100%',
                 }}
               >
                 <Box
                   sx={{
-                    color: "var(--gold)",
+                    color: 'var(--gold)',
                     height: 34,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   <s.icon sx={{ fontSize: 34 }} />
@@ -601,20 +601,20 @@ export default function Project() {
                   sx={{
                     fontSize: s.isNumber ? 24 : 15,
                     fontWeight: 800,
-                    color: "var(--teal-900)",
+                    color: 'var(--teal-900)',
                     fontFamily: "'Cairo', sans-serif",
                     minHeight: 34,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    textAlign: "center",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
                   }}
                 >
                   {s.isNumber ? (
                     <Counter
                       end={s.num}
-                      suffix={s.suffix || ""}
-                      prefix={s.prefix || ""}
+                      suffix={s.suffix || ''}
+                      prefix={s.prefix || ''}
                     />
                   ) : (
                     s.value
@@ -624,9 +624,9 @@ export default function Project() {
                 <Typography
                   sx={{
                     fontSize: 13.5,
-                    color: "var(--muted)",
+                    color: 'var(--muted)',
                     lineHeight: 1.7,
-                    textAlign: "center",
+                    textAlign: 'center',
                   }}
                 >
                   {s.label}
@@ -640,8 +640,8 @@ export default function Project() {
       <Box
         sx={{
           px: { xs: 2.5, sm: 5 },
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           gap: 3,
         }}
       >
@@ -649,27 +649,27 @@ export default function Project() {
           <Card
             elevation={0}
             sx={{
-              borderRadius: "24px",
+              borderRadius: '24px',
               p: { xs: 3, md: 5 },
-              backgroundColor: "var(--white)",
-              border: "1px solid var(--border-grey)",
-              boxShadow: "var(--shadow-1)",
-              overflow: "hidden",
-              position: "relative",
+              backgroundColor: 'var(--white)',
+              border: '1px solid var(--border-grey)',
+              boxShadow: 'var(--shadow-1)',
+              overflow: 'hidden',
+              position: 'relative',
             }}
           >
             <Box
               sx={{
-                position: "absolute",
+                position: 'absolute',
                 top: 0,
                 right: 0,
                 width: 5,
-                height: "100%",
-                backgroundColor: "var(--gold)",
+                height: '100%',
+                backgroundColor: 'var(--gold)',
               }}
             />
 
-            <Grid container spacing={{ xs: 3, md: 6 }} alignItems="center">
+            <Grid container spacing={{ xs: 3, md: 6 }} alignItems='center'>
               <Grid item xs={12} md={8}>
                 <Stack spacing={2}>
                   <Typography
@@ -678,25 +678,25 @@ export default function Project() {
                     عن المشروع
                   </Typography>
 
-                  <Box sx={{ display: "flex" }}>
+                  <Box sx={{ display: 'flex' }}>
                     <Box
                       sx={{
                         width: 32,
                         height: 32,
                         flexShrink: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
                     >
                       <VolunteerActivismRoundedIcon
-                        sx={{ fontSize: 24, color: "var(--gold)" }}
+                        sx={{ fontSize: 24, color: 'var(--gold)' }}
                       />
                     </Box>
                     <Typography
                       sx={{
-                        color: "var(--desc-color)",
-                        fontSize: { xs: "14.5px", md: 15 },
+                        color: 'var(--desc-color)',
+                        fontSize: { xs: '14.5px', md: 15 },
                         lineHeight: 2.2,
                         maxWidth: 1400,
                       }}
@@ -807,23 +807,23 @@ export default function Project() {
           <Card
             elevation={0}
             sx={{
-              borderRadius: "24px",
+              borderRadius: '24px',
               p: { xs: 3, md: 5 },
-              backgroundColor: "var(--white)",
-              border: "1px solid var(--border-grey)",
-              boxShadow: "var(--shadow-1)",
-              overflow: "hidden",
-              position: "relative",
+              backgroundColor: 'var(--white)',
+              border: '1px solid var(--border-grey)',
+              boxShadow: 'var(--shadow-1)',
+              overflow: 'hidden',
+              position: 'relative',
             }}
           >
             <Box
               sx={{
-                position: "absolute",
+                position: 'absolute',
                 top: 0,
                 right: 0,
                 width: 5,
-                height: "100%",
-                backgroundColor: "var(--gold)",
+                height: '100%',
+                backgroundColor: 'var(--gold)',
               }}
             />
 
@@ -831,22 +831,22 @@ export default function Project() {
               onClick={() => setShowBreakdown((current) => !current)}
               fullWidth
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 p: 0,
-                color: "var(--ink)",
-                textTransform: "none",
-                "&:hover": { backgroundColor: "transparent" },
+                color: 'var(--ink)',
+                textTransform: 'none',
+                '&:hover': { backgroundColor: 'transparent' },
               }}
             >
-              <Stack direction="row" spacing={1} alignItems="center">
-                <AutoAwesome sx={{ fontSize: 18, color: "var(--gold)" }} />
+              <Stack direction='row' spacing={1} alignItems='center'>
+                <AutoAwesome sx={{ fontSize: 18, color: 'var(--gold)' }} />
                 <Typography
                   sx={{
-                    color: "var(--ink)",
+                    color: 'var(--ink)',
                     fontFamily: "'Cairo', sans-serif",
-                    fontSize: "24px",
+                    fontSize: '24px',
                     fontWeight: 800,
                   }}
                 >
@@ -856,28 +856,28 @@ export default function Project() {
 
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  display: 'flex',
+                  alignItems: 'center',
                   gap: 0.75,
                   px: 1.5,
                   py: 0.75,
-                  borderRadius: "999px",
-                  backgroundColor: "var(--bg)",
-                  color: "var(--ink)",
-                  fontSize: "14.5px",
+                  borderRadius: '999px',
+                  backgroundColor: 'var(--bg)',
+                  color: 'var(--ink)',
+                  fontSize: '14.5px',
                   lineHeight: 2,
                   fontWeight: 400,
-                  whiteSpace: "nowrap",
+                  whiteSpace: 'nowrap',
                 }}
               >
-                {showBreakdown ? "إخفاء التفاصيل" : "عرض تفاصيل التكلفة"}
+                {showBreakdown ? 'إخفاء التفاصيل' : 'عرض تفاصيل التكلفة'}
                 <KeyboardArrowDown
                   sx={{
-                    fontSize: "14.5px",
-                    transition: "transform 0.2s ease",
+                    fontSize: '14.5px',
+                    transition: 'transform 0.2s ease',
                     transform: showBreakdown
-                      ? "rotate(180deg)"
-                      : "rotate(0deg)",
+                      ? 'rotate(180deg)'
+                      : 'rotate(0deg)',
                   }}
                 />
               </Box>
@@ -887,13 +887,13 @@ export default function Project() {
               <Typography
                 sx={{
                   mt: 1.5,
-                  color: "var(--desc-color)",
-                  fontSize: "14.5px",
+                  color: 'var(--desc-color)',
+                  fontSize: '14.5px',
                   lineHeight: 2,
                 }}
               >
-                التكلفة الإجمالية للمشروع{" "}
-                <Box component="strong" sx={{ color: "var(--ink)" }}>
+                التكلفة الإجمالية للمشروع{' '}
+                <Box component='strong' sx={{ color: 'var(--ink)' }}>
                   ${totalCost.toLocaleString()}
                 </Box>
                 . اضغط لعرض توزيع المبلغ على كل بند.
@@ -911,19 +911,19 @@ export default function Project() {
                     <Box key={item.label}>
                       <Box
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
                           mb: 0.5,
                         }}
                       >
                         <Typography
-                          sx={{ color: "var(--ink)", fontSize: "14.5px" }}
+                          sx={{ color: 'var(--ink)', fontSize: '14.5px' }}
                         >
                           {item.label}
                         </Typography>
                         <Typography
-                          sx={{ color: "var(--muted)", fontSize: "14.5px" }}
+                          sx={{ color: 'var(--muted)', fontSize: '14.5px' }}
                         >
                           ${item.amount.toLocaleString()}
                         </Typography>
@@ -932,18 +932,18 @@ export default function Project() {
                       <Box
                         sx={{
                           height: 6,
-                          borderRadius: "999px",
-                          overflow: "hidden",
-                          backgroundColor: "var(--bg)",
+                          borderRadius: '999px',
+                          overflow: 'hidden',
+                          backgroundColor: 'var(--bg)',
                         }}
                       >
                         <Box
                           sx={{
                             width: `${percentage}%`,
-                            height: "100%",
-                            borderRadius: "999px",
-                            backgroundColor: "var(--teal-700)",
-                            transition: "width .6s ease",
+                            height: '100%',
+                            borderRadius: '999px',
+                            backgroundColor: 'var(--teal-700)',
+                            transition: 'width .6s ease',
                           }}
                         />
                       </Box>
@@ -951,20 +951,20 @@ export default function Project() {
                   );
                 })}
 
-                <Divider sx={{ borderColor: "var(--border-grey)", mt: 0.5 }} />
+                <Divider sx={{ borderColor: 'var(--border-grey)', mt: 0.5 }} />
 
                 <Box
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     pt: 0.5,
                   }}
                 >
                   <Typography
                     sx={{
-                      color: "var(--ink)",
-                      fontSize: "14.5px",
+                      color: 'var(--ink)',
+                      fontSize: '14.5px',
                       fontWeight: 700,
                     }}
                   >
@@ -972,8 +972,8 @@ export default function Project() {
                   </Typography>
                   <Typography
                     sx={{
-                      color: "var(--teal-800)",
-                      fontSize: "14.5px",
+                      color: 'var(--teal-800)',
+                      fontSize: '14.5px',
                       fontWeight: 700,
                     }}
                   >

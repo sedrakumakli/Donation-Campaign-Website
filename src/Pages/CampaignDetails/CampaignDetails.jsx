@@ -150,19 +150,21 @@ function CampaignDetails() {
               {/* <button className="btn btn-gold">
                 <HeartHandshake size={16} /> تبرع الآن
               </button> */}
-              <DonateButton
-                options={[
-                  {
-                    label: 'تبرع مباشر',
-                    onClick: () => navigate(`/donate?id=${id}`),
-                  },
-                  {
-                    label: 'تعهد',
-                    onClick: () =>
-                      navigate(`/pledge?id=${campaignsDetails.uuid}`),
-                  },
-                ]}
-              />
+              {CampaignDetails?.status === 'نشطة' && (
+                <DonateButton
+                  options={[
+                    {
+                      label: 'تبرع مباشر',
+                      onClick: () => navigate(`/donate?id=${id}`),
+                    },
+                    {
+                      label: 'تعهد',
+                      onClick: () =>
+                        navigate(`/pledge?id=${campaignsDetails.uuid}`),
+                    },
+                  ]}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -307,23 +309,25 @@ function CampaignDetails() {
                 </div> */}
               </div>
 
-              <DonateButton
-                options={[
-                  {
-                    label: 'تبرع مباشر',
-                    onClick: () => navigate(`/donate?id=${id}`),
-                  },
-                  {
-                    label: 'تعهد',
-                    onClick: () => navigate(`/pledge/?id=${id}`),
-                  },
-                ]}
-                sx={{
-                  height: '60px',
-                  width: '100%',
-                  fontSize: '20px',
-                }}
-              />
+              {CampaignDetails?.status === 'نشطة' && (
+                <DonateButton
+                  options={[
+                    {
+                      label: 'تبرع مباشر',
+                      onClick: () => navigate(`/donate?id=${id}`),
+                    },
+                    {
+                      label: 'تعهد',
+                      onClick: () => navigate(`/pledge/?id=${id}`),
+                    },
+                  ]}
+                  sx={{
+                    height: '60px',
+                    width: '100%',
+                    fontSize: '20px',
+                  }}
+                />
+              )}
 
               <div className='share-row'>
                 {/* <button className="share-btn">

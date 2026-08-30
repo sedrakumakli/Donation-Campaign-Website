@@ -24,8 +24,6 @@ const CompleteDateErrPayment = () => {
 
   const [preview, setPreview] = useState(null);
 
-  const [setSuccess] = useState(false);
-
   const nextStep = () => setActiveStep((prev) => prev + 1);
 
   const previousStep = () => setActiveStep((prev) => prev - 1);
@@ -40,7 +38,6 @@ const CompleteDateErrPayment = () => {
     mutationFn: (body) => payDateErr(id, body),
 
     onSuccess: () => {
-      setSuccess(true); // أو فتح modal النجاح
       toast.success(
         'تم رفع الوصل الجديد. سيتم مراجعة إثبات الدفع واعتماد التبرع من قبل الإدارة.',
       );

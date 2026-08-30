@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -7,35 +7,35 @@ import {
   MenuItem,
   InputBase,
   FormHelperText,
-} from "@mui/material";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+} from '@mui/material';
+import { FaFacebook } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import CustomContainer from "../../components/common/CustomContainer";
-import CustomInput from "../../components/common/CustomInput";
-import SuccessDialog from "../../components/common/SuccessDialog";
-import { registerUser } from "../../services/authService";
-import { getAll } from "../../services/crudService";
+import CustomContainer from '../../components/common/CustomContainer';
+import CustomInput from '../../components/common/CustomInput';
+import SuccessDialog from '../../components/common/SuccessDialog';
+import { registerUser } from '../../services/authService';
+import { getAll } from '../../services/crudService';
 
-import signupImg from "../../assets/child.jpg";
-import SyrianFlag from "../../assets/SyrianFlag.svg";
+import signupImg from '../../assets/child.jpg';
+import SyrianFlag from '../../assets/SyrianFlag.svg';
 
 export default function SignUpPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [selectUserType, setSelectUserType] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [selectUserType, setSelectUserType] = useState('');
 
-  const [nameError, setNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [userTypeError, setUserTypeError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [userTypeError, setUserTypeError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
@@ -43,40 +43,40 @@ export default function SignUpPage() {
   const navigate = useNavigate();
 
   const resetErrors = () => {
-    setNameError("");
-    setEmailError("");
-    setPhoneError("");
-    setUserTypeError("");
-    setPasswordError("");
-    setConfirmPasswordError("");
+    setNameError('');
+    setEmailError('');
+    setPhoneError('');
+    setUserTypeError('');
+    setPasswordError('');
+    setConfirmPasswordError('');
   };
 
   const validate = () => {
     let isValid = true;
 
     if (!name.trim()) {
-      setNameError("الاسم مطلوب");
+      setNameError('الاسم مطلوب');
       isValid = false;
     }
     if (!email.trim()) {
-      setEmailError("البريد الإلكتروني مطلوب");
+      setEmailError('البريد الإلكتروني مطلوب');
       isValid = false;
     }
     if (!phone.trim()) {
-      setPhoneError("رقم الهاتف مطلوب");
+      setPhoneError('رقم الهاتف مطلوب');
       isValid = false;
     }
 
     if (!selectUserType) {
-      setUserTypeError("الرجاء اختيار نوع المستخدم");
+      setUserTypeError('الرجاء اختيار نوع المستخدم');
       isValid = false;
     }
     if (!password) {
-      setPasswordError("كلمة المرور مطلوبة");
+      setPasswordError('كلمة المرور مطلوبة');
       isValid = false;
     }
     if (password && confirmPassword && password !== confirmPassword) {
-      setConfirmPasswordError("كلمتا المرور غير متطابقتين");
+      setConfirmPasswordError('كلمتا المرور غير متطابقتين');
       isValid = false;
     }
 
@@ -119,15 +119,15 @@ export default function SignUpPage() {
     }
 
     const { user, token } = result.data;
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
 
-    setName("");
-    setEmail("");
-    setPhone("");
-    setPassword("");
-    setConfirmPassword("");
-    setSelectUserType("");
+    setName('');
+    setEmail('');
+    setPhone('');
+    setPassword('');
+    setConfirmPassword('');
+    setSelectUserType('');
 
     setOpenSuccess(true);
   };
@@ -135,23 +135,23 @@ export default function SignUpPage() {
   return (
     <Box
       sx={{
-        display: "flex",
-        minHeight: "calc(100vh - 122px)",
-        flexWrap: { xs: "wrap-reverse", md: "nowrap" },
+        display: 'flex',
+        minHeight: 'calc(100vh - 122px)',
+        flexWrap: { xs: 'wrap-reverse', md: 'nowrap' },
       }}
     >
       <Box
         sx={{
-          width: { xs: "100%", md: "50%" },
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+          width: { xs: '100%', md: '50%' },
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
           backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${signupImg})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          position: "relative",
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          position: 'relative',
         }}
       >
         <Box
@@ -167,24 +167,24 @@ export default function SignUpPage() {
           //   width: "fit-content",
           // }}
           sx={{
-            position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
-            wordSpacing: "4px",
-            maxWidth: "450px",
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            wordSpacing: '4px',
+            maxWidth: '450px',
           }}
         >
           <Typography
-            component="h1"
+            component='h1'
             sx={{
-              fontFamily: "Cairo",
-              fontSize: "40px",
+              fontFamily: 'Cairo',
+              fontSize: '40px',
               fontWeight: 500,
-              color: "var(--white)",
-              mb: "20px",
+              color: 'var(--white)',
+              mb: '20px',
             }}
           >
-            حوّل عطائك إلى أثرٍ حقيقي{" "}
+            حوّل عطائك إلى أثرٍ حقيقي{' '}
           </Typography>
 
           {/* <Box component="ul" sx={{ pr: "20px", m: 0 }}>
@@ -198,15 +198,15 @@ export default function SignUpPage() {
             // component="li"
             // key={i}
             sx={{
-              fontFamily: "Cairo",
-              color: "var(--white)",
-              fontSize: "17px",
-              lineHeight: "30px",
-              p: "10px",
+              fontFamily: 'Cairo',
+              color: 'var(--white)',
+              fontSize: '17px',
+              lineHeight: '30px',
+              p: '10px',
             }}
           >
             لأن الخير يستحق أن يصل بالشكل الصحيح، نوفر منصة تربط المتبرعين
-            بالمبادرات الإنسانية وتتابع أثر كل مساهمة.{" "}
+            بالمبادرات الإنسانية وتتابع أثر كل مساهمة.{' '}
           </Typography>
           {/* ))} */}
           {/* </Box> */}
@@ -216,29 +216,29 @@ export default function SignUpPage() {
       {/* القسم الأيسر - الفورم */}
       <Box
         sx={{
-          width: { xs: "100%", md: "50%" },
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "20px",
+          width: { xs: '100%', md: '50%' },
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          mt: '20px',
         }}
       >
         <CustomContainer
           styles={{
-            maxWidth: "90% !important",
-            mx: "auto",
-            px: { xs: "20px", md: "0" },
+            maxWidth: '90% !important',
+            mx: 'auto',
+            px: { xs: '20px', md: '0' },
           }}
         >
           <Typography
-            component="h2"
+            component='h2'
             sx={{
-              textAlign: "center",
-              fontFamily: "Cairo",
+              textAlign: 'center',
+              fontFamily: 'Cairo',
               fontWeight: 600,
-              fontSize: "30px",
-              mb: "20px",
-              color: "var(--ink)",
+              fontSize: '30px',
+              mb: '20px',
+              color: 'var(--ink)',
             }}
           >
             إنشاء حساب جديد
@@ -291,14 +291,14 @@ export default function SignUpPage() {
             أو
           </Divider> */}
 
-          <Box component="form" onSubmit={handleSubmit}>
+          <Box component='form' onSubmit={handleSubmit}>
             <Box sx={{ mb: 2 }}>
               <CustomInput
-                label="البريد الإلكتروني"
-                inputType="email"
+                label='البريد الإلكتروني'
+                inputType='email'
                 value={email}
                 setValue={setEmail}
-                placeholder="ادخل بريدك الإلكتروني"
+                placeholder='ادخل بريدك الإلكتروني'
                 errorMsg={emailError}
                 isRequired
               />
@@ -306,11 +306,11 @@ export default function SignUpPage() {
 
             <Box sx={{ mb: 2 }}>
               <CustomInput
-                label="الاسم الكامل"
-                inputType="input"
+                label='الاسم الكامل'
+                inputType='input'
                 value={name}
                 setValue={setName}
-                placeholder="ادخل اسمك الكامل"
+                placeholder='ادخل اسمك الكامل'
                 errorMsg={nameError}
                 isRequired
               />
@@ -321,46 +321,44 @@ export default function SignUpPage() {
               <Typography
                 sx={{
                   mb: 1,
-                  fontFamily: "Cairo",
-                  fontSize: "16px",
-                  color: "#374151",
+                  fontFamily: 'Cairo',
+                  fontSize: '16px',
+                  color: '#374151',
                 }}
               >
                 رقم الهاتف
-                <span style={{ color: "var(--error-color)" }}>*</span>
+                <span style={{ color: 'var(--error-color)' }}>*</span>
               </Typography>
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "48px",
-                  px: "10px",
-                  border: "1px solid",
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '48px',
+                  px: '10px',
+                  border: '1px solid',
                   borderColor: phoneError
-                    ? "var(--error-color)"
-                    : "var(--border-grey)",
-                  borderRadius: "4px",
+                    ? 'var(--error-color)'
+                    : 'var(--border-grey)',
+                  borderRadius: '4px',
                 }}
               >
                 <img
                   src={SyrianFlag}
-                  alt="سوريا"
-                  style={{ width: "30px", height: "22px" }}
+                  alt='سوريا'
+                  style={{ width: '30px', height: '22px' }}
                 />
                 <InputBase
                   fullWidth
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  sx={{ fontFamily: "Cairo", color: "#333" }}
+                  sx={{ fontFamily: 'Cairo', color: '#333' }}
                 />
                 <Typography
-                  sx={{ mx: "8px", fontFamily: "Cairo", color: "var(--muted)" }}
-                >
-                  963+
-                </Typography>
+                  sx={{ mx: '8px', fontFamily: 'Cairo', color: 'var(--muted)' }}
+                ></Typography>
               </Box>
               {phoneError && (
-                <FormHelperText sx={{ color: "var(--error-color)" }}>
+                <FormHelperText sx={{ color: 'var(--error-color)' }}>
                   {phoneError}
                 </FormHelperText>
               )}
@@ -369,26 +367,26 @@ export default function SignUpPage() {
             {/* نوع المستخدم */}
             <Box sx={{ mb: 2 }}>
               <CustomInput
-                label="نوع المستخدم"
-                inputType="select"
+                label='نوع المستخدم'
+                inputType='select'
                 value={selectUserType}
                 setValue={setSelectUserType}
                 errorMsg={userTypeError}
                 isRequired
               >
-                <MenuItem value="فردي">متبرع</MenuItem>
-                <MenuItem value="رجال أعمال">رجل أعمال</MenuItem>
-                <MenuItem value="منظمات">منظمة</MenuItem>
+                <MenuItem value='فردي'>متبرع</MenuItem>
+                <MenuItem value='رجال أعمال'>رجل أعمال</MenuItem>
+                <MenuItem value='منظمات'>منظمة</MenuItem>
               </CustomInput>
             </Box>
 
             <Box sx={{ mb: 2 }}>
               <CustomInput
-                label="كلمة المرور"
-                inputType="password"
+                label='كلمة المرور'
+                inputType='password'
                 value={password}
                 setValue={setPassword}
-                placeholder="ادخل كلمة المرور"
+                placeholder='ادخل كلمة المرور'
                 errorMsg={passwordError}
                 isRequired
               />
@@ -396,11 +394,11 @@ export default function SignUpPage() {
 
             <Box sx={{ mb: 1 }}>
               <CustomInput
-                label="تأكيد كلمة المرور"
-                inputType="password"
+                label='تأكيد كلمة المرور'
+                inputType='password'
                 value={confirmPassword}
                 setValue={setConfirmPassword}
-                placeholder="أعد إدخال كلمة المرور"
+                placeholder='أعد إدخال كلمة المرور'
                 errorMsg={confirmPasswordError}
                 isRequired
               />
@@ -408,40 +406,40 @@ export default function SignUpPage() {
 
             <Button
               fullWidth
-              type="submit"
+              type='submit'
               disabled={isSubmitting}
               sx={{
-                fontFamily: "Cairo",
-                fontSize: "17px",
+                fontFamily: 'Cairo',
+                fontSize: '17px',
                 fontWeight: 100,
-                py: "15px",
+                py: '15px',
                 mt: 1,
-                bgcolor: "var(--secondary-color)",
-                color: "var(--white)",
-                borderRadius: "4px",
-                "&:hover": { bgcolor: "var(--main-color)" },
-                "&.Mui-disabled": { opacity: 0.7, color: "var(--white)" },
+                bgcolor: 'var(--secondary-color)',
+                color: 'var(--white)',
+                borderRadius: '4px',
+                '&:hover': { bgcolor: 'var(--main-color)' },
+                '&.Mui-disabled': { opacity: 0.7, color: 'var(--white)' },
               }}
             >
-              {isSubmitting ? "جارِ إنشاء الحساب..." : "إنشاء الحساب"}
+              {isSubmitting ? 'جارِ إنشاء الحساب...' : 'إنشاء الحساب'}
             </Button>
           </Box>
 
           <Typography
             sx={{
-              textAlign: "center",
-              mt: "15px",
-              fontFamily: "Cairo",
-              fontSize: "14px",
+              textAlign: 'center',
+              mt: '15px',
+              fontFamily: 'Cairo',
+              fontSize: '14px',
             }}
           >
-            لديك حساب بالفعل؟{" "}
+            لديك حساب بالفعل؟{' '}
             <Link
-              to="/login"
+              to='/login'
               style={{
-                color: "var(--ink)",
-                textDecoration: "underline",
-                fontFamily: "Cairo",
+                color: 'var(--ink)',
+                textDecoration: 'underline',
+                fontFamily: 'Cairo',
               }}
             >
               تسجيل الدخول
@@ -452,11 +450,11 @@ export default function SignUpPage() {
 
       <SuccessDialog
         open={openSuccess}
-        title="تم إنشاء حسابك بنجاح"
-        description="مرحبًا بك في منصة حملات التبرع، يمكنك الآن البدء"
-        buttonText="الذهاب للرئيسية"
+        title='تم إنشاء حسابك بنجاح'
+        description='مرحبًا بك في منصة حملات التبرع، يمكنك الآن البدء'
+        buttonText='الذهاب للرئيسية'
         onClose={() => setOpenSuccess(false)}
-        onAction={() => navigate("/")}
+        onAction={() => navigate('/')}
       />
     </Box>
   );

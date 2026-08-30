@@ -14,7 +14,7 @@ const CampaignTile = ({ campaign, isBig }) => {
         borderRadius: 4,
         overflow: 'hidden',
         cursor: 'pointer',
-        backgroundImage: `url(${config.baseUrl}${campaign.image})`,
+        backgroundImage: `url("${config.baseUrl}${campaign.image}")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         transition: '0.3s',
